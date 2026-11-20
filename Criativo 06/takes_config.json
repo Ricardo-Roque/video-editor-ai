@@ -1,0 +1,45 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_360p_v1",
+  "size": "360x640",
+  "price_per_sec": 0.039,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "suffix": "Only spoken voice, natural room tone, no music, no subtitles, no text on screen. Realistic lip sync.",
+  "images": {
+    "H1": "imagens/cenas/B1_v2.png",
+    "B1": "imagens/cenas/B1_v2.png",
+    "B1b": "imagens/cenas/B1_v2.png",
+    "B1c": "imagens/cenas/B1_v2.png"
+  },
+  "image_persona": {
+    "H1": "nurse_hook",
+    "B1": "nurse",
+    "B1b": "nurse_point",
+    "B1c": "nurse_chest"
+  },
+  "personas": {
+    "nurse": {
+      "seed": 606,
+      "scene": "Static phone on a tripod in a hospital room, the camera never moves. The woman in royal blue scrubs stands and talks directly to camera like a friendly health professional giving tips on social media, confident and warm, expressive eyebrows, natural smile. The hospital bed, IV pole and monitors behind her stay unchanged. Lively natural hand gestures in front of her chest while she explains.",
+      "voice": "Her voice: French woman around fifty, native Parisian French, clear, warm, confident and reassuring, natural conversational social-media pace."
+    },
+    "nurse_hook": {
+      "seed": 606,
+      "scene": "Static phone on a tripod in a hospital room, the camera never moves. The woman in royal blue scrubs stands and talks directly to camera like a friendly health professional giving tips on social media, confident and warm, expressive eyebrows, natural smile. The hospital bed, IV pole and monitors behind her stay unchanged. Right at the start she raises her right hand beside her shoulder with the open palm facing the camera, showing five spread fingers, her left hand on her hip.",
+      "voice": "Her voice: French woman around fifty, native Parisian French, clear, warm, confident and reassuring, natural conversational social-media pace."
+    },
+    "nurse_point": {
+      "seed": 606,
+      "scene": "Static phone on a tripod in a hospital room, the camera never moves. The woman in royal blue scrubs stands and talks directly to camera like a friendly health professional giving tips on social media, confident and warm, expressive eyebrows, natural smile. The hospital bed, IV pole and monitors behind her stay unchanged. When she says the number she raises her right index finger in front of her chest, then keeps gesturing naturally while she explains.",
+      "voice": "Her voice: French woman around fifty, native Parisian French, clear, warm, confident and reassuring, natural conversational social-media pace."
+    },
+    "nurse_chest": {
+      "seed": 606,
+      "scene": "Static phone on a tripod in a hospital room, the camera never moves. The woman in royal blue scrubs stands and talks directly to camera like a friendly health professional giving tips on social media, confident and warm, expressive eyebrows, natural smile. The hospital bed, IV pole and monitors behind her stay unchanged. She places her right hand flat on her upper chest while she talks about herself, sincere and warm, then gestures naturally.",
+      "voice": "Her voice: French woman around fifty, native Parisian French, clear, warm, confident and reassuring, natural conversational social-media pace."
+    }
+  }
+}

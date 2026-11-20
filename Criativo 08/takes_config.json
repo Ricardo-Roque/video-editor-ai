@@ -1,0 +1,31 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_360p_v1",
+  "size": "360x640",
+  "price_per_sec": 0.023172,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "suffix": "Only spoken voice, natural room tone, no music, no subtitles, no text on screen. Realistic lip sync.",
+  "images": {
+    "H1": "imagens/cenas/H1_v1.png",
+    "B1": "imagens/cenas/B1_v2.png"
+  },
+  "image_persona": {
+    "H1": "grandma_floor",
+    "B1": "grandma"
+  },
+  "personas": {
+    "grandma_floor": {
+      "seed": 808,
+      "scene": "Handheld smartphone home video filmed by a family member at night in the bedroom. The 72-year-old woman on all fours on the parquet floor pushes herself up in one quick agile movement and stands upright facing the camera, grinning proudly, barefoot. The grey-haired man at the left edge laughs warmly. Natural body proportions, no distortion.",
+      "voice": "No speech. Only soft warm laughter from the man and natural room tone."
+    },
+    "grandma": {
+      "seed": 808,
+      "scene": "Handheld smartphone home video filmed by a family member at night in the bedroom, slight natural shake. The 72-year-old woman stands facing the camera and talks directly to it, beaming with pride and joy, lively expressive face, small hand gestures at chest height, a thumbs-up near the end. The grey-haired man at the left edge smiles and stays in the background, silent.",
+      "voice": "Her voice: elderly French woman aged 72, native French, warm, cheerful, slightly frail but energetic, amused and proud, natural pace."
+    }
+  }
+}

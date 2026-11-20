@@ -1,0 +1,90 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "takes_dir": "takes",
+  "work_dir": "montagem",
+  "output": "../Vídeos Prontos/Criativo 06 - FR.mp4",
+  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "clips": [
+    {
+      "take": "T01",
+      "file": "T01_360p_v1.mp4"
+    },
+    {
+      "take": "T02",
+      "file": "T02_360p_v1.mp4"
+    },
+    {
+      "take": "T03",
+      "file": "T03_360p_v1.mp4"
+    },
+    {
+      "take": "T04",
+      "file": "T04_360p_v1.mp4",
+      "text": "Il fait tourner plus de 400 processus enzymatiques. Votre cœur, vos muscles, vos nerfs, vos hormones, votre énergie : rien ne fonctionne sans lui."
+    },
+    {
+      "take": "T05",
+      "file": "T05_360p_v1.mp4",
+      "text": "Et la plupart des femmes de plus de 40 ans en manquent déjà. Numéro un : prenez-le le soir, tous les soirs sans exception."
+    },
+    {
+      "take": "T06",
+      "file": "T06_360p_v1.mp4"
+    },
+    {
+      "take": "T07",
+      "file": "T07_360p_v1.mp4"
+    },
+    {
+      "take": "T08a",
+      "file": "T08a_360p_v1.mp4"
+    },
+    {
+      "take": "T08b",
+      "file": "T08b_360p_v1.mp4"
+    },
+    {
+      "take": "T09a",
+      "file": "T09a_360p_v1.mp4"
+    },
+    {
+      "take": "T09b",
+      "file": "T09b_360p_v1.mp4"
+    },
+    {
+      "take": "T10",
+      "file": "T10_360p_v1.mp4"
+    },
+    {
+      "take": "T11",
+      "file": "T11_360p_v1.mp4"
+    },
+    {
+      "take": "T12",
+      "file": "T12_360p_v1.mp4"
+    },
+    {
+      "take": "T13a",
+      "file": "T13a_360p_v1.mp4"
+    },
+    {
+      "take": "T13b",
+      "file": "T13b_360p_v1.mp4"
+    },
+    {
+      "take": "T14",
+      "file": "T14_360p_v1.mp4"
+    },
+    {
+      "take": "T15",
+      "file": "T15_360p_v1.mp4",
+      "text": "Une femme a dépensé 1400€ dans le mauvais magnésium avant qu'un médecin lui explique enfin tout ça."
+    },
+    {
+      "take": "T16",
+      "file": "T16_360p_v1.mp4"
+    }
+  ],
+  "overlays": []
+}

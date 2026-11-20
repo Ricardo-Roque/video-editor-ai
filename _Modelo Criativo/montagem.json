@@ -1,0 +1,15 @@
+{
+  "language": "fr",
+  "script": "roteiro.md",
+  "takes_dir": "takes",
+  "work_dir": "montagem",
+  "output": "../Vídeos Prontos/Criativo NN - XX.mp4",
+  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "clips": [
+    {"take": "T01", "file": "T01_360p_v1.mp4"},
+    {"take": "T02", "file": "T02_360p_v1.mp4"}
+  ],
+  "overlays": [
+    {"image": "imagens/cenas/O1_v1.png", "clip_index": 0, "from_word": "palavra_inicio", "to_word": "palavra_fim"}
+  ]
+}

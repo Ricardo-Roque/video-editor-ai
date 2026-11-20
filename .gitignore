@@ -1,0 +1,41 @@
+# Segredos: cada pessoa usa a própria chave do OpenRouter
+.env
+
+# Logs e cache locais
+tools/jobs.log
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Mídia não vai para o Git (arquivos grandes; ficam na pasta compartilhada do time)
+*.mp4
+*.mov
+*.m4v
+*.webm
+*.wav
+*.mp3
+*.m4a
+*.aac
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Pastas de mídia de cada criativo
+Criativo */imagens/
+Criativo */takes/
+Criativo */montagem/
+Criativo */montagem_*/
+
+# Entradas e saídas: só a pasta vai, o conteúdo fica local
+Vídeo Bruto/*
+!Vídeo Bruto/.gitkeep
+Vídeos Prontos/*
+!Vídeos Prontos/.gitkeep
+
+# Exceções: arquivos necessários para o processo funcionar
+!Referências/*.png
+!assets/**
+!.claude/skills/**

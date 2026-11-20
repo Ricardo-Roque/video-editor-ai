@@ -1,0 +1,83 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr_sono.md",
+  "takes_dir": "takes",
+  "work_dir": "montagem_sono",
+  "output": "../Vídeos Prontos/Criativo 07 - FR Sono.mp4",
+  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "clips": [
+    {
+      "take": "T01",
+      "file": "T01_360p_v1.mp4"
+    },
+    {
+      "take": "T02",
+      "file": "T02a_360p_v1.mp4"
+    },
+    {
+      "take": "T20",
+      "file": "T20_veo720_v1.mp4",
+      "text": "Et franchement, quoi, je dors enfin d'une traite, toute la nuit."
+    },
+    {
+      "take": "T03",
+      "file": "T03b_360p_v1.mp4"
+    },
+    {
+      "take": "T04",
+      "file": "T04_360p_v1.mp4"
+    },
+    {
+      "take": "T05",
+      "file": "T05_360p_v1.mp4"
+    },
+    {
+      "take": "T06",
+      "file": "T06_360p_v1.mp4",
+      "text": "Moi, j'ai payé plein pot le mois dernier. Non mais vous vous foutez de moi, Cinnarae?"
+    },
+    {
+      "take": "T07",
+      "file": "T07_360p_v1.mp4"
+    },
+    {
+      "take": "T08",
+      "file": "T08a_360p_v1.mp4"
+    },
+    {
+      "take": "T21",
+      "file": "T21_veo720_v1.mp4"
+    },
+    {
+      "take": "T09",
+      "file": "T09_360p_v1.mp4"
+    },
+    {
+      "take": "T10",
+      "file": "T10_360p_v1.mp4"
+    },
+    {
+      "take": "T11",
+      "file": "T11a_360p_v1.mp4"
+    },
+    {
+      "take": "T22",
+      "file": "T22_veo720_v1.mp4"
+    },
+    {
+      "take": "T12",
+      "file": "T12_360p_v1.mp4"
+    },
+    {
+      "take": "T13",
+      "file": "T13a_360p_v1.mp4",
+      "text": "Mais si vous ne l'avez pas encore essayé, ne faites pas la même erreur que moi. Ils le fabriquent en petites séries, donc il part très vite."
+    },
+    {
+      "take": "T13",
+      "file": "T13b_360p_v1.mp4",
+      "text": "Profitez de l'offre tant que vous pouvez."
+    }
+  ],
+  "overlays": []
+}

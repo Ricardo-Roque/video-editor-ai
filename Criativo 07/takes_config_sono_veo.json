@@ -1,0 +1,51 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr_sono.md",
+  "out_dir": "takes",
+  "out_suffix": "_veo720_v1",
+  "size": "720x1280",
+  "price_per_sec": 0.05,
+  "words_per_sec": 3.3,
+  "pad": 0.3,
+  "images": {
+    "B1": "imagens/cenas/B1_v1.png",
+    "B1a": "imagens/cenas/B1a_v1.png",
+    "B1b": "imagens/cenas/B1b_v1.png",
+    "B1c": "imagens/cenas/B1c_v1.png"
+  },
+  "image_persona": {
+    "B1": "woman",
+    "B1a": "woman_angry",
+    "B1b": "woman_pouch",
+    "B1c": "woman_gummy"
+  },
+  "personas": {
+    "woman": {
+      "seed": 707,
+      "scene": "Handheld front-camera selfie video in her kitchen, phone at arm's length, slight natural shake. The woman talks fast and directly to camera like a candid social-media rant, very expressive face, raised eyebrows, natural hand gestures that match her words. She is not smiling unless the words are positive.",
+      "voice": "Her voice: French woman in her mid-forties, native Parisian French, slightly raspy, animated and indignant, fast conversational social-media tone."
+    },
+    "woman_angry": {
+      "seed": 707,
+      "scene": "Handheld front-camera selfie video in her kitchen, phone at arm's length, slight natural shake. The woman is fed up and annoyed, frowning, ranting directly to camera, pushing her open palm toward the camera in a stop gesture, very expressive face.",
+      "voice": "Her voice: French woman in her mid-forties, native Parisian French, slightly raspy, animated and indignant, fast conversational social-media tone."
+    },
+    "woman_pouch": {
+      "seed": 707,
+      "scene": "Handheld front-camera selfie video in her kitchen, phone at arm's length, slight natural shake. The woman keeps holding the product pouch steady next to her face with the label facing the camera, and talks directly to camera with an indignant, wide-eyed expression, her free hand gesturing.",
+      "voice": "Her voice: French woman in her mid-forties, native Parisian French, slightly raspy, animated and indignant, fast conversational social-media tone."
+    },
+    "woman_gummy": {
+      "seed": 707,
+      "scene": "Handheld front-camera selfie video in her kitchen, phone at arm's length, slight natural shake. The woman keeps holding the small red gummy bear between her fingers near her face and talks directly to camera in a confiding, explaining tone, expressive face.",
+      "voice": "Her voice: French woman in her mid-forties, native Parisian French, slightly raspy, animated and indignant, fast conversational social-media tone."
+    }
+  },
+  "suffix": "Only spoken voice, natural room tone, no music, no subtitles, no text on screen. Realistic lip sync.",
+  "model": "google/veo-3.1-lite",
+  "durations": [
+    4,
+    6,
+    8
+  ]
+}

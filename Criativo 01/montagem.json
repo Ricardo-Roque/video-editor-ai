@@ -1,0 +1,156 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "takes_dir": "takes",
+  "work_dir": "montagem",
+  "output": "../Vídeos Prontos/Criativo 01 - FR.mp4",
+  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "clips": [
+    {
+      "take": "T01",
+      "file": "T01_v1.mp4"
+    },
+    {
+      "take": "T02",
+      "file": "T02_v1.mp4"
+    },
+    {
+      "take": "T03",
+      "file": "T03_v1.mp4"
+    },
+    {
+      "take": "T04",
+      "file": "T04_v1.mp4"
+    },
+    {
+      "take": "T05",
+      "file": "T05_v1.mp4"
+    },
+    {
+      "take": "T06",
+      "file": "T06_360p_v1.mp4"
+    },
+    {
+      "take": "T07",
+      "file": "T07_360p_v1.mp4"
+    },
+    {
+      "take": "T08",
+      "file": "T08_360p_v1.mp4"
+    },
+    {
+      "take": "T09",
+      "file": "T09_360p_v1.mp4"
+    },
+    {
+      "take": "T10",
+      "file": "T10a_360p_v1.mp4",
+      "text": "Votre corps s'y accroche et ne veut pas le lâcher. Réveil à trois heures du matin, visage gonflé, mauvais sommeil, ventre ballonné, brouillard mental, peu d'énergie, libido en baisse,"
+    },
+    {
+      "take": "T10",
+      "file": "T10b_360p_v1.mp4",
+      "text": "et un poids qui ne bouge pas."
+    },
+    {
+      "take": "T11",
+      "file": "T11_360p_v1.mp4"
+    },
+    {
+      "take": "T12",
+      "file": "T12_360p_v1.mp4"
+    },
+    {
+      "take": "T13",
+      "file": "T13_360p_v1.mp4"
+    },
+    {
+      "take": "T14",
+      "file": "T14_360p_v1.mp4"
+    },
+    {
+      "take": "T15",
+      "file": "T15_360p_v1.mp4"
+    },
+    {
+      "take": "T16",
+      "file": "T16_360p_v1.mp4"
+    },
+    {
+      "take": "T17",
+      "file": "T17_360p_v1.mp4"
+    },
+    {
+      "take": "T18",
+      "file": "T18_360p_v1.mp4"
+    },
+    {
+      "take": "T19",
+      "file": "T19_360p_v1.mp4"
+    },
+    {
+      "take": "T20",
+      "file": "T20_360p_v1.mp4"
+    },
+    {
+      "take": "T21",
+      "file": "T21_360p_v1.mp4"
+    },
+    {
+      "take": "T22",
+      "file": "T22_360p_v1.mp4"
+    },
+    {
+      "take": "T23",
+      "file": "T23_360p_v1.mp4"
+    },
+    {
+      "take": "T24",
+      "file": "T24_360p_v1.mp4"
+    },
+    {
+      "take": "T25",
+      "file": "T25_360p_v1.mp4"
+    },
+    {
+      "take": "T26",
+      "file": "T26_360p_v1.mp4"
+    },
+    {
+      "take": "T27",
+      "file": "T27a_360p_v1.mp4",
+      "text": "Votre corps l'absorbe tout de suite, même si votre digestion n'est plus ce qu'elle était."
+    },
+    {
+      "take": "T27",
+      "file": "T27b_360p_v1.mp4",
+      "text": "La même forme qui passe la barrière hémato-encéphalique, mais sous une forme que votre corps peut vraiment utiliser."
+    },
+    {
+      "take": "T28",
+      "file": "T28_360p_v1.mp4"
+    },
+    {
+      "take": "T29",
+      "file": "T29_360p_v1.mp4"
+    },
+    {
+      "take": "T30",
+      "file": "T30_360p_v1.mp4"
+    }
+  ],
+  "overlays": [
+    {
+      "image": "imagens/cenas/O1_v2.png",
+      "clip_index": 2,
+      "from_word": "poitrine",
+      "to_word": "ventre"
+    },
+    {
+      "image": "imagens/cenas/O2_v1.png",
+      "clip_index": 2,
+      "from_word": "ventre",
+      "to_word": "Vous"
+    }
+  ]
+}

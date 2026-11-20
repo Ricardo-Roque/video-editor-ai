@@ -1,0 +1,21 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "takes_dir": "takes",
+  "work_dir": "montagem",
+  "output": "../Vídeos Prontos/Criativo 09 - FR.mp4",
+  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "clips": [
+    {
+      "take": "T01",
+      "file": "T01_360p_v1.mp4",
+      "text": "Plus de 70% des gens manquent de magnésium. C'est pour ça que je recommande le bisglycinate de magnésium de Cinnarae."
+    },
+    {
+      "take": "T02",
+      "file": "T02_360p_v1.mp4",
+      "text": "Il calme votre cerveau et vous aide à dormir jusqu'au matin, sans vous réveiller à 3h du matin. Essayez-le."
+    }
+  ],
+  "overlays": []
+}

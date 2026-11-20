@@ -1,0 +1,24 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_360p_v1",
+  "size": "360x640",
+  "price_per_sec": 0.023172,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "suffix": "Only spoken voice, natural room tone, no music, no subtitles, no text on screen. Realistic lip sync.",
+  "images": {
+    "B1": "imagens/cenas/B1_v1.png"
+  },
+  "image_persona": {
+    "B1": "woman"
+  },
+  "personas": {
+    "woman": {
+      "seed": 1010,
+      "scene": "Static smartphone video, the phone propped on the marble kitchen counter, the camera does not move. The woman sits behind the counter with her forearms crossed on the marble and talks directly to camera in a calm, sincere, serious confiding tone, small natural head movements, occasional blink, one hand briefly touching her other arm. The product pouch standing on the counter stays perfectly still, sharp and unchanged, label facing the camera.",
+      "voice": "Her voice: French woman in her early forties, native French, calm, low, sincere and slightly tired, honest testimonial tone, natural conversational pace."
+    }
+  }
+}

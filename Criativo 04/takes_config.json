@@ -1,0 +1,31 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_360p_v1",
+  "size": "360x640",
+  "price_per_sec": 0.023172,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "suffix": "Only spoken voice, natural room tone, no music, no subtitles, no text on screen. Realistic lip sync.",
+  "images": {
+    "H3": "imagens/cenas/H3_v2.png",
+    "B3b": "imagens/cenas/B3b_v2.png"
+  },
+  "image_persona": {
+    "H3": "grandma_hook",
+    "B3b": "grandma"
+  },
+  "personas": {
+    "grandma_hook": {
+      "seed": 404,
+      "scene": "Static smartphone video, the phone propped on the wooden kitchen table, the camera does not move. The elderly woman keeps her hand resting on the side of her neck, rubbing it gently as if it aches, and talks directly to camera with a worried, knowing tone, small natural head movements, occasional blink. The pill organiser and reading glasses on the table stay still.",
+      "voice": "Her voice: French woman around seventy, native French from France, warm, slightly husky, calm and serious, the tone of a grandmother giving a warning, natural conversational pace."
+    },
+    "grandma": {
+      "seed": 404,
+      "scene": "Static smartphone video, the phone propped on the wooden kitchen table, the camera does not move. The elderly woman sits with her forearms resting on the table and talks directly to camera in a calm, serious, knowing tone, small natural head movements, occasional blink, one hand making a small gesture now and then. The pill organiser and reading glasses on the table stay still.",
+      "voice": "Her voice: French woman around seventy, native French from France, warm, slightly husky, calm and serious, the tone of a grandmother giving a warning, natural conversational pace."
+    }
+  }
+}

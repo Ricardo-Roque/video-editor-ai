@@ -1,0 +1,44 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_360p_v1",
+  "size": "360x640",
+  "price_per_sec": 0.023172,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "images": {
+    "H1": "imagens/cenas/H1_v2.png",
+    "H2": "imagens/cenas/H2_v2.png",
+    "H3": "imagens/cenas/H3_v1.png",
+    "B1": "imagens/cenas/B1_v1.png",
+    "B1b": "imagens/cenas/B1b_v1.png",
+    "B1c": "imagens/cenas/B1c_v1.png"
+  },
+  "image_persona": {
+    "H1": "wife",
+    "H2": "wife",
+    "H3": "doctor_seated",
+    "B1": "doctor",
+    "B1b": "doctor",
+    "B1c": "doctor"
+  },
+  "personas": {
+    "doctor": {
+      "seed": 777,
+      "scene": "Handheld front-camera selfie video, she holds the phone at arm's length, gentle natural movement. The elderly Chinese woman speaks directly to camera in French, expressive and warm, with natural hand gestures that match her words.",
+      "voice": "Her voice: soft, warm, slightly husky elderly woman's voice, speaking fluent French with a light Chinese accent, unhurried pace."
+    },
+    "doctor_seated": {
+      "seed": 777,
+      "scene": "Static tripod shot, the elderly Chinese woman sits at her desk in her traditional Chinese medicine clinic and speaks directly to camera in French, calm, warm and confident, with natural small hand gestures.",
+      "voice": "Her voice: soft, warm, slightly husky elderly woman's voice, speaking fluent French with a light Chinese accent, unhurried pace."
+    },
+    "wife": {
+      "seed": 101,
+      "scene": "Handheld front-camera selfie video, slight natural shake. The woman in the foreground talks to camera.",
+      "voice": "Her voice: young French woman, native Parisian French, playful, excited, conversational social-media tone."
+    }
+  },
+  "suffix": "Only spoken voice, natural room tone, no music, no subtitles, no text on screen. Realistic lip sync."
+}

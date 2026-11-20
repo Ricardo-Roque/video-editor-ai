@@ -1,0 +1,45 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_360p_v1",
+  "size": "360x640",
+  "price_per_sec": 0.023172,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "images": {
+    "H1": "imagens/cenas/H1_v1.png",
+    "B1": "imagens/cenas/B1_v1.png",
+    "B2": "imagens/cenas/B2_v1.png",
+    "B3": "imagens/cenas/B3_v1.png"
+  },
+  "image_persona": {
+    "H1": "H1",
+    "B1": "B1",
+    "B2": "B2",
+    "B3": "B3"
+  },
+  "personas": {
+    "H1": {
+      "seed": 1212,
+      "scene": "Handheld point-of-view smartphone video: the hand holds the product pouch close to the camera above the open box of pouches, with gentle natural hand movement and slight handheld camera shake. The narration is an off-screen voiceover: no face is visible and nobody on screen speaks. The pouch label stays sharp, readable and unchanged.",
+      "voice": "Voice: off-screen female narrator, French woman in her early thirties, native French from France, the brand owner speaking candidly, a sincere apologetic confession tone that turns excited and urgent, fast conversational pace, speaking fluent French."
+    },
+    "B1": {
+      "seed": 1212,
+      "scene": "Handheld point-of-view smartphone video walking slowly forward down the warehouse aisle while the hand holds the product pouch steady in front of the camera, pallets of pouches passing by on both sides. The narration is an off-screen voiceover: no face is visible and nobody on screen speaks. The pouch label stays sharp, readable and unchanged.",
+      "voice": "Voice: off-screen female narrator, French woman in her early thirties, native French from France, the brand owner speaking candidly, a sincere apologetic confession tone that turns excited and urgent, fast conversational pace, speaking fluent French."
+    },
+    "B2": {
+      "seed": 1212,
+      "scene": "Handheld smartphone video at the packing table: the hand slowly lifts the product pouch up out of the open box full of pouches and holds it facing the camera. The narration is an off-screen voiceover: no face is visible and nobody on screen speaks. The pouch label stays sharp, readable and unchanged.",
+      "voice": "Voice: off-screen female narrator, French woman in her early thirties, native French from France, the brand owner speaking candidly, a sincere apologetic confession tone that turns excited and urgent, fast conversational pace, speaking fluent French."
+    },
+    "B3": {
+      "seed": 1212,
+      "scene": "Handheld point-of-view smartphone video: the hand holds the product pouch steady facing the camera in front of the wrapped pallets, gentle natural hand movement, slight handheld camera shake. The narration is an off-screen voiceover: no face is visible and nobody on screen speaks. The pouch label stays sharp, readable and unchanged.",
+      "voice": "Voice: off-screen female narrator, French woman in her early thirties, native French from France, the brand owner speaking candidly, a sincere apologetic confession tone that turns excited and urgent, fast conversational pace, speaking fluent French."
+    }
+  },
+  "suffix": "Only the narrator's voice, natural warehouse room tone, no music, no subtitles, no text added on screen."
+}

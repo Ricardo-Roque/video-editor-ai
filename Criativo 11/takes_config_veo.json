@@ -1,0 +1,49 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_veo720_v1",
+  "size": "720x1280",
+  "price_per_sec": 0.05,
+  "words_per_sec": 3.3,
+  "pad": 0.3,
+  "images": {
+    "H1": "imagens/cenas/H1_v1.png",
+    "B1": "imagens/cenas/B1_v2.png",
+    "B2": "imagens/cenas/B2_v1.png",
+    "B1b": "imagens/cenas/B1_fimT02a.png",
+    "B2b": "imagens/cenas/B2_fimT03a.png"
+  },
+  "image_persona": {
+    "H1": "H1",
+    "B1": "B1",
+    "B2": "B2",
+    "B1b": "B1",
+    "B2b": "B2"
+  },
+  "personas": {
+    "H1": {
+      "seed": 1111,
+      "scene": "Handheld point-of-view smartphone video in the warehouse: the hand holds the product pouch up facing the camera with gentle natural hand movement, slowly tilting it a little, slight handheld camera shake. The narration is an off-screen voiceover: no face is visible and nobody on screen speaks. The pouch label stays sharp, readable and unchanged. No person, face or body appears anywhere in the frame at any time, only the hand(s); the warehouse is empty of people in the foreground.",
+      "voice": "Voice: off-screen female narrator, French woman in her early thirties, native French from France, energetic, urgent and persuasive flash-sale announcement tone, fast but clear pace, speaking fluent French."
+    },
+    "B1": {
+      "seed": 1111,
+      "scene": "Smartphone video, the camera slowly and smoothly pushes in a little toward the product pouch standing on the cardboard box with the gummy bears in front of it. The pouch and the gummy bears stay perfectly still. The narration is an off-screen voiceover: no face is visible and nobody on screen speaks. The pouch label stays sharp, readable and unchanged. No person, face or body appears anywhere in the frame at any time, only the hand(s); the warehouse is empty of people in the foreground.",
+      "voice": "Voice: off-screen female narrator, French woman in her early thirties, native French from France, energetic, urgent and persuasive flash-sale announcement tone, fast but clear pace, speaking fluent French."
+    },
+    "B2": {
+      "seed": 1111,
+      "scene": "Handheld point-of-view smartphone video in the warehouse: one hand holds the product pouch steady facing the camera while the index finger of the other hand taps twice on the label title, gentle natural hand movement. The narration is an off-screen voiceover: no face is visible and nobody on screen speaks. The pouch label stays sharp, readable and unchanged. No person, face or body appears anywhere in the frame at any time, only the hand(s); the warehouse is empty of people in the foreground.",
+      "voice": "Voice: off-screen female narrator, French woman in her early thirties, native French from France, energetic, urgent and persuasive flash-sale announcement tone, fast but clear pace, speaking fluent French."
+    }
+  },
+  "suffix": "Only the narrator's voice, natural warehouse room tone, no music, no subtitles, no text added on screen. Keep every letter of the pouch label exactly as in the image.",
+  "model": "google/veo-3.1-lite",
+  "durations": [
+    4,
+    6,
+    8
+  ],
+  "say": "The unseen off-screen narrator says:"
+}

@@ -1,0 +1,61 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_360p_v2",
+  "size": "360x640",
+  "price_per_sec": 0.023172,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "suffix": "Only spoken voice, natural room tone, no music, no subtitles, no text overlays on screen. Realistic lip sync.",
+  "images": {
+    "C1": "imagens/cenas/C1_v2.png",
+    "C2": "imagens/cenas/C2_v3.png",
+    "C3": "imagens/cenas/C3_v1.png",
+    "C4": "imagens/cenas/C4_v1.png",
+    "C5": "imagens/cenas/C5_v2.png",
+    "C6": "imagens/cenas/C6_v2.png",
+    "C7": "imagens/cenas/C7_v1.png"
+  },
+  "image_persona": {
+    "C1": "point1",
+    "C2": "point2",
+    "C3": "point3",
+    "C4": "pouch",
+    "C5": "point5",
+    "C6": "point6",
+    "C7": "pouch"
+  },
+  "personas": {
+    "pouch": {
+      "seed": 1313,
+      "scene": "Static phone on a tripod, the camera never moves. The woman in the white T-shirt stands in front of the whiteboard and talks directly to camera with a confident smile, holding the product pouch steady in front of her chest, label facing the camera, upright; the pouch label stays sharp and unchanged. The whiteboard, every handwritten word and drawing on it, and the wall behind stay perfectly still and unchanged.",
+      "voice": "Her voice: French woman around fifty-five, native Parisian French, warm, clear and confident, slightly low pitch, natural conversational social-media pace."
+    },
+    "point1": {
+      "seed": 1313,
+      "scene": "Static phone on a tripod, the camera never moves. The woman in the white T-shirt stands in front of the whiteboard and talks directly to camera like a friendly teacher explaining her board on social media, engaged and warm, expressive eyebrows. The whiteboard, every handwritten word and drawing on it, and the wall behind stay perfectly still and unchanged. She keeps the marker pointed at the first line of writing (\"Pisser 3x/nuit\") while she describes the problem, glancing at the board and back at the camera; when she talks about the solution she slides the marker to the right along the same line to the green words (\"sucre ↓ insuline ✓\"); near the end she lowers her arm and gestures naturally toward the camera.",
+      "voice": "Her voice: French woman around fifty-five, native Parisian French, warm, clear and confident, slightly low pitch, natural conversational social-media pace."
+    },
+    "point2": {
+      "seed": 1313,
+      "scene": "Static phone on a tripod, the camera never moves. The woman in the white T-shirt stands in front of the whiteboard and talks directly to camera like a friendly teacher explaining her board on social media, engaged and warm, expressive eyebrows. The whiteboard, every handwritten word and drawing on it, and the wall behind stay perfectly still and unchanged. She keeps the marker pointed at the second line of writing (\"Bouche sèche\") while she describes the problem, glancing at the board and back at the camera; when she talks about the solution she slides the marker to the right along the same line to the green words (\"glycémie stable\"); near the end she lowers her arm and gestures naturally toward the camera.",
+      "voice": "Her voice: French woman around fifty-five, native Parisian French, warm, clear and confident, slightly low pitch, natural conversational social-media pace."
+    },
+    "point3": {
+      "seed": 1313,
+      "scene": "Static phone on a tripod, the camera never moves. The woman in the white T-shirt stands in front of the whiteboard and talks directly to camera like a friendly teacher explaining her board on social media, engaged and warm, expressive eyebrows. The whiteboard, every handwritten word and drawing on it, and the wall behind stay perfectly still and unchanged. She keeps the marker pointed at the third line of writing (\"Nuits coupées\") while she describes the problem, glancing at the board and back at the camera; when she talks about the solution she slides the marker to the right along the same line to the green words (\"nerfs calmes\"); near the end she lowers her arm and gestures naturally toward the camera.",
+      "voice": "Her voice: French woman around fifty-five, native Parisian French, warm, clear and confident, slightly low pitch, natural conversational social-media pace."
+    },
+    "point5": {
+      "seed": 1313,
+      "scene": "Static phone on a tripod, the camera never moves. The woman in the white T-shirt stands in front of the whiteboard and talks directly to camera like a friendly teacher explaining her board on social media, engaged and warm, expressive eyebrows. The whiteboard, every handwritten word and drawing on it, and the wall behind stay perfectly still and unchanged. She points the marker at the green line \"2 gommes au coucher\" while she says to take two before bed, then moves the marker down to \"✓ nuit complète\" when she says she now sleeps through the night, glancing at the board and back at the camera, then lowers her arm and gestures naturally.",
+      "voice": "Her voice: French woman around fifty-five, native Parisian French, warm, clear and confident, slightly low pitch, natural conversational social-media pace."
+    },
+    "point6": {
+      "seed": 1313,
+      "scene": "Static phone on a tripod, the camera never moves. The woman in the white T-shirt stands in front of the whiteboard and talks directly to camera like a friendly teacher explaining her board on social media, engaged and warm, expressive eyebrows. The whiteboard, every handwritten word and drawing on it, and the wall behind stay perfectly still and unchanged. She keeps the marker pointed at the green words \"✓ énergie\" on the board, then turns to the camera with a big rested smile, gesturing naturally.",
+      "voice": "Her voice: French woman around fifty-five, native Parisian French, warm, clear and confident, slightly low pitch, natural conversational social-media pace."
+    }
+  }
+}

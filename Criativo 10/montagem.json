@@ -1,0 +1,45 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "takes_dir": "takes",
+  "work_dir": "montagem",
+  "output": "../Vídeos Prontos/Criativo 10 - FR.mp4",
+  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "clips": [
+    {
+      "take": "T01",
+      "file": "T01_360p_v1.mp4",
+      "text": "Avant, je me réveillais toutes les nuits vers 3h du matin. Le cœur qui s'emballe, la tête qui tourne à cent à l'heure, impossible de me rendormir, peu importe ce que j'essayais."
+    },
+    {
+      "take": "T02",
+      "file": "T02_360p_v1.mp4"
+    },
+    {
+      "take": "T03",
+      "file": "T03_360p_v1.mp4"
+    },
+    {
+      "take": "T04",
+      "file": "T04_360p_v1.mp4",
+      "text": "Dès la première semaine, ma tête était plus calme. La deuxième semaine, je dormais toute la nuit. Fini les réveils à 3h du matin. Ça fait deux mois maintenant."
+    },
+    {
+      "take": "T05",
+      "file": "T05_360p_v1.mp4"
+    },
+    {
+      "take": "T06",
+      "file": "T06_360p_v1.mp4"
+    }
+  ],
+  "overlays": [
+    {
+      "mode": "patch",
+      "image": "imagens/cenas/pacote_patch.png",
+      "x": 676,
+      "y": 1096
+    }
+  ],
+  "caption_y": 1000
+}
