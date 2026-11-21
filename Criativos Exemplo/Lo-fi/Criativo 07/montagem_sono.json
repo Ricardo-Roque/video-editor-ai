@@ -3,8 +3,8 @@
   "script": "roteiro_fr_sono.md",
   "takes_dir": "takes",
   "work_dir": "montagem_sono",
-  "output": "../Vídeos Prontos/Criativo 07 - FR Sono.mp4",
-  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "output": "../../../Vídeos Prontos/Criativo 07 - FR Sono.mp4",
+  "font_file": "../../../assets/fonts/Montserrat-ExtraBold.ttf",
   "clips": [
     {
       "take": "T01",

@@ -1,6 +1,6 @@
 # Roteiro FR — Criativo 13 (copy do 05, formato palestrinha)
 
-Base: a fala do [Criativo 05](../Criativo%2005/roteiro_fr.md), aprovada em 2026-11-18. **Nenhuma palavra muda.** Só muda o visual. Uma apresentadora francesa de 50+ fala para a câmera na frente de um quadro branco. A prova social (T07) vira clipes curtos de UGC.
+Base: a fala do [Criativo 05](../../Narrado/Criativo%2005/roteiro_fr.md), aprovada em 2026-11-18. **Nenhuma palavra muda.** Só muda o visual. Uma apresentadora francesa de 50+ fala para a câmera na frente de um quadro branco. A prova social (T07) vira clipes curtos de UGC.
 
 Adaptações em relação ao 05:
 1. A narradora em off virou apresentadora na tela, com sincronia labial. A fala continua no feminino ("reposée"), que combina com ela.

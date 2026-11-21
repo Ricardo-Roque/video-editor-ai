@@ -1,7 +1,7 @@
 # Processo de criação de criativos
 
 Este é o passo a passo para transformar um vídeo de referência num criativo novo, em outro idioma e país, usando IA para imagens e takes e montagem local.
-O [Criativo 01](Criativo%2001/) é o exemplo completo de todas as etapas. O [CRIATIVOS.md](CRIATIVOS.md) lista todos os criativos já feitos, por formato, com o que cada um ensinou. O [PRODUTOS.md](PRODUTOS.md) guarda os fatos confirmados de cada produto.
+O [Criativo 01](Criativos%20Exemplo/Lo-fi/Criativo%2001/) é o exemplo completo de todas as etapas. Os formatos de criativo são os do quadro do Trello "Formatos Criativos de Conteúdo", resumidos em [FORMATOS.md](FORMATOS.md). Os criativos entregues ficam em [Criativos Exemplo/](Criativos%20Exemplo/), separados por esses formatos, e cada formato tem um `FORMATO.md` (estrutura do anúncio, receita de produção, cuidados). O [CRIATIVOS.md](CRIATIVOS.md) lista todos, com custo e o que cada um ensinou. O [PRODUTOS.md](PRODUTOS.md) guarda os fatos confirmados de cada produto.
 
 Regra geral: **nada avança sem aprovação**. Cada etapa termina com algo para validar, e a seguinte só começa depois do "ok".
 
@@ -25,6 +25,7 @@ Custos reais: de US$ 0,70 (versão reaproveitando takes) a US$ 8,66 (3:59 de ví
 Editor de Vídeo/
 ├─ README.md              instalação e primeiros passos
 ├─ PROCESSO.md            este documento
+├─ FORMATOS.md            os 16 formatos do Trello, estruturas de roteiro e elementos que prendem
 ├─ CRIATIVOS.md           catálogo dos criativos e lições aprendidas
 ├─ PRODUTOS.md            fatos confirmados de cada produto
 ├─ CLAUDE.md              regras que o Claude segue em toda sessão
@@ -35,7 +36,11 @@ Editor de Vídeo/
 ├─ assets/fonts/          fonte das legendas (Montserrat ExtraBold)
 ├─ tools/                 scripts de todas as etapas
 ├─ _Modelo Criativo/      modelos de arquivos para começar um criativo
-└─ Criativo NN/           uma pasta por criativo
+├─ Criativos Exemplo/     criativos entregues, por formato
+│  ├─ Lo-fi/          FORMATO.md + Criativo 01, 04, 06, 07, 08, 09, 10
+│  ├─ Narrado/        FORMATO.md + Criativo 05, 11, 12
+│  └─ Palestrinha/    FORMATO.md + Criativo 13
+└─ Criativo NN/           criativo em produção (vai para Criativos Exemplo/ ao ser entregue)
    ├─ referencia/         transcrição, cortes e frames da referência
    ├─ analise.md
    ├─ roteiro_fr.md       roteiro no idioma final (sufixo = idioma)
@@ -62,7 +67,7 @@ Nomes usados em todos os criativos:
 2. Abra o Claude Code na pasta do projeto e diga, por exemplo:
    > Novo criativo: Criativo 14, referência `Vídeo Bruto/<arquivo>.mp4`, francês, França, Cinnarae.
    Ou use `/novo-criativo`.
-3. O Claude lê `CLAUDE.md`, este documento, `PRODUTOS.md` e `CRIATIVOS.md` e segue as etapas, parando em cada aprovação.
+3. O Claude lê `CLAUDE.md`, este documento, `PRODUTOS.md` e `CRIATIVOS.md`, identifica o formato da referência, lê o `FORMATO.md` dele e segue as etapas, parando em cada aprovação.
 
 O que o Claude pergunta se faltar: número do criativo, idioma, país, produto (e se a embalagem muda), se a copy é a mesma ou adaptada, e se o formato é o da referência ou outro (ex.: copy do 05 no formato "palestrinha").
 
@@ -70,8 +75,8 @@ O que o Claude pergunta se faltar: número do criativo, idioma, país, produto (
 
 ## Etapa 0 — Preparação
 
-1. Escolher o número: o próximo livre em `Criativo NN/` (não o número do arquivo de referência). Em equipe, avisar no grupo qual número vai usar antes de criar a pasta.
-2. Criar `Criativo NN/` copiando `_Modelo Criativo/`.
+1. Escolher o número: o próximo livre, contando a raiz e `Criativos Exemplo/` (não o número do arquivo de referência). Em equipe, avisar no grupo qual número vai usar antes de criar a pasta.
+2. Criar `Criativo NN/` na raiz do projeto copiando `_Modelo Criativo/`. O criativo fica na raiz enquanto está em produção.
 3. Conferir a chave no `.env` e o saldo no OpenRouter.
 4. Conferir se os modelos estão no ar: `https://openrouter.ai/api/v1/models/google/gemini-omni-1.2-flash/endpoints` mostra a disponibilidade. O Omni 1.2 já ficou fora do ar por horas (2026-11-19); com ele fora, todo envio volta "Video generation failed" (sem cobrança).
 
@@ -86,7 +91,9 @@ Gera transcrição com tempos, cortes de cena, folhas de frames e o frame de cad
 - **Hook, body e CTA** com tempos e o que acontece em cada um.
 - **Cada cena**: cenário, enquadramento (tripé, selfie, POV, PiP), quem fala (em cena ou em off), overlays.
 - **Estilo de edição**: legenda, B-roll, produto em cena, faixas fixas, música.
-- **Formato parecido já feito**: procurar em [CRIATIVOS.md](CRIATIVOS.md) e reaproveitar a solução.
+- **Formato**: dizer qual dos 16 formatos de [FORMATOS.md](FORMATOS.md) a referência segue. Se já houver exemplo em [Criativos Exemplo/](Criativos%20Exemplo/), ler o `FORMATO.md` dele e reaproveitar a receita e os cuidados; se não houver, propor a produção pela tabela de `FORMATOS.md` e avisar se precisa de ferramenta nova.
+- **Estrutura de roteiro e elementos que prendem** (ver [FORMATOS.md](FORMATOS.md)): qual estrutura a referência usa (AIDA, I.H.C., jeito errado × certo...) e onde estão o conflito, a curiosidade, o contraste. O roteiro traduzido preserva esses pontos.
+- **Música**: se a referência tem trilha, registrar (hoje a montagem sai só com voz).
 - **Estratégia para texto na tela** (ver tabela da Etapa 6): rótulo do produto, prancheta, quadro e faixas são deformados pelo modelo de vídeo. Decidir já aqui como cada um será feito, porque muda o modelo e o custo.
 - **Imagens necessárias** e estimativa de takes e custo.
 - **Pessoa da referência**: nunca copiar o rosto (pode ser pessoa real). Criar personagem nova com o mesmo visual (idade, roupa, cabelo, cenário).
@@ -252,7 +259,12 @@ O jeito mais barato de fazer um criativo novo é reaproveitar o que já foi apro
 - Cada pessoa usa a própria chave do OpenRouter no `.env` (nunca commitar). O limite de gasto é por chave.
 - Antes de criar `Criativo NN/`, avisar o número no grupo para não haver duas pastas iguais.
 - No Git vão só os textos (`.md`, `.json`) e as ferramentas. Imagens, takes e vídeos ficam na pasta compartilhada do time, na mesma estrutura de pastas.
-- Ao terminar um criativo: atualizar as "Notas de produção" do roteiro, acrescentar uma linha em [CRIATIVOS.md](CRIATIVOS.md) (formato, custo, lições) e, se algo do produto foi confirmado, em [PRODUTOS.md](PRODUTOS.md). Se surgiu uma ferramenta ou opção nova, documentar neste arquivo.
+- Ao entregar um criativo:
+  1. Atualizar as "Notas de produção" do roteiro.
+  2. Mover a pasta para `Criativos Exemplo/<formato>/` e trocar, no `montagem*.json`, os caminhos `../Vídeos Prontos/` e `../assets/` por `../../../Vídeos Prontos/` e `../../../assets/`. Formato novo: criar a pasta do formato com um `FORMATO.md` no mesmo modelo dos outros.
+  3. Acrescentar a linha dele em [CRIATIVOS.md](CRIATIVOS.md) (formato, custo, lições) e o que ele ensinou no `FORMATO.md`.
+  4. Fato do produto confirmado vai em [PRODUTOS.md](PRODUTOS.md); ferramenta ou opção nova, neste arquivo.
+  5. Commit e push dos textos.
 
 ## Regras que valem para todo criativo
 
@@ -283,7 +295,7 @@ O jeito mais barato de fazer um criativo novo é reaproveitar o que já foi apro
 | `analisar_referencia.py` | 1 | transcrição, cortes e folhas de frames da referência |
 | `prompt_de.py` | 3 | lê o prompt de uma seção `## ID` de `prompts_imagens.md` |
 | `gerar_imagem.py` | 3 | gera ou edita imagem com Nano Banana (aceita vários `--ref`) |
-| `gerar_take.py` | 4–5 | gera um take a partir de uma imagem; `--resume` recupera job; `--no-audio` para take sem fala |
+| `gerar_take.py` | 4–5 | gera um take a partir de uma imagem; `--resume` recupera job; `--no-audio` (o Omni 1.2 recusa com HTTP 400: gerar com áudio e descartar na montagem) |
 | `lote_takes.py` | 4–5 | gera takes a partir do roteiro + `takes_config.json` (`--dry-run` mostra o custo; `--only`; `--workers`) |
 | `checar_takes.py` | 4–5 | confere texto e corte de fala de cada take |
 | `montar.py` | 6 | montagem final com legendas e overlays |

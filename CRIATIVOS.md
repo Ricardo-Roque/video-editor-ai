@@ -1,33 +1,33 @@
 # Catálogo de criativos
 
 Todos os criativos feitos até agora, com formato, decisões e o que cada um ensinou.
-Antes de começar um criativo novo, procure aqui um criativo do mesmo formato e use a pasta dele como exemplo.
+Os criativos entregues ficam em [Criativos Exemplo/](Criativos%20Exemplo/), separados pelos formatos do Trello (ver [FORMATOS.md](FORMATOS.md)); cada formato tem um `FORMATO.md` com estrutura, receita e cuidados. Antes de começar um criativo novo, leia o `FORMATO.md` do formato da referência e use a pasta do exemplo como modelo.
 Os textos (análise, roteiro, prompts, configs) estão no repositório. Imagens, takes e vídeos ficam na pasta compartilhada do time.
 
 ## Resumo
 
-| Criativo | Referência (`Vídeo Bruto/`) | Formato | Duração final | Custo total | Situação |
-|----------|-----------------------------|---------|---------------|-------------|----------|
-| [01](Criativo%2001/) | `Criativo #01 [Hook #02].mp4` | antes/depois + talking head selfie (autoridade) | 3:59 | US$ 8,66 | aprovado |
-| [04](Criativo%2004/) | `Criativo #04 (1).mp4` | talking head sentada, lista de sintomas, 2 hooks | 48,3 s + cortes A (21,9 s) e B (26,5 s) | US$ 1,30 | aprovado |
-| [05](Criativo%2005/) | `Criativo #05.mp4` | narradora em off + infográficos em prancheta + mulheres com o sachê | 62,6 s | US$ 2,35 | **primeira venda** |
-| [06](Criativo%2006/) | `Criativo #06 (1).mp4` | enfermeira de pijama cirúrgico no hospital, 5 dicas | 114,9 s | US$ 4,42 | 1º corte entregue |
-| [07](Criativo%2007/) | `Criativo #07.mp4` | depoimento UGC ("reclamação falsa"), cards antes/depois | 73,5 s | US$ 2,31 | 1º corte entregue |
-| 07 Sono | (mesma) | versão do 07 sem emagrecimento, foco em sono, reaproveitando takes | 71,0 s | US$ 0,70 | 1º corte entregue |
-| [08](Criativo%2008/) | `46a88423….mp4` | senhora levanta do chão (take sem fala) e fala | 13,4 s | US$ 2,40 (08+09+10) | 1º corte entregue |
-| [09](Criativo%2009/) | `91e91073….mp4` | farmacêutica, selfie na farmácia | 13,0 s | (no lote acima) | 1º corte entregue |
-| [10](Criativo%2010/) | `16a0e279….mp4` | mulher no balcão da cozinha, sachê parado em cena | 47,8 s | (no lote acima) | 1º corte entregue |
-| [11](Criativo%2011/) | `Criativo #08.mp4` | POV mão + sachê em armazém, narradora em off, faixas de oferta (urgência) | 22,4 s | US$ 4,06 (11+12) | 1º corte entregue |
-| [12](Criativo%2012/) | `Criativo #09.mp4` | mesmo formato do 11 ("superestoque") | 23,0 s | (no lote acima) | 1º corte entregue |
-| [13](Criativo%2013/) | `Criativo #10.mp4` (só formato) | "palestrinha": apresentadora na frente de quadro branco, copy do 05 | — | ~US$ 1,21 até agora | em produção (takes) |
+| Criativo | Referência (`Vídeo Bruto/`) | Formato (Trello) | Descrição | Duração final | Custo total | Situação |
+|----------|-----------------------------|------------------|-----------|---------------|-------------|----------|
+| [01](Criativos%20Exemplo/Lo-fi/Criativo%2001/) | `Criativo #01 [Hook #02].mp4` | Lo-fi | antes/depois + talking head selfie (autoridade) | 3:59 | US$ 8,66 | aprovado |
+| [04](Criativos%20Exemplo/Lo-fi/Criativo%2004/) | `Criativo #04 (1).mp4` | Lo-fi | talking head sentada, lista de sintomas, 2 hooks | 48,3 s + cortes A (21,9 s) e B (26,5 s) | US$ 1,30 | aprovado |
+| [05](Criativos%20Exemplo/Narrado/Criativo%2005/) | `Criativo #05.mp4` | Narrado | narradora em off + infográficos em prancheta + mulheres com o sachê | 62,6 s | US$ 2,35 | **primeira venda** |
+| [06](Criativos%20Exemplo/Lo-fi/Criativo%2006/) | `Criativo #06 (1).mp4` | Lo-fi | enfermeira de pijama cirúrgico no hospital, 5 dicas | 114,9 s | US$ 4,42 | 1º corte entregue |
+| [07](Criativos%20Exemplo/Lo-fi/Criativo%2007/) | `Criativo #07.mp4` | Lo-fi | depoimento UGC ("reclamação falsa"), cards antes/depois | 73,5 s | US$ 2,31 | 1º corte entregue |
+| 07 Sono | (mesma) | Lo-fi | versão do 07 sem emagrecimento, foco em sono, reaproveitando takes | 71,0 s | US$ 0,70 | 1º corte entregue |
+| [08](Criativos%20Exemplo/Lo-fi/Criativo%2008/) | `46a88423….mp4` | Lo-fi | senhora levanta do chão (take sem fala) e fala | 13,4 s | US$ 2,40 (08+09+10) | 1º corte entregue |
+| [09](Criativos%20Exemplo/Lo-fi/Criativo%2009/) | `91e91073….mp4` | Lo-fi | farmacêutica, selfie na farmácia | 13,0 s | (no lote acima) | 1º corte entregue |
+| [10](Criativos%20Exemplo/Lo-fi/Criativo%2010/) | `16a0e279….mp4` | Lo-fi | mulher no balcão da cozinha, sachê parado em cena | 47,8 s | (no lote acima) | 1º corte entregue |
+| [11](Criativos%20Exemplo/Narrado/Criativo%2011/) | `Criativo #08.mp4` | Narrado | POV mão + sachê em armazém, narradora em off, faixas de oferta (urgência) | 22,4 s | US$ 4,06 (11+12) | 1º corte entregue |
+| [12](Criativos%20Exemplo/Narrado/Criativo%2012/) | `Criativo #09.mp4` | Narrado | mesmo formato do 11 ("superestoque") | 23,0 s | (no lote acima) | 1º corte entregue |
+| [13](Criativos%20Exemplo/Palestrinha/Criativo%2013/) | `Criativo #10.mp4` (só formato) | Palestrinha | "palestrinha": apresentadora na frente de quadro branco, copy do 05 | 62,0 s | ~US$ 3,02 | 1º corte entregue |
 
 Atenção à numeração: o número da pasta **não** é o número do arquivo de referência. Ex.: `Criativo #08.mp4` virou a pasta 11, e `Criativo #10.mp4` é a referência de formato do 13, não do 10. Registre sempre a origem na primeira linha do `analise.md`.
 
 Custo médio: cerca de US$ 0,03 a 0,04 por segundo de vídeo final em Omni 360p; o dobro em Veo 720p.
 
-## Formatos já resolvidos
+## Técnicas já resolvidas
 
-Use o criativo indicado como modelo de configuração, prompts e montagem.
+Cada linha é uma solução de produção; o criativo indicado tem a configuração, os prompts e a montagem prontos para copiar.
 
 | Formato | Exemplo | Como foi feito |
 |---------|---------|----------------|
@@ -62,4 +62,4 @@ Use o criativo indicado como modelo de configuração, prompts e montagem.
 
 **11–12.** Referências já em francês, da concorrência: só a marca muda. Omni deformava o rótulo; Veo 3.1 Lite 720p mantém o rótulo, mas só aceita 4, 6 ou 8 s e fala rápido (~3,6 palavras/s). "She says" no prompt faz o Veo colocar uma mulher na cena: usar `"say": "The unseen off-screen narrator says:"`. Mesmo assim, em cena de produto parado o Veo pôs uma apresentadora: usar só a voz sobre a imagem. O fundo pode mudar depois de ~4 s; se a fala já acabou, o corte de silêncio resolve.
 
-**13.** Primeiro reaproveitamento da copy vencedora (05) em outro formato. O dono pediu que a apresentadora **aponte para o quadro sempre que falar do que está escrito**: uma imagem de partida por linha do quadro, com o canetão na linha certa. O modelo inventou frase depois do fim da fala de novo (T01): corte em pausa. Nova ferramenta `quadro_nitido.py` troca o texto do quadro pelo nítido, mantendo mãos e cabelo do take.
+**13.** Primeiro reaproveitamento da copy vencedora (05) em outro formato. O dono pediu que a apresentadora **aponte para o quadro sempre que falar do que está escrito**: uma imagem de partida por linha do quadro, com o canetão na linha certa. O modelo inventou frase depois do fim da fala de novo (T01): corte em pausa. Nova ferramenta `quadro_nitido.py` troca o texto do quadro pelo nítido, mantendo mãos e cabelo do take. A prova social virou clipes UGC curtos (o dono preferiu a fotos); o Omni 1.2 não aceita `--no-audio`, então os clipes saem com áudio, descartado na montagem.

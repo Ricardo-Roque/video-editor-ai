@@ -3,7 +3,7 @@
   "script": "roteiro_fr.md",
   "takes_dir": "takes",
   "work_dir": "montagem",
-  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "font_file": "../../../assets/fonts/Montserrat-ExtraBold.ttf",
   "overlays": [
     {
       "mode": "patch",
@@ -12,19 +12,15 @@
       "y": 0
     }
   ],
-  "output": "../Vídeos Prontos/Criativo 11 - FR.mp4",
+  "output": "../../../Vídeos Prontos/Criativo 12 - FR.mp4",
   "clips": [
     {
       "take": "T01",
       "file": "T01_veo720_v1.mp4"
     },
     {
-      "take": "T02a",
-      "file": "T02a_zoom_v1.mp4"
-    },
-    {
-      "take": "T02b",
-      "file": "T02b_zoom_v1.mp4"
+      "take": "T02",
+      "file": "T02_veo720_v1.mp4"
     },
     {
       "take": "T03a",
@@ -32,7 +28,11 @@
     },
     {
       "take": "T03b",
-      "file": "T03b_veo720_v1.mp4"
+      "file": "T03b_zoom_v1.mp4"
+    },
+    {
+      "take": "T04",
+      "file": "T04_veo720_v1.mp4"
     }
   ]
 }

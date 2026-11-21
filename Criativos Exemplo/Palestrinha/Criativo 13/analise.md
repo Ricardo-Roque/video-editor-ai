@@ -1,6 +1,6 @@
 # Análise — Criativo 13 (copy do Criativo 05 no formato "palestrinha")
 
-Copy: a mesma do [Criativo 05](../Criativo%2005/roteiro_fr.md), que fez a primeira venda. Está em francês, com "vous" e "gommes", agressiva e aprovada.
+Copy: a mesma do [Criativo 05](../../Narrado/Criativo%2005/roteiro_fr.md), que fez a primeira venda. Está em francês, com "vous" e "gommes", agressiva e aprovada.
 Referência de formato: `Vídeo Bruto/Criativo #10.mp4` (116,7 s, 360x640, japonês). Não é a referência da pasta `Criativo 10`, que usa o arquivo com nome de hash.
 Arquivos da análise: `referencia_formato/` (transcrição, cortes, folhas de frames).
 Produto: **Cinnarae** (gomas de bisglicinato de magnésio, ursinhos vermelhos de framboesa). País: França. Idioma: francês.

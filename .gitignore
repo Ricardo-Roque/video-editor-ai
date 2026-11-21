@@ -24,10 +24,10 @@ desktop.ini
 *.webp
 
 # Pastas de mídia de cada criativo
-Criativo */imagens/
-Criativo */takes/
-Criativo */montagem/
-Criativo */montagem_*/
+**/Criativo */imagens/
+**/Criativo */takes/
+**/Criativo */montagem/
+**/Criativo */montagem_*/
 
 # Entradas e saídas: só a pasta vai, o conteúdo fica local
 Vídeo Bruto/*

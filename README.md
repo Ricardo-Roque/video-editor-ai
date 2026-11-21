@@ -7,7 +7,9 @@ O trabalho é conduzido pelo [Claude Code](https://claude.com/claude-code) dentr
 | Documento | Para quê |
 |-----------|----------|
 | [PROCESSO.md](PROCESSO.md) | o passo a passo completo, da referência ao vídeo final |
-| [CRIATIVOS.md](CRIATIVOS.md) | os criativos já feitos, por formato, com custo e lições |
+| [FORMATOS.md](FORMATOS.md) | os 16 formatos criativos do Trello, estruturas de roteiro e elementos que prendem a atenção |
+| [Criativos Exemplo/](Criativos%20Exemplo/) | criativos entregues separados por formato, cada formato com um `FORMATO.md` (estrutura, receita, cuidados) |
+| [CRIATIVOS.md](CRIATIVOS.md) | catálogo de todos os criativos, com custo e lições |
 | [PRODUTOS.md](PRODUTOS.md) | fatos confirmados de cada produto (oferta, embalagem, o que não pode ser dito) |
 | [CLAUDE.md](CLAUDE.md) | regras que o Claude segue em toda sessão |
 
@@ -43,14 +45,14 @@ python -I -X utf8 tools/<script>.py ...
    > Novo criativo: Criativo 14, referência `Vídeo Bruto/<arquivo>.mp4`, francês, França, Cinnarae.
 
    Ou digite `/novo-criativo`.
-3. O Claude analisa a referência, propõe o roteiro (com tradução de volta para o português), gera as imagens, os takes e monta o vídeo, parando para você aprovar cada etapa e mostrando o custo antes de cada geração paga.
+3. O Claude identifica o formato da referência (pelo `FORMATO.md` do exemplo mais próximo), analisa a referência, propõe o roteiro (com tradução de volta para o português), gera as imagens, os takes e monta o vídeo, parando para você aprovar cada etapa e mostrando o custo antes de cada geração paga.
 4. O vídeo final sai em `Vídeos Prontos/`.
 
 Para continuar um criativo começado por outra pessoa, diga "continuar o Criativo NN": o Claude descobre a etapa pelos arquivos da pasta.
 
 ## O que está e o que não está no repositório
 
-No Git: ferramentas (`tools/`), documentação, skills do Claude (`.claude/skills/`), modelo de criativo (`_Modelo Criativo/`), fonte das legendas, foto do produto e os textos de cada criativo (análise, roteiro, comparativo, prompts, configurações).
+No Git: ferramentas (`tools/`), documentação, skills do Claude (`.claude/skills/`), modelo de criativo (`_Modelo Criativo/`), fonte das legendas, foto do produto e os textos de cada criativo entregue, em `Criativos Exemplo/<formato>/` (análise, roteiro, comparativo, prompts, configurações).
 
 Fora do Git (ver [.gitignore](.gitignore)): vídeos de referência, imagens, takes, intermediários de montagem e vídeos prontos. São arquivos grandes; ficam na pasta compartilhada do time, na mesma estrutura de pastas. Para continuar um criativo antigo, copie as pastas `imagens/` e `takes/` dele da pasta compartilhada para cá.
 

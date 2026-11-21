@@ -3,8 +3,8 @@
   "script": "roteiro_fr.md",
   "takes_dir": "takes",
   "work_dir": "montagem",
-  "output": "../Vídeos Prontos/Criativo 06 - FR.mp4",
-  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "output": "../../../Vídeos Prontos/Criativo 06 - FR.mp4",
+  "font_file": "../../../assets/fonts/Montserrat-ExtraBold.ttf",
   "clips": [
     {
       "take": "T01",

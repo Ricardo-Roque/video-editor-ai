@@ -2,7 +2,7 @@
 
 Este projeto produz criativos de vídeo (anúncios 9:16) a partir de um vídeo de referência, traduzidos e adaptados para outro país, com imagens e takes gerados por IA e montagem local. Várias pessoas usam o projeto, cada uma com a própria chave do OpenRouter.
 
-**Antes de qualquer trabalho num criativo, leia [PROCESSO.md](PROCESSO.md) e siga as etapas na ordem.** Leia também [PRODUTOS.md](PRODUTOS.md) (fatos confirmados do produto) e procure em [CRIATIVOS.md](CRIATIVOS.md) um criativo do mesmo formato para usar como exemplo. O [Criativo 01](Criativo%2001/) é o exemplo completo de cada etapa.
+**Antes de qualquer trabalho num criativo, leia [PROCESSO.md](PROCESSO.md) e siga as etapas na ordem.** Leia também [PRODUTOS.md](PRODUTOS.md) (fatos confirmados do produto) e identifique o formato da referência entre os 16 do Trello resumidos em [FORMATOS.md](FORMATOS.md). Se houver exemplo em [Criativos Exemplo/](Criativos%20Exemplo/), leia o `FORMATO.md` dele e use os criativos daquela pasta como exemplo ([CRIATIVOS.md](CRIATIVOS.md) tem o catálogo). O [Criativo 01](Criativos%20Exemplo/Lo-fi/Criativo%2001/) é o exemplo completo de cada etapa.
 
 ## Regras
 
@@ -14,7 +14,7 @@ Este projeto produz criativos de vídeo (anúncios 9:16) a partir de um vídeo d
 - **Texto na tela** (rótulo, prancheta, quadro, faixas): decida a solução na análise, pela tabela "Texto na tela" do `PROCESSO.md`.
 - **Pessoas reais**: nunca copie o rosto da pessoa da referência nem de uma foto de estilo; crie personagem nova com o mesmo visual.
 - **Política de anúncios**: avise riscos (antes/depois de corpo, depoimento fabricado, autoridade fictícia, alegações de saúde do país) uma vez, antes de gastar; a decisão é do usuário e fica registrada no `analise.md`.
-- **Ao fechar um criativo**: atualize as "Notas de produção" do roteiro, a linha dele em `CRIATIVOS.md` e, se houver fato novo do produto, `PRODUTOS.md`. Ferramenta ou opção nova vai documentada no `PROCESSO.md`.
+- **Criativo em produção** fica na raiz (`Criativo NN/`). **Ao entregar**, siga a lista "Ao entregar um criativo" do `PROCESSO.md`: notas de produção, mover para `Criativos Exemplo/<formato>/` (corrigindo os `../` do `montagem*.json`), `CRIATIVOS.md`, `FORMATO.md`, `PRODUTOS.md` e oferecer commit e push.
 
 ## Ambiente
 
