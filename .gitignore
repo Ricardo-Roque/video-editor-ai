@@ -39,3 +39,6 @@ Vídeos Prontos/*
 !Referências/*.png
 !assets/**
 !.claude/skills/**
+
+# Livros de copy: material com direitos autorais, só local (os resumos em Copy/ vão para o Git)
+Livros Copywriting/

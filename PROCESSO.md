@@ -26,6 +26,11 @@ Editor de Vídeo/
 ├─ README.md              instalação e primeiros passos
 ├─ PROCESSO.md            este documento
 ├─ FORMATOS.md            os 16 formatos do Trello, estruturas de roteiro e elementos que prendem
+├─ Copy/                  método de copy tirado dos livros clássicos
+│  ├─ COPY.md             o método aplicado aos nossos criativos (diagnóstico, hook, corpo, CTA, checklist)
+│  ├─ BIBLIOTECA.md       os livros, o andamento da leitura e onde está cada resumo
+│  └─ livros/             um resumo aplicado por livro
+├─ Livros Copywriting/    os livros em PDF (só local, fora do Git por direitos autorais)
 ├─ CRIATIVOS.md           catálogo dos criativos e lições aprendidas
 ├─ PRODUTOS.md            fatos confirmados de cada produto
 ├─ CLAUDE.md              regras que o Claude segue em toda sessão
@@ -95,6 +100,7 @@ Gera transcrição com tempos, cortes de cena, folhas de frames e o frame de cad
 - **Formato**: dizer qual dos 16 formatos de [FORMATOS.md](FORMATOS.md) a referência segue e seguir o guia `Criativos Exemplo/<formato>/FORMATO.md` (receita, cuidados, exemplos quando houver). Se o guia diz que falta ferramenta, avisar antes de gastar.
 - **Estrutura de roteiro, tema e moral da história** (ver [FORMATOS.md](FORMATOS.md)): AIDA, I.H.C., jeito errado × certo, ele-eu-você-futuro ou análise estratégica.
 - **Roteiro anotado**: cada frase da referência, em português, com o elemento que segura a atenção nela entre colchetes ([Conflito + Curiosidade: ...]), pelo vocabulário de [FORMATOS.md](FORMATOS.md). É o mapa que a tradução precisa preservar.
+- **Diagnóstico de copy** (seção 2 de [Copy/COPY.md](Copy/COPY.md)): nível de consciência que o hook supõe, sofisticação do mercado no país, tipo de lead (oferta, promessa, problema-solução, segredo, proclamação ou história), crença única em uma frase e qual dos 4 pés (ideia, promessa, prova, credibilidade) está fraco. A tradução e as variações mantêm o nível e o tipo de lead.
 - **Música**: se a referência tem trilha, registrar (hoje a montagem sai só com voz).
 - **Estratégia para texto na tela** (ver tabela da Etapa 6): rótulo do produto, prancheta, quadro e faixas são deformados pelo modelo de vídeo. Decidir já aqui como cada um será feito, porque muda o modelo e o custo.
 - **Imagens necessárias** e estimativa de takes e custo.
@@ -115,6 +121,7 @@ Gera transcrição com tempos, cortes de cena, folhas de frames e o frame de cad
    - Evitar frases que o modelo bloqueia: "n'achetez pas" foi recusado ~15 vezes; "ne prenez surtout pas" passou.
    - Não incluir fato do produto que não esteja em [PRODUTOS.md](PRODUTOS.md).
 6. Gerar `comparativo_roteiro.md`: original × tradução × tradução de volta para o português, com as diferenças explicadas. Assim quem não fala o idioma consegue validar.
+7. Ler a tradução em voz alta e passar pelo checklist da seção 9 de [Copy/COPY.md](Copy/COPY.md). Frase que ficou confusa, inverossímil ou sem ritmo no idioma de destino vira adaptação listada no topo do roteiro.
 
 ➡ **Aprovação:** roteiro inteiro, incluindo os trechos ⚠.
 
@@ -126,6 +133,7 @@ Quando o dono pede uma variação de um criativo que vendeu (outro hook, outro �
 2. Propor 2 ou 3 ideias em poucas linhas, cada uma dizendo o tema novo, a estrutura e o formato. ➡ O dono escolhe.
 3. Escrever o roteiro com o **mesmo esqueleto**: mesma estrutura, mesmos elementos nas mesmas posições, mesmo peso emocional, tema novo. Entregar anotado frase a frase e com a tradução de volta para o português.
 4. Regras: número, estudo, pessoa real ou citação só com fonte verificável (link no roteiro); fato do produto só de [PRODUTOS.md](PRODUTOS.md); sem fonte, fica de fora. Seguir "Como escrever o roteiro" do `FORMATO.md` do formato escolhido.
+5. Hooks e ângulos novos saem das seções 3 e 7 de [Copy/COPY.md](Copy/COPY.md): tipo de lead pelo público da campanha, fórmulas testadas, modelos visuais e uma variável por teste (hook, ângulo ou oferta).
 
 Se a ideia é a mesma copy em outro formato (como o 13), a copy não muda: pular para a Etapa 3 com o guia do formato novo.
 

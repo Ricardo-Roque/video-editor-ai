@@ -9,6 +9,7 @@ O trabalho é conduzido pelo [Claude Code](https://claude.com/claude-code) dentr
 | [PROCESSO.md](PROCESSO.md) | o passo a passo completo, da referência ao vídeo final |
 | [FORMATOS.md](FORMATOS.md) | os 16 formatos criativos do Trello, como anotar e escrever roteiros, estruturas e elementos que prendem a atenção |
 | [Criativos Exemplo/](Criativos%20Exemplo/) | uma pasta por formato com o guia `FORMATO.md` (roteiro, produção, custo, riscos) e os criativos entregues naquele formato |
+| [Copy/COPY.md](Copy/COPY.md) | o método de copy tirado de 58 livros clássicos (Schwartz, Hopkins, Ogilvy, Caples, Halbert...): diagnóstico, hook, corpo, oferta, checklist. Resumos por livro em [Copy/livros/](Copy/livros/) |
 | [CRIATIVOS.md](CRIATIVOS.md) | catálogo de todos os criativos, com custo e lições |
 | [PRODUTOS.md](PRODUTOS.md) | fatos confirmados de cada produto (oferta, embalagem, o que não pode ser dito) |
 | [CLAUDE.md](CLAUDE.md) | regras que o Claude segue em toda sessão |
