@@ -1,8 +1,15 @@
 # Análise — Criativo NN
 
 Fonte: `Vídeo Bruto/<arquivo>.mp4`
-Formato: (resolução, fps, duração). Idioma: ...
+Formato do arquivo: (resolução, fps, duração). Idioma: ...
 Transcrição completa com timestamps: `referencia/transcript.txt`.
+
+## Formato e estrutura
+
+- **Formato criativo** (um dos 16 de `FORMATOS.md`): ... Exemplo nosso mais próximo: `Criativos Exemplo/<formato>/Criativo NN`.
+- **Estrutura de roteiro**: AIDA / I.H.C. / Jeito errado × certo / Ele, eu, você e futuro / Análise estratégica / outra (descrever).
+- **Tema** (o que chama atenção) e **moral da história** (a ideia que o anúncio vende): ...
+- **Música**: sem / com (qual clima).
 
 ## Estrutura
 
@@ -14,12 +21,27 @@ Transcrição completa com timestamps: `referencia/transcript.txt`.
 
 Cortes detectados: (de `referencia/cortes.txt`).
 
+## Roteiro anotado
+
+Cada frase da referência (traduzida para o português) com o elemento que segura a atenção nela, entre colchetes. Vocabulário em `FORMATOS.md`: relevância emocional, linguagem familiar, imagem mental, conflito, mudança, curiosidade, efeito a-há, contraste, debate mental, identificação, gancho visual, moral da história, CTA.
+
+| Tempo | Frase (PT) | Elementos |
+|-------|-----------|-----------|
+| 0,0 | ... | [Conflito + Curiosidade: por que prende] |
+| ... | ... | [...] |
+
+O roteiro traduzido precisa manter cada um desses elementos na mesma frase. Onde a tradução literal perde o elemento (gíria, referência que só existe no país de origem), a adaptação vai listada no topo do roteiro.
+
 ## Estilo de edição
 
 - Legenda: (tamanho, cor, destaque, posição)
-- B-roll / overlays: ...
+- B-roll / overlays / texto na tela: ...
 - Produto aparece? ...
 - Áudio: voz / música / efeitos
+
+## Texto na tela e solução
+
+(rótulo, prancheta, quadro, faixas: qual solução da tabela "Texto na tela" do `PROCESSO.md`)
 
 ## Imagens necessárias
 
@@ -30,3 +52,8 @@ Cenas: H1 ..., B1 ..., O1 ...
 
 - Hook: N takes. Body + CTA: ~X s de fala, ~N takes de até 15 s.
 - Custo estimado (360p, ~US$ 0,023/s): US$ ...
+
+## Política de anúncios e perguntas abertas
+
+- Riscos: ...
+- Fatos do produto que a copy afirma e não estão em `PRODUTOS.md`: ...

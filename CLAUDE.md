@@ -2,7 +2,7 @@
 
 Este projeto produz criativos de vídeo (anúncios 9:16) a partir de um vídeo de referência, traduzidos e adaptados para outro país, com imagens e takes gerados por IA e montagem local. Várias pessoas usam o projeto, cada uma com a própria chave do OpenRouter.
 
-**Antes de qualquer trabalho num criativo, leia [PROCESSO.md](PROCESSO.md) e siga as etapas na ordem.** Leia também [PRODUTOS.md](PRODUTOS.md) (fatos confirmados do produto) e identifique o formato da referência entre os 16 do Trello resumidos em [FORMATOS.md](FORMATOS.md). Se houver exemplo em [Criativos Exemplo/](Criativos%20Exemplo/), leia o `FORMATO.md` dele e use os criativos daquela pasta como exemplo ([CRIATIVOS.md](CRIATIVOS.md) tem o catálogo). O [Criativo 01](Criativos%20Exemplo/Lo-fi/Criativo%2001/) é o exemplo completo de cada etapa.
+**Antes de qualquer trabalho num criativo, leia [PROCESSO.md](PROCESSO.md) e siga as etapas na ordem.** Leia também [PRODUTOS.md](PRODUTOS.md) (fatos confirmados do produto) e identifique o formato da referência entre os 16 do Trello resumidos em [FORMATOS.md](FORMATOS.md). Leia o guia `Criativos Exemplo/<formato>/FORMATO.md` (todos os 16 têm um) e use os criativos daquela pasta como exemplo, quando houver ([CRIATIVOS.md](CRIATIVOS.md) tem o catálogo). O [Criativo 01](Criativos%20Exemplo/Lo-fi/Criativo%2001/) é o exemplo completo de cada etapa.
 
 ## Regras
 
@@ -11,6 +11,7 @@ Este projeto produz criativos de vídeo (anúncios 9:16) a partir de um vídeo d
 - **Gastar o mínimo possível**: informe o custo estimado antes de qualquer geração paga e o gasto real depois. Padrão: imagens `google/gemini-nano-banana-2.1`; takes `google/gemini-omni-1.2-flash` em 360x640. Veo 3.1 Lite 720p só para rótulo em movimento ou com o Omni fora do ar, com aprovação. Corrija só o trecho com erro (divisão Ta/Tb) em vez de refazer o take inteiro. Reaproveite imagens e takes aprovados.
 - **Conferir antes de mostrar**: rode `tools/checar_takes.py` em todo take e olhe os frames; olhe toda imagem gerada antes de apresentar.
 - **Roteiro fiel à referência**: mesma ordem e conteúdo; liste e explique toda adaptação. Não afirme fato do produto que não esteja em `PRODUTOS.md`; pergunte.
+- **Roteiro anotado**: na análise, anote cada frase da referência com o elemento que prende a atenção nela (vocabulário em `FORMATOS.md`); a tradução preserva esses elementos frase a frase. Roteiro novo a partir de um vencedor segue a Etapa 2b do `PROCESSO.md` (mesmo esqueleto, tema novo, nenhum fato sem fonte).
 - **Texto na tela** (rótulo, prancheta, quadro, faixas): decida a solução na análise, pela tabela "Texto na tela" do `PROCESSO.md`.
 - **Pessoas reais**: nunca copie o rosto da pessoa da referência nem de uma foto de estilo; crie personagem nova com o mesmo visual.
 - **Política de anúncios**: avise riscos (antes/depois de corpo, depoimento fabricado, autoridade fictícia, alegações de saúde do país) uma vez, antes de gastar; a decisão é do usuário e fica registrada no `analise.md`.

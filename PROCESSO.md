@@ -36,10 +36,11 @@ Editor de Vídeo/
 ├─ assets/fonts/          fonte das legendas (Montserrat ExtraBold)
 ├─ tools/                 scripts de todas as etapas
 ├─ _Modelo Criativo/      modelos de arquivos para começar um criativo
-├─ Criativos Exemplo/     criativos entregues, por formato
+├─ Criativos Exemplo/     uma pasta por formato do Trello (16), cada uma com o guia FORMATO.md
 │  ├─ Lo-fi/          FORMATO.md + Criativo 01, 04, 06, 07, 08, 09, 10
 │  ├─ Narrado/        FORMATO.md + Criativo 05, 11, 12
-│  └─ Palestrinha/    FORMATO.md + Criativo 13
+│  ├─ Palestrinha/    FORMATO.md + Criativo 13
+│  └─ Tela dividida/, Cine/, Caixinha de perguntas/...   só o FORMATO.md (sem exemplo ainda)
 └─ Criativo NN/           criativo em produção (vai para Criativos Exemplo/ ao ser entregue)
    ├─ referencia/         transcrição, cortes e frames da referência
    ├─ analise.md
@@ -91,8 +92,9 @@ Gera transcrição com tempos, cortes de cena, folhas de frames e o frame de cad
 - **Hook, body e CTA** com tempos e o que acontece em cada um.
 - **Cada cena**: cenário, enquadramento (tripé, selfie, POV, PiP), quem fala (em cena ou em off), overlays.
 - **Estilo de edição**: legenda, B-roll, produto em cena, faixas fixas, música.
-- **Formato**: dizer qual dos 16 formatos de [FORMATOS.md](FORMATOS.md) a referência segue. Se já houver exemplo em [Criativos Exemplo/](Criativos%20Exemplo/), ler o `FORMATO.md` dele e reaproveitar a receita e os cuidados; se não houver, propor a produção pela tabela de `FORMATOS.md` e avisar se precisa de ferramenta nova.
-- **Estrutura de roteiro e elementos que prendem** (ver [FORMATOS.md](FORMATOS.md)): qual estrutura a referência usa (AIDA, I.H.C., jeito errado × certo...) e onde estão o conflito, a curiosidade, o contraste. O roteiro traduzido preserva esses pontos.
+- **Formato**: dizer qual dos 16 formatos de [FORMATOS.md](FORMATOS.md) a referência segue e seguir o guia `Criativos Exemplo/<formato>/FORMATO.md` (receita, cuidados, exemplos quando houver). Se o guia diz que falta ferramenta, avisar antes de gastar.
+- **Estrutura de roteiro, tema e moral da história** (ver [FORMATOS.md](FORMATOS.md)): AIDA, I.H.C., jeito errado × certo, ele-eu-você-futuro ou análise estratégica.
+- **Roteiro anotado**: cada frase da referência, em português, com o elemento que segura a atenção nela entre colchetes ([Conflito + Curiosidade: ...]), pelo vocabulário de [FORMATOS.md](FORMATOS.md). É o mapa que a tradução precisa preservar.
 - **Música**: se a referência tem trilha, registrar (hoje a montagem sai só com voz).
 - **Estratégia para texto na tela** (ver tabela da Etapa 6): rótulo do produto, prancheta, quadro e faixas são deformados pelo modelo de vídeo. Decidir já aqui como cada um será feito, porque muda o modelo e o custo.
 - **Imagens necessárias** e estimativa de takes e custo.
@@ -105,7 +107,7 @@ Gera transcrição com tempos, cortes de cena, folhas de frames e o frame de cad
 ## Etapa 2 — Roteiro
 
 1. Traduzir a transcrição para o idioma do país, **mesma ordem, sem cortar nem acrescentar**. Se a referência já está no idioma final, mudar só a marca.
-2. Adaptar só o que não faz sentido no país (ex.: "American doctors" → "les médecins") e listar cada adaptação no topo do roteiro.
+2. Adaptar só o que não faz sentido no país (ex.: "American doctors" → "les médecins") e listar cada adaptação no topo do roteiro. Conferir frase a frase contra o roteiro anotado da análise: cada elemento (linguagem familiar, imagem mental, referência conhecida, contraste, curiosidade) precisa sobreviver. Gíria ou referência que só existe no país de origem vira o equivalente cotidiano do país de destino, não a tradução literal.
 3. Quebrar em takes (`| Txx | imagem | segundos | fala |`), de 4 a 12 s, no máximo 15 s. Se o modelo escolhido tiver durações fixas (Veo: 4, 6 ou 8 s; Omni 1.1: 3 a 10 s), dividir em a/b numa pausa natural já no roteiro.
 4. Marcar com ⚠ as falas de risco.
 5. Cuidados que evitam refação:
@@ -115,6 +117,19 @@ Gera transcrição com tempos, cortes de cena, folhas de frames e o frame de cad
 6. Gerar `comparativo_roteiro.md`: original × tradução × tradução de volta para o português, com as diferenças explicadas. Assim quem não fala o idioma consegue validar.
 
 ➡ **Aprovação:** roteiro inteiro, incluindo os trechos ⚠.
+
+## Etapa 2b — Roteiro novo a partir de um vencedor (quando pedido)
+
+Quando o dono pede uma variação de um criativo que vendeu (outro hook, outro ângulo, copy nova em outro formato), em vez de traduzir uma referência:
+
+1. Partir do roteiro anotado do vencedor (se não existir, anotar primeiro).
+2. Propor 2 ou 3 ideias em poucas linhas, cada uma dizendo o tema novo, a estrutura e o formato. ➡ O dono escolhe.
+3. Escrever o roteiro com o **mesmo esqueleto**: mesma estrutura, mesmos elementos nas mesmas posições, mesmo peso emocional, tema novo. Entregar anotado frase a frase e com a tradução de volta para o português.
+4. Regras: número, estudo, pessoa real ou citação só com fonte verificável (link no roteiro); fato do produto só de [PRODUTOS.md](PRODUTOS.md); sem fonte, fica de fora. Seguir "Como escrever o roteiro" do `FORMATO.md` do formato escolhido.
+
+Se a ideia é a mesma copy em outro formato (como o 13), a copy não muda: pular para a Etapa 3 com o guia do formato novo.
+
+➡ **Aprovação:** roteiro inteiro, como na Etapa 2.
 
 ## Etapa 3 — Imagens
 
@@ -261,7 +276,7 @@ O jeito mais barato de fazer um criativo novo é reaproveitar o que já foi apro
 - No Git vão só os textos (`.md`, `.json`) e as ferramentas. Imagens, takes e vídeos ficam na pasta compartilhada do time, na mesma estrutura de pastas.
 - Ao entregar um criativo:
   1. Atualizar as "Notas de produção" do roteiro.
-  2. Mover a pasta para `Criativos Exemplo/<formato>/` e trocar, no `montagem*.json`, os caminhos `../Vídeos Prontos/` e `../assets/` por `../../../Vídeos Prontos/` e `../../../assets/`. Formato novo: criar a pasta do formato com um `FORMATO.md` no mesmo modelo dos outros.
+  2. Mover a pasta para `Criativos Exemplo/<formato>/` e trocar, no `montagem*.json`, os caminhos `../Vídeos Prontos/` e `../assets/` por `../../../Vídeos Prontos/` e `../../../assets/`. Primeiro criativo de um formato: acrescentar a tabela de exemplos e o que ele ensinou ao `FORMATO.md` da pasta.
   3. Acrescentar a linha dele em [CRIATIVOS.md](CRIATIVOS.md) (formato, custo, lições) e o que ele ensinou no `FORMATO.md`.
   4. Fato do produto confirmado vai em [PRODUTOS.md](PRODUTOS.md); ferramenta ou opção nova, neste arquivo.
   5. Commit e push dos textos.

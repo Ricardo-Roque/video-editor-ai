@@ -1,15 +1,24 @@
 # Criativos exemplo
 
-Criativos já entregues, separados pelos formatos do quadro do Trello "Formatos Criativos de Conteúdo" (lista completa dos 16 formatos em [FORMATOS.md](../FORMATOS.md)). Cada pasta de formato tem um `FORMATO.md` com a estrutura do anúncio, a receita de produção, os cuidados e qual criativo abrir primeiro.
+Uma pasta para cada um dos 16 formatos do quadro do Trello "Formatos Criativos de Conteúdo". Cada pasta tem um `FORMATO.md` com o que é o formato, por que prende, como escrever o roteiro, como produzir aqui, um ângulo de anúncio, custo e riscos. Os criativos já entregues ficam na pasta do formato deles.
 
-Para um criativo novo: identifique na análise o formato da referência, leia o `FORMATO.md` correspondente e use os arquivos do exemplo (análise, prompts, `takes_config.json`, `montagem.json`, notas de produção do roteiro) como modelo.
+Visão geral, método de análise e estruturas de roteiro: [FORMATOS.md](../FORMATOS.md). Custos e lições de cada criativo: [CRIATIVOS.md](../CRIATIVOS.md).
 
-| Formato (Trello) | Criativos | Em uma frase |
-|------------------|-----------|--------------|
-| [15 Lo-fi](Lo-fi/FORMATO.md) | 01, 04, 06, 07, 08, 09, 10 | pessoa fala para o celular como com uma amiga: depoimento ou autoridade de saúde |
-| [04 Narrado](Narrado/FORMATO.md) | 05, 11, 12 | voz em off sobre imagens: infográficos (05, **primeira venda**) ou mão com o sachê e faixas de oferta (11, 12) |
-| [03 Palestrinha](Palestrinha/FORMATO.md) | 13 | apresentadora na frente de quadro branco, apontando o texto |
-
-Custos, durações e lições de cada criativo: [CRIATIVOS.md](../CRIATIVOS.md).
-
-Formato do Trello ainda sem exemplo: ao entregar o primeiro criativo dele, criar a pasta com o nome do formato e um `FORMATO.md` no mesmo modelo.
+| Formato | Criativos | Situação |
+|---------|-----------|----------|
+| [Lo-fi](Lo-fi/FORMATO.md) | 01, 04, 06, 07, 08, 09, 10 | pronto |
+| [Narrado](Narrado/FORMATO.md) | 05 (**primeira venda**), 11, 12 | pronto |
+| [Palestrinha](Palestrinha/FORMATO.md) | 13 | pronto |
+| [Trivial](Trivial/FORMATO.md) | — | pronto para produzir (como Lo-fi) |
+| [Conflito situacional](Conflito%20situacional/FORMATO.md) | — | pronto para produzir (take sem fala) |
+| [Caixinha de perguntas](Caixinha%20de%20perguntas/FORMATO.md) | — | possível; candidato forte para a Cinnarae |
+| [Tela dividida](Tela%20dividida/FORMATO.md) | — | possível com as ferramentas atuais |
+| [Cine](Cine/FORMATO.md) | — | possível; falta música no `montar.py` |
+| [Dinamismo](Dinamismo/FORMATO.md) | — | possível |
+| [Diálogo](Diálogo/FORMATO.md) | — | possível |
+| [The Office](The%20Office/FORMATO.md) | — | possível |
+| [Storytelling visual](Storytelling%20visual/FORMATO.md) | — | possível; caro em takes |
+| [Comparação](Comparação/FORMATO.md) | — | imagens sim; vídeos lado a lado precisam de ferramenta |
+| [Tela verde](Tela%20verde/FORMATO.md) | — | precisa de ferramenta nova |
+| [Experimento social](Experimento%20social/FORMATO.md) | — | possível; risco de política alto |
+| [Bastidores](Bastidores/FORMATO.md) | — | só com material real do produto |

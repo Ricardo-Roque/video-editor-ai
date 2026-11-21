@@ -21,6 +21,15 @@ A referência de formato foi `Vídeo Bruto/Criativo #10.mp4` (japonês, canela �
 - **Texto do quadro no terço de cima**, acima da cabeça, para a legenda e a pessoa não cobrirem.
 - **Gesto**: ela aponta para a linha que está falando. O dono pediu isso explicitamente e aprovou.
 
+## Como escrever o roteiro
+
+Quando a copy não vem pronta da referência:
+- Moldura de **aula**: "Bem-vindo à aula de hoje: ..." ou "X contra Y"; o quadro mostra o tema.
+- Abrir com curiosidade dirigida a quem assiste ("se te mandaram este vídeo, é porque...").
+- Lista de 3 a 5 itens; cada item = situação familiar + efeito a-há + uma linha no quadro.
+- Contraste em colunas (errado × certo, antes × depois) funciona muito bem no quadro.
+- O produto entra como o último item ou a conclusão da aula, não como interrupção.
+
 ## Receita de produção
 
 - **Personagem**: apresentadora nova (50+ no 13), visual realista de iPhone, nada de modelo. Passar um frame da referência como segundo `--ref` ajudou no enquadramento e na luz.

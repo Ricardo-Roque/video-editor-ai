@@ -30,6 +30,15 @@ Infográfico (05):
 
 Promoção (11, 12), 20 a 25 s: hook de urgência ("dernier avertissement") ou confissão ("j'ai menti") → motivo da oferta (estoque acabando / sobrando) → "2 achetés = 1 offert" e CTA. Faixas fixas no topo o vídeo todo. A confissão do 12 usa **curiosidade e efeito "ahá"** do Trello: abre a pergunta "mentiu sobre o quê?" e só fecha depois.
 
+## Como escrever o roteiro
+
+Quando a copy não vem pronta da referência:
+- Abrir com **gancho visual + conflito** na mesma frase (a imagem mostra o problema enquanto a voz o nomeia).
+- Encadear conflito → mudança várias vezes: cada problema resolvido abre o próximo. Nunca mais de ~3 s na mesma imagem.
+- Voz de conversa, como um áudio de WhatsApp para uma amiga; sem pausas.
+- Fechar com **contraste visual de antes e depois** e a moral ligando ao produto.
+- Promoção (11, 12): a confissão ou o alerta abre uma pergunta que só fecha na oferta.
+
 ## Receita de produção
 
 - **Voz**: mesma persona e seed em todos os takes. Escrever `"say": "The unseen off-screen narrator says:"` e, na cena, que ninguém aparece. O padrão "She says" faz o modelo pôr uma mulher falando.

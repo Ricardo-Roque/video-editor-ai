@@ -7,8 +7,8 @@ O trabalho é conduzido pelo [Claude Code](https://claude.com/claude-code) dentr
 | Documento | Para quê |
 |-----------|----------|
 | [PROCESSO.md](PROCESSO.md) | o passo a passo completo, da referência ao vídeo final |
-| [FORMATOS.md](FORMATOS.md) | os 16 formatos criativos do Trello, estruturas de roteiro e elementos que prendem a atenção |
-| [Criativos Exemplo/](Criativos%20Exemplo/) | criativos entregues separados por formato, cada formato com um `FORMATO.md` (estrutura, receita, cuidados) |
+| [FORMATOS.md](FORMATOS.md) | os 16 formatos criativos do Trello, como anotar e escrever roteiros, estruturas e elementos que prendem a atenção |
+| [Criativos Exemplo/](Criativos%20Exemplo/) | uma pasta por formato com o guia `FORMATO.md` (roteiro, produção, custo, riscos) e os criativos entregues naquele formato |
 | [CRIATIVOS.md](CRIATIVOS.md) | catálogo de todos os criativos, com custo e lições |
 | [PRODUTOS.md](PRODUTOS.md) | fatos confirmados de cada produto (oferta, embalagem, o que não pode ser dito) |
 | [CLAUDE.md](CLAUDE.md) | regras que o Claude segue em toda sessão |

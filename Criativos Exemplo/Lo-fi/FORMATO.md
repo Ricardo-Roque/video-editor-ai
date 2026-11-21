@@ -30,6 +30,15 @@ Formato 15 do quadro do Trello (ver [FORMATOS.md](../../FORMATOS.md)). Vídeo si
 
 Estruturas de roteiro do Trello que aparecem aqui: **Jeito Errado × Jeito Certo** (07: reclamava, descobriu, mudou), **I.H.C.** (04, 10: identificação pelo sintoma, história, conteúdo) e **AIDA** (06, 09).
 
+## Como escrever o roteiro
+
+Quando a copy não vem pronta da referência (roteiro novo ou variação de hook):
+- Primeira frase é uma **tese que incomoda** ou um sintoma concreto em primeira pessoa; quem vive aquilo precisa pensar "é comigo".
+- Tom de **amiga jogando a real**: expressões do dia a dia do país, nada de termo técnico sem tradução na mesma frase.
+- Falar em voz alta a objeção de quem assiste ("talvez você pense...") e responder.
+- Um efeito a-há no meio (a causa que a pessoa não conhecia) e a moral curta no fim, antes do CTA.
+- Autoridade: termo técnico sempre traduzido ("o cortisol, o hormônio do estresse"); lista que empilha sintomas do invisível ao que se vê no espelho.
+
 ## Receita de produção
 
 - **Personagem**: pessoa nova com o visual da referência (idade, cabelo, roupa, cenário). Nunca copiar o rosto, nem quando pedirem "a mesma modelo" (pode ser pessoa real). Se o dono mandar uma foto de estilo, seguir o estilo (o 04 virou uma avó francesa numa cozinha rústica).
