@@ -15,7 +15,10 @@ Ao confirmar um fato novo com o dono do produto, acrescente aqui com a data.
 | Pronúncia | o modelo de vídeo fala "Si-na-rê". Aceita. A transcrição costuma ouvir "Sinaré" ou "Synaret": é só grafia |
 | Oferta padrão | -20% **só na primeira compra** + frete grátis. **Sem brindes** |
 | Oferta promocional | "2 achetés = 1 offert" (confirmada em 2026-11-19, criativos 11 e 12) |
-| Garantia | 30 dias, dinheiro de volta (real) |
+| Oferta na PDP (2026-11-22, "Offre du Black Friday") | 1 sachê = 30 noites, 29 € (de 35 €); 2 sachês + 1 offert = 90 noites, 59 €; 3 + 2 offerts = 150 noites, 89 €. Conferir a PDP antes de citar preço |
+| Composição (PDP, 2026-11-22) | bisglicinato puro, **zéro oxyde**, 400 mg em 2 gomas, vegan, sem glúten, sem OGM, testado em laboratório |
+| Página do produto | https://cinnarae.store/products/gommes-au-bisglycinate-de-magnesium |
+| Garantia | 30 dias, dinheiro de volta (real). A PDP diz "un simple e-mail", sem devolver o produto, mesmo com o sachê aberto |
 | Onde é fabricado | **não confirmado**. Não usar "fabriqué en France" |
 | Concorrente | Elmora (mesmas gomas de bisglicinato de framboesa; referências 11 e 12 eram anúncios dela) |
 

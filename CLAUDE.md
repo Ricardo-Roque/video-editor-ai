@@ -10,6 +10,7 @@ Este projeto produz criativos de vídeo (anúncios 9:16) a partir de um vídeo d
 
 - Responda ao usuário em português. Quem usa o projeto não fala o idioma dos criativos: sempre mostre a tradução de volta para o português quando houver texto em outro idioma.
 - **Aprovação em cada etapa**: análise → roteiro → imagens (uma a uma) → takes (um a um, salvo se o usuário liberar o lote) → montagem. Nunca gere takes de imagens não aprovadas.
+- **Criativo nativo** (foto + texto longo no post + link, da Biblioteca de Anúncios): siga a seção "Criativo nativo" do `PROCESSO.md` (análise → texto → imagem → entrega, sem takes nem montagem). A entrega é sempre a **imagem do anúncio + a descrição do post** (`copy_final_<idioma>.txt`, com título do link, descrição e botão), mostradas no chat prontas para copiar, sem o usuário precisar pedir. Criativo em vídeo segue o processo normal.
 - **Gastar o mínimo possível**: informe o custo estimado antes de qualquer geração paga e o gasto real depois. Padrão: imagens `google/gemini-nano-banana-2.1`; takes `google/gemini-omni-1.2-flash` em 360x640. Veo 3.1 Lite 720p só para rótulo em movimento ou com o Omni fora do ar, com aprovação. Corrija só o trecho com erro (divisão Ta/Tb) em vez de refazer o take inteiro. Reaproveite imagens e takes aprovados.
 - **Conferir antes de mostrar**: rode `tools/checar_takes.py` em todo take e olhe os frames; olhe toda imagem gerada antes de apresentar.
 - **Roteiro fiel à referência**: mesma ordem e conteúdo; liste e explique toda adaptação. Não afirme fato do produto que não esteja em `PRODUTOS.md`; pergunte.
@@ -18,7 +19,7 @@ Este projeto produz criativos de vídeo (anúncios 9:16) a partir de um vídeo d
 - **Texto na tela** (rótulo, prancheta, quadro, faixas): decida a solução na análise, pela tabela "Texto na tela" do `PROCESSO.md`.
 - **Pessoas reais**: nunca copie o rosto da pessoa da referência nem de uma foto de estilo; crie personagem nova com o mesmo visual.
 - **Política de anúncios**: avise riscos (antes/depois de corpo, depoimento fabricado, autoridade fictícia, alegações de saúde do país) uma vez, antes de gastar; a decisão é do usuário e fica registrada no `analise.md`.
-- **Criativo em produção** fica na raiz (`Criativo NN/`). **Ao entregar**, siga a lista "Ao entregar um criativo" do `PROCESSO.md`: notas de produção, mover para `Criativos Exemplo/<formato>/` (corrigindo os `../` do `montagem*.json`), `CRIATIVOS.md`, `FORMATO.md`, `PRODUTOS.md` e oferecer commit e push.
+- **Criativo em produção** fica na raiz (`Criativo NN/`). **Ao entregar**, siga a lista "Ao entregar um criativo" do `PROCESSO.md`: notas de produção, mover para `Criativos Exemplo/<formato>/` (corrigindo os `../` do `montagem*.json`), `CRIATIVOS.md`, `FORMATO.md`, `PRODUTOS.md`, registro no Google Drive do time (seção "Registro no Google Drive" do `PROCESSO.md`) e oferecer commit e push.
 
 ## Ambiente
 

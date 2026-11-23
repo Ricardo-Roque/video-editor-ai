@@ -22,3 +22,9 @@ Visão geral, método de análise e estruturas de roteiro: [FORMATOS.md](../FORM
 | [Tela verde](Tela%20verde/FORMATO.md) | — | precisa de ferramenta nova |
 | [Experimento social](Experimento%20social/FORMATO.md) | — | possível; risco de política alto |
 | [Bastidores](Bastidores/FORMATO.md) | — | só com material real do produto |
+
+Fora dos 16 do Trello:
+
+| Formato | Criativos | Situação |
+|---------|-----------|----------|
+| [Nativo](Nativo/FORMATO.md) (anúncio estático: foto + história longa + link) | 15 a 28 | pronto |

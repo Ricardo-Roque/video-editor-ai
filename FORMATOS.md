@@ -29,6 +29,8 @@ Cada formato tem um guia em `Criativos Exemplo/<formato>/FORMATO.md`: o que é, 
 
 Formato sem exemplo: na análise, dizer qual é, seguir o `FORMATO.md` dele e avisar se precisa de ferramenta nova antes de gastar. Ao entregar o primeiro criativo do formato, ele entra na pasta e o guia ganha a seção de exemplos.
 
+**Fora do Trello: [Nativo](Criativos%20Exemplo/Nativo/FORMATO.md)** (exemplos 15 a 28). É um anúncio estático, não vídeo: uma foto + uma história longa em primeira pessoa no post + link. As referências vêm da Biblioteca de Anúncios da Meta. Sem takes nem montagem; o custo é só da imagem.
+
 ## Como analisar um roteiro: anotação frase a frase
 
 O quadro analisa cada roteiro viral frase por frase, marcando entre colchetes **qual elemento segura a atenção naquela frase e por quê**. Esse é o método da nossa análise (seção "Roteiro anotado" do `analise.md`):

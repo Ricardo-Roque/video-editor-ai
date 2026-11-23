@@ -5,7 +5,11 @@ O [Criativo 01](Criativos%20Exemplo/Lo-fi/Criativo%2001/) é o exemplo completo 
 
 Regra geral: **nada avança sem aprovação**. Cada etapa termina com algo para validar, e a seguinte só começa depois do "ok".
 
-## Visão geral
+Há dois tipos de criativo, e o tipo é identificado já na análise:
+- **Vídeo** (referência em `Vídeo Bruto/`): segue as Etapas 0 a 6 abaixo e entrega o vídeo final em `Vídeos Prontos/`.
+- **Nativo** (anúncio estático: uma foto + texto longo no post + link, em geral da Biblioteca de Anúncios da Meta): segue a seção [Criativo nativo](#criativo-nativo-estático), sem takes nem montagem. A entrega é sempre **a imagem do anúncio e a descrição do post**, prontas para subir.
+
+## Visão geral (vídeo)
 
 | Etapa | O que sai | Custo | Quem aprova |
 |-------|-----------|-------|-------------|
@@ -41,7 +45,7 @@ Editor de Vídeo/
 ├─ assets/fonts/          fonte das legendas (Montserrat ExtraBold)
 ├─ tools/                 scripts de todas as etapas
 ├─ _Modelo Criativo/      modelos de arquivos para começar um criativo
-├─ Criativos Exemplo/     uma pasta por formato do Trello (16), cada uma com o guia FORMATO.md
+├─ Criativos Exemplo/     uma pasta por formato do Trello (16) + Nativo, cada uma com o guia FORMATO.md
 │  ├─ Lo-fi/          FORMATO.md + Criativo 01, 04, 06, 07, 08, 09, 10
 │  ├─ Narrado/        FORMATO.md + Criativo 05, 11, 12
 │  ├─ Palestrinha/    FORMATO.md + Criativo 13
@@ -72,7 +76,8 @@ Nomes usados em todos os criativos:
 1. Coloque o vídeo de referência em `Vídeo Bruto/`.
 2. Abra o Claude Code na pasta do projeto e diga, por exemplo:
    > Novo criativo: Criativo 14, referência `Vídeo Bruto/<arquivo>.mp4`, francês, França, Cinnarae.
-   Ou use `/novo-criativo`.
+   Ou use `/novo-criativo`. Para um criativo nativo, mande o link da Biblioteca de Anúncios no lugar do vídeo:
+   > Novo criativo nativo: modelar https://www.facebook.com/ads/library/?id=<ID>, francês, Cinnarae.
 3. O Claude lê `CLAUDE.md`, este documento, `PRODUTOS.md` e `CRIATIVOS.md`, identifica o formato da referência, lê o `FORMATO.md` dele e segue as etapas, parando em cada aprovação.
 
 O que o Claude pergunta se faltar: número do criativo, idioma, país, produto (e se a embalagem muda), se a copy é a mesma ou adaptada, e se o formato é o da referência ou outro (ex.: copy do 05 no formato "palestrinha").
@@ -97,7 +102,7 @@ Gera transcrição com tempos, cortes de cena, folhas de frames e o frame de cad
 - **Hook, body e CTA** com tempos e o que acontece em cada um.
 - **Cada cena**: cenário, enquadramento (tripé, selfie, POV, PiP), quem fala (em cena ou em off), overlays.
 - **Estilo de edição**: legenda, B-roll, produto em cena, faixas fixas, música.
-- **Formato**: dizer qual dos 16 formatos de [FORMATOS.md](FORMATOS.md) a referência segue e seguir o guia `Criativos Exemplo/<formato>/FORMATO.md` (receita, cuidados, exemplos quando houver). Se o guia diz que falta ferramenta, avisar antes de gastar.
+- **Formato**: dizer qual dos 16 formatos de [FORMATOS.md](FORMATOS.md) a referência segue e seguir o guia `Criativos Exemplo/<formato>/FORMATO.md` (receita, cuidados, exemplos quando houver). Se o guia diz que falta ferramenta, avisar antes de gastar. Referência que não é vídeo (foto + texto longo da Biblioteca de Anúncios): seguir o guia [Nativo](Criativos%20Exemplo/Nativo/FORMATO.md), sem takes nem montagem.
 - **Estrutura de roteiro, tema e moral da história** (ver [FORMATOS.md](FORMATOS.md)): AIDA, I.H.C., jeito errado × certo, ele-eu-você-futuro ou análise estratégica.
 - **Roteiro anotado**: cada frase da referência, em português, com o elemento que segura a atenção nela entre colchetes ([Conflito + Curiosidade: ...]), pelo vocabulário de [FORMATOS.md](FORMATOS.md). É o mapa que a tradução precisa preservar.
 - **Diagnóstico de copy** (seção 2 de [Copy/COPY.md](Copy/COPY.md)): nível de consciência que o hook supõe, sofisticação do mercado no país, tipo de lead (oferta, promessa, problema-solução, segredo, proclamação ou história), crença única em uma frase e qual dos 4 pés (ideia, promessa, prova, credibilidade) está fraco. A tradução e as variações mantêm o nível e o tipo de lead.
@@ -268,6 +273,29 @@ Olhar frames do hook, dos cards e do body: legenda legível, nada cobrindo rosto
 
 ---
 
+## Criativo nativo (estático)
+
+Quando a referência é um anúncio nativo estático (uma foto + texto longo no post + link), não há takes nem montagem. O guia do formato, com exemplos (15 a 28), fontes já verificadas e cuidados, é o [Nativo/FORMATO.md](Criativos%20Exemplo/Nativo/FORMATO.md).
+
+**O que o dono recebe no fim, sempre e sem precisar pedir: a imagem do anúncio e a descrição do post.**
+
+| Etapa | O que sai | Custo | Quem aprova |
+|-------|-----------|-------|-------------|
+| N0. Preparação | `Criativo NN/` na raiz, com `referencia/` e `imagens/` (sem `takes_config` nem `montagem`) | 0 | — |
+| N1. Análise | `analise.md`: a imagem e por que ela prende, roteiro anotado bloco a bloco, diagnóstico de copy, tabela de fontes das afirmações, 3 ideias de história, política, perguntas abertas | 0 | dono |
+| N2. Texto | `roteiro_<idioma>.md` (Etapa 2b, frases ⚠ com alternativa suave) + `comparativo_roteiro.md` + `prompts_imagens.md` | 0 | dono, texto inteiro |
+| N3. Imagem | `imagens/B1_vN.png`, no mesmo aspecto da referência (4:5 ou 3:4) | ~US$ 0,04 por tentativa | dono |
+| N4. Entrega | imagem + descrição do post (`copy_final_<idioma>.txt`), mostradas no chat | 0 | dono |
+
+1. **Referência**: ler o anúncio com o Claude in Chrome (`get_page_text`) e capturar a imagem: sobreposição em JavaScript com a imagem em tamanho natural numa camada branca, depois `zoom` com `save_to_disk`. Salvar em `referencia/imagem_anuncio.png`. O link, o título do link, a descrição e o botão vão em `referencia/fonte.md`. O texto original do anúncio (de terceiros) não vai para a pasta; o resumo bloco a bloco fica no `analise.md`.
+2. **Análise (N1)**: como na Etapa 1, adaptada: em vez de cenas e takes, a imagem (o que ela mostra e qual dos quatro tipos é: pessoa da história, cena final, quebra de padrão ou o problema em close) e a verificação de cada número, estudo e citação da referência. ➡ **Aprovação.**
+3. **Texto (N2)**: pela Etapa 2b. Mesmo esqueleto e tamanho, história nova, fatos só de `PRODUTOS.md`, citações só com fonte. ➡ **Aprovação do texto inteiro.**
+4. **Imagem (N3)**: Nano Banana com `--aspect` da referência, **sem a imagem da referência como `--ref`** (pode ser pessoa real). Pedir no prompt que não haja texto nem logo, e conferir à mão. ➡ **Aprovação.**
+5. **Entrega (N4)**:
+   - Gravar `copy_final_<idioma>.txt` com o título do link, a descrição do link ("Lire la suite"), o botão, o arquivo da imagem e o texto do post **sem as marcas ⚠**.
+   - Na mensagem de entrega, mostrar sempre: o caminho da imagem aprovada; o título do link com a tradução em português; a descrição do post inteira num bloco de código pronto para copiar; o link da tradução de volta (`comparativo_roteiro.md`); e a lista das frases que ainda dependem de confirmação do dono, cada uma com a troca pronta.
+   - Depois, seguir "Ao entregar um criativo" (pasta `Criativos Exemplo/Nativo/`), incluindo o registro no Google Drive do time.
+
 ## Reaproveitamento
 
 O jeito mais barato de fazer um criativo novo é reaproveitar o que já foi aprovado.
@@ -287,7 +315,22 @@ O jeito mais barato de fazer um criativo novo é reaproveitar o que já foi apro
   2. Mover a pasta para `Criativos Exemplo/<formato>/` e trocar, no `montagem*.json`, os caminhos `../Vídeos Prontos/` e `../assets/` por `../../../Vídeos Prontos/` e `../../../assets/`. Primeiro criativo de um formato: acrescentar a tabela de exemplos e o que ele ensinou ao `FORMATO.md` da pasta.
   3. Acrescentar a linha dele em [CRIATIVOS.md](CRIATIVOS.md) (formato, custo, lições) e o que ele ensinou no `FORMATO.md`.
   4. Fato do produto confirmado vai em [PRODUTOS.md](PRODUTOS.md); ferramenta ou opção nova, neste arquivo.
-  5. Commit e push dos textos.
+  5. Registrar no Google Drive do time (ver "Registro no Google Drive", abaixo).
+  6. Commit e push dos textos.
+
+## Registro no Google Drive
+
+Todo criativo entregue vai também para o Drive do dono, que o time usa como registro: `Meu Drive > Business > Bisglicinato de Magnésio > Criativos`. Não há conector do Google nesta máquina: o registro é feito pelo **Claude in Chrome**, na conta já logada.
+
+1. **Arquivo final** em `Criativos Prontos`, com o nome no padrão da pasta: `Criativo #NN` (vídeo), `Criativo de Imagem #NN`, `Criativo Nativo #NN`, sem extensão, continuando a numeração que já está lá (é diferente da numeração do projeto).
+   - Upload: o `file_upload` só aceita arquivos dentro do projeto. Copiar o arquivo já com o nome final para uma pasta temporária no projeto (ex.: `_upload_drive/`) e apagar depois.
+   - O Drive cria o campo de arquivo só ao clicar em "Novo > Upload de arquivo". Antes de clicar, interceptar `HTMLInputElement.prototype.click` em JavaScript para o seletor nativo não abrir, achar o campo com `find` e mandar os arquivos com `file_upload` (até 10 MB por vez).
+   - Renomear para tirar o `.png` (ícone de lápis da linha; Ctrl+Alt+E).
+2. **Copy** no documento `Copys Criativos`: uma aba por criativo, com o mesmo nome do arquivo.
+   - Duplicar a última aba do mesmo tipo (menu ⋮ > Duplicar) e renomear.
+   - Nativo: na linha **IMAGEM**, trocar o link pelo do arquivo novo (`https://drive.google.com/file/d/<ID>/view?usp=drive_link`; o ID está no atributo `data-id` da linha do arquivo no Drive).
+   - Trocar o texto abaixo: cursor no início da segunda linha, Ctrl+Shift+End e **Ctrl+Shift+V** (texto simples, mantém a formatação do documento). O texto vai para a área de transferência abrindo o `.txt` num servidor local (`python -m http.server --bind 127.0.0.1`) e usando `navigator.clipboard.writeText` naquela aba.
+   - Conferir cada aba depois de colar (primeira linha e link). No 19–28, uma colagem falhou e foi refeita.
 
 ## Regras que valem para todo criativo
 
