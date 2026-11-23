@@ -40,5 +40,8 @@ Vídeos Prontos/*
 !assets/**
 !.claude/skills/**
 
+# Texto completo de anúncios de terceiros (referências nativas): só local; o resumo vai no analise.md
+**/Criativo */referencia/texto_anuncio_*.txt
+
 # Livros de copy: material com direitos autorais, só local (os resumos em Copy/ vão para o Git)
 Livros Copywriting/

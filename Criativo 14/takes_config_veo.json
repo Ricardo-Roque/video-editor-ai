@@ -1,0 +1,27 @@
+{
+  "language": "fr",
+  "script": "roteiro.md",
+  "out_dir": "takes",
+  "out_suffix": "_veo720_v1",
+  "size": "720x1280",
+  "price_per_sec": 0.05,
+  "words_per_sec": 3.3,
+  "pad": 0.3,
+  "model": "google/veo-3.1-lite",
+  "durations": [4, 6, 8],
+  "say": "The unseen off-screen narrator says:",
+  "images": {
+    "B1": "imagens/cenas/B1_v1.png"
+  },
+  "image_persona": {
+    "B1": "B1"
+  },
+  "personas": {
+    "B1": {
+      "seed": 1111,
+      "scene": "Describe the camera and the action. If nobody should appear on screen, say so explicitly: The narration is an off-screen voiceover: no face is visible and nobody on screen speaks. No person, face or body appears anywhere in the frame at any time, only the hand(s).",
+      "voice": "Voice: off-screen narrator, describe age, gender, accent, energy and pace, speaking fluent <LANGUAGE>."
+    }
+  },
+  "suffix": "Only the narrator's voice, natural room tone, no music, no subtitles, no text added on screen. Keep every letter of the product label exactly as in the image."
+}
