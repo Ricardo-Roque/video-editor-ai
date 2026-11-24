@@ -1,8 +1,10 @@
 # Análise — Criativo NN
 
+Processo: **Réplica** (`PROCESSO.md`). Na Modelagem, usar `quebra.md` e `conceito.md` no lugar deste arquivo.
+
 Fonte: `Vídeo Bruto/<arquivo>.mp4`
 Formato do arquivo: (resolução, fps, duração). Idioma: ...
-Transcrição completa com timestamps: `referencia/transcript.txt`.
+Transcrição completa com timestamps: `referencia/transcript.txt`. Evidências medidas: `referencia/evidencias.md` (palavras nos 3 s, palavras/s, ritmo de cortes, fundo sob a voz).
 
 ## Formato e estrutura
 
@@ -25,12 +27,40 @@ Cortes detectados: (de `referencia/cortes.txt`).
 
 Cada frase da referência (traduzida para o português) com o elemento que segura a atenção nela, entre colchetes. Vocabulário em `FORMATOS.md`: relevância emocional, linguagem familiar, imagem mental, conflito, mudança, curiosidade, efeito a-há, contraste, debate mental, identificação, gancho visual, moral da história, CTA.
 
-| Tempo | Frase (PT) | Elementos |
-|-------|-----------|-----------|
-| 0,0 | ... | [Conflito + Curiosidade: por que prende] |
-| ... | ... | [...] |
+| Tempo | Frase (PT) | Função | Elementos |
+|-------|-----------|--------|-----------|
+| 0,0 | ... | hook | [Conflito + Curiosidade: por que prende] |
+| ... | ... | ... | [...] |
+
+Função (vocabulário em `MODELAGEM.md`, M1 passo 4): hook, desqualificar, aumentar a aposta, agitação, descoberta, entrada da autoridade, UMP, UMS, matar objeção, tirar a culpa, prova, urgência, callback, CTA. Callbacks: "..." plantado em x s, pago em y s.
 
 O roteiro traduzido precisa manter cada um desses elementos na mesma frase. Onde a tradução literal perde o elemento (gíria, referência que só existe no país de origem), a adaptação vai listada no topo do roteiro.
+
+## Mecanismos e avatar
+
+- Avatar: dor exata e quando acontece; soluções já tentadas, na ordem, e por que falharam.
+- Autoridade: quem afirma e como entra.
+- UMP (mecanismo do problema): "frase" em x s.
+- UMS (mecanismo da solução): "frase" em x s; onde a marca aparece.
+
+## Diagnóstico de copy
+
+Nível de consciência, sofisticação, tipo de lead, crença única, pé fraco dos 4 (seção 2 do `Copy/COPY.md`): ...
+
+## Variáveis da referência
+
+Valores específicos; todas Candidate (Réplica não testa). Linhas novas em `Variáveis/<Marca>.md`: CIN-V0xx...
+
+| Categoria | Valor |
+|-----------|-------|
+| Hook | ... (palavras nos 3 s: n) |
+| Mensageiro | papel, idade, gênero, visual, energia |
+| Cenário | ... |
+| Figurino | peça e cor |
+| Filmagem | selfie / tripé / POV, qualidade |
+| Texto na tela | estilo, tamanho, posição, cor |
+| Áudio e ritmo | palavras/s, planos (hook / corpo / final), trilha |
+| Oferta e CTA | ... |
 
 ## Estilo de edição
 

@@ -20,6 +20,8 @@ Ao confirmar um fato novo com o dono do produto, acrescente aqui com a data.
 | Página do produto | https://cinnarae.store/products/gommes-au-bisglycinate-de-magnesium |
 | Garantia | 30 dias, dinheiro de volta (real). A PDP diz "un simple e-mail", sem devolver o produto, mesmo com o sachê aberto |
 | Onde é fabricado | **não confirmado**. Não usar "fabriqué en France" |
+| CPA de break-even / ROAS alvo | **não informado**. Sem ele não há tier (F a S) na biblioteca de variáveis |
+| Controle atual (melhor anúncio no ar) | **não informado** |
 | Concorrente | Elmora (mesmas gomas de bisglicinato de framboesa; referências 11 e 12 eram anúncios dela) |
 
 Padrões para criativos Cinnarae, salvo pedido diferente:

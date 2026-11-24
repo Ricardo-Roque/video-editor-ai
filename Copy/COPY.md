@@ -2,7 +2,7 @@
 
 Este guia junta o que os livros de copy da biblioteca ensinam, adaptado ao que fazemos aqui: **anúncio vertical 9:16 de 15 a 60 segundos**, traduzido de uma referência ou escrito a partir de um vencedor, com personagem gerada por IA. Os resumos completos de cada livro estão em [livros/](livros/) e o andamento da leitura em [BIBLIOTECA.md](BIBLIOTECA.md).
 
-**Quando consultar**: na análise (Etapa 1), no roteiro (Etapas 2 e 2b), ao propor hooks e variações e ao revisar qualquer texto que vai para o ar.
+**Quando consultar**: na análise (Etapa 1), no roteiro (Etapa 2 e Modelagem), ao propor hooks e variações e ao revisar qualquer texto que vai para o ar.
 
 **As regras do projeto vencem os livros.** Nada de depoimento fabricado apresentado como real, autoridade inventada, antes/depois de corpo, alegação de saúde fora das permitidas no país, número ou fato sem fonte, ou fato do produto que não esteja em [PRODUTOS.md](../PRODUTOS.md). Os livros são dos EUA e de outras décadas; vários exemplos deles seriam reprovados hoje pela Meta e pela lei europeia. Quando uma técnica depende de prova, urgência, garantia ou escassez, ela só entra se for verdadeira.
 
@@ -57,6 +57,7 @@ Além do que o `PROCESSO.md` já pede, registrar no `analise.md`:
 
    100 ou mais é A+; abaixo de 85, ajustar antes de gastar.
 9. **Mecanismo único** (Todd Brown): o que faz **este** produto diferente de "magnésio" em geral? Sem isso, o espectador vai ao Google procurar mais barato.
+10. **Avatar, autoridade, UMP e UMS em camadas**: a ordem em que o anúncio apresenta a dor, as soluções que falharam, a autoridade, o mecanismo do problema (com a frase que tira a culpa) e o da solução (o que uma solução precisa fazer → a categoria → os componentes → a marca). Roteiro de quebra na M1 do [MODELAGEM.md](../MODELAGEM.md).
 
 ## 3. O hook (0 a 3 segundos, até 5)
 
@@ -141,7 +142,7 @@ Num anúncio de 45 s cabem de 3 a 5 blocos.
 ## 7. Variações e testes
 
 - **"Regra e exemplo"** (Schwartz): o núcleo do vencedor fica, a abertura muda. A Colgate só trocava os 10 primeiros segundos do comercial. É o nosso hook A/B.
-- **Uma variável por teste** (Caples): hook, ângulo (LF8, ganhar/evitar) ou oferta, uma de cada vez.
+- **Uma variável por teste** (Caples): hook, ângulo (LF8, ganhar/evitar) ou oferta, uma de cada vez. Hoje registrada como teste de conceito na biblioteca de variáveis da marca ([Variáveis/](../Variáveis/), [MODELAGEM.md](../MODELAGEM.md)), com hipótese, condição de vitória e de corte. Cuidado com a "corrida de rato": microvariação de um vencedor raramente o supera; conceito novo com as vencedoras empilhadas escala mais.
 - **O resultado manda** (Hopkins, Caples): o CPA de cada criativo é o cupom de Hopkins. Registrar o vencedor nas notas de produção e no `CRIATIVOS.md`.
 - **Repetir o vencedor até cansar** (Ogilvy, Hopkins): "você anuncia para um desfile em movimento".
 - **Volume** (Goff/Mawer): quem escala testa de 30 a 50 anúncios por oferta. **Quando o resultado cai, muitas vezes é o anúncio que cansou, não a oferta**: o primeiro remédio é hook ou ângulo novo.

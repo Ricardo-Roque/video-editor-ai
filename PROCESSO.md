@@ -5,6 +5,12 @@ O [Criativo 01](Criativos%20Exemplo/Lo-fi/Criativo%2001/) é o exemplo completo 
 
 Regra geral: **nada avança sem aprovação**. Cada etapa termina com algo para validar, e a seguinte só começa depois do "ok".
 
+Há dois processos, e o dono escolhe um no começo:
+- **Réplica** (este documento): refazer a referência o mais fiel possível, em outro idioma e país. Mesma ordem, mesmo conteúdo, só as adaptações necessárias.
+- **Modelagem** ([MODELAGEM.md](MODELAGEM.md)): quebrar um ou mais anúncios em variáveis, consultar a biblioteca de variáveis da marca ([Variáveis/](Variáveis/)) e construir um conceito novo que empilha as variáveis vencedoras e testa **uma** variável. A produção (imagens, takes, montagem, nativo) é a deste documento.
+
+Sem escolha explícita: "traduzir", "refazer" ou "replicar" é Réplica; "modelar", "criar a partir de", "conceito novo" ou "variação de um vencedor" é Modelagem. Na dúvida, perguntar. Nos dois, as variáveis da referência entram na biblioteca da marca.
+
 Há dois tipos de criativo, e o tipo é identificado já na análise:
 - **Vídeo** (referência em `Vídeo Bruto/`): segue as Etapas 0 a 6 abaixo e entrega o vídeo final em `Vídeos Prontos/`.
 - **Nativo** (anúncio estático: uma foto + texto longo no post + link, em geral da Biblioteca de Anúncios da Meta): segue a seção [Criativo nativo](#criativo-nativo-estático), sem takes nem montagem. A entrega é sempre **a imagem do anúncio e a descrição do post**, prontas para subir.
@@ -28,7 +34,10 @@ Custos reais: de US$ 0,70 (versão reaproveitando takes) a US$ 8,66 (3:59 de ví
 ```
 Editor de Vídeo/
 ├─ README.md              instalação e primeiros passos
-├─ PROCESSO.md            este documento
+├─ PROCESSO.md            este documento (processo de Réplica + produção)
+├─ MODELAGEM.md           processo de Modelagem: quebra em variáveis, testes de conceito, roteiro novo
+├─ Variáveis/             biblioteca de variáveis por marca (vencedoras, perdedoras, testes)
+├─ Quebras/               quebras avulsas de anúncios, sem produção (alimentam a biblioteca)
 ├─ FORMATOS.md            os 16 formatos do Trello, estruturas de roteiro e elementos que prendem
 ├─ Copy/                  método de copy tirado dos livros clássicos
 │  ├─ COPY.md             o método aplicado aos nossos criativos (diagnóstico, hook, corpo, CTA, checklist)
@@ -51,8 +60,8 @@ Editor de Vídeo/
 │  ├─ Palestrinha/    FORMATO.md + Criativo 13
 │  └─ Tela dividida/, Cine/, Caixinha de perguntas/...   só o FORMATO.md (sem exemplo ainda)
 └─ Criativo NN/           criativo em produção (vai para Criativos Exemplo/ ao ser entregue)
-   ├─ referencia/         transcrição, cortes e frames da referência
-   ├─ analise.md
+   ├─ referencia/         transcrição, cortes, frames e evidencias.md da referência
+   ├─ analise.md          (Réplica) ou quebra.md + conceito.md (Modelagem)
    ├─ roteiro_fr.md       roteiro no idioma final (sufixo = idioma)
    ├─ comparativo_roteiro.md
    ├─ prompts_imagens.md
@@ -78,6 +87,11 @@ Nomes usados em todos os criativos:
    > Novo criativo: Criativo 14, referência `Vídeo Bruto/<arquivo>.mp4`, francês, França, Cinnarae.
    Ou use `/novo-criativo`. Para um criativo nativo, mande o link da Biblioteca de Anúncios no lugar do vídeo:
    > Novo criativo nativo: modelar https://www.facebook.com/ads/library/?id=<ID>, francês, Cinnarae.
+
+   Para a Modelagem, diga "modelar" e, se quiser, a variável a testar:
+   > Novo criativo, modelagem: base `Vídeo Bruto/<arquivo>.mp4`, francês, Cinnarae, testar a idade da apresentadora.
+
+   Só a quebra, sem criativo: "quebra do anúncio <link ou arquivo>" (ver "Quebra avulsa" no [MODELAGEM.md](MODELAGEM.md)).
 3. O Claude lê `CLAUDE.md`, este documento, `PRODUTOS.md` e `CRIATIVOS.md`, identifica o formato da referência, lê o `FORMATO.md` dele e segue as etapas, parando em cada aprovação.
 
 O que o Claude pergunta se faltar: número do criativo, idioma, país, produto (e se a embalagem muda), se a copy é a mesma ou adaptada, e se o formato é o da referência ou outro (ex.: copy do 05 no formato "palestrinha").
@@ -97,7 +111,7 @@ O que o Claude pergunta se faltar: número do criativo, idioma, país, produto (
 python -I -X utf8 tools/analisar_referencia.py --video "Vídeo Bruto/<arquivo>.mp4" --out "Criativo NN/referencia" --language en
 ```
 
-Gera transcrição com tempos, cortes de cena, folhas de frames e o frame de cada corte. Com isso, preencher `analise.md`:
+Gera transcrição com tempo por palavra, cortes candidatos, folhas com um quadro por segundo (com o tempo marcado), o hook denso (`hook_3s.jpg`, um quadro a cada 0,25 s), o frame de cada corte e o `evidencias.md`: ritmo de cortes no hook, no corpo e no final, palavras nos 3 primeiros segundos, palavras/s, pausas, volume e nível do fundo sob a voz (trilha). O detector de cortes conta a menos em edição rápida: conferir nas folhas. Com isso, preencher `analise.md`:
 - **Origem**: arquivo de referência na primeira linha (o nome do arquivo nem sempre bate com o número da pasta).
 - **Hook, body e CTA** com tempos e o que acontece em cada um.
 - **Cada cena**: cenário, enquadramento (tripé, selfie, POV, PiP), quem fala (em cena ou em off), overlays.
@@ -106,7 +120,9 @@ Gera transcrição com tempos, cortes de cena, folhas de frames e o frame de cad
 - **Estrutura de roteiro, tema e moral da história** (ver [FORMATOS.md](FORMATOS.md)): AIDA, I.H.C., jeito errado × certo, ele-eu-você-futuro ou análise estratégica.
 - **Roteiro anotado**: cada frase da referência, em português, com o elemento que segura a atenção nela entre colchetes ([Conflito + Curiosidade: ...]), pelo vocabulário de [FORMATOS.md](FORMATOS.md). É o mapa que a tradução precisa preservar.
 - **Diagnóstico de copy** (seção 2 de [Copy/COPY.md](Copy/COPY.md)): nível de consciência que o hook supõe, sofisticação do mercado no país, tipo de lead (oferta, promessa, problema-solução, segredo, proclamação ou história), crença única em uma frase e qual dos 4 pés (ideia, promessa, prova, credibilidade) está fraco. A tradução e as variações mantêm o nível e o tipo de lead.
-- **Música**: se a referência tem trilha, registrar (hoje a montagem sai só com voz).
+- **Mecanismos e avatar** (M1, passo 2, do [MODELAGEM.md](MODELAGEM.md)), em poucas linhas: dor exata e soluções que já falharam, como a autoridade entra, UMP e UMS com a frase de onde entram. É o que a tradução não pode perder.
+- **Variáveis da referência**: tabela curta com os valores específicos (hook, mensageiro, cenário, figurino, filmagem, texto na tela, ritmo, oferta), todas como Candidate, e as linhas novas em `Variáveis/<Marca>.md`. A Réplica não testa variável, mas alimenta a biblioteca.
+- **Música**: se a referência tem trilha (ver o fundo sob a voz no `evidencias.md`), registrar (hoje a montagem sai só com voz).
 - **Estratégia para texto na tela** (ver tabela da Etapa 6): rótulo do produto, prancheta, quadro e faixas são deformados pelo modelo de vídeo. Decidir já aqui como cada um será feito, porque muda o modelo e o custo.
 - **Imagens necessárias** e estimativa de takes e custo.
 - **Pessoa da referência**: nunca copiar o rosto (pode ser pessoa real). Criar personagem nova com o mesmo visual (idade, roupa, cabelo, cenário).
@@ -130,19 +146,9 @@ Gera transcrição com tempos, cortes de cena, folhas de frames e o frame de cad
 
 ➡ **Aprovação:** roteiro inteiro, incluindo os trechos ⚠.
 
-## Etapa 2b — Roteiro novo a partir de um vencedor (quando pedido)
+## Etapa 2b — Roteiro novo a partir de um vencedor
 
-Quando o dono pede uma variação de um criativo que vendeu (outro hook, outro ângulo, copy nova em outro formato), em vez de traduzir uma referência:
-
-1. Partir do roteiro anotado do vencedor (se não existir, anotar primeiro).
-2. Propor 2 ou 3 ideias em poucas linhas, cada uma dizendo o tema novo, a estrutura e o formato. ➡ O dono escolhe.
-3. Escrever o roteiro com o **mesmo esqueleto**: mesma estrutura, mesmos elementos nas mesmas posições, mesmo peso emocional, tema novo. Entregar anotado frase a frase e com a tradução de volta para o português.
-4. Regras: número, estudo, pessoa real ou citação só com fonte verificável (link no roteiro); fato do produto só de [PRODUTOS.md](PRODUTOS.md); sem fonte, fica de fora. Seguir "Como escrever o roteiro" do `FORMATO.md` do formato escolhido.
-5. Hooks e ângulos novos saem das seções 3 e 7 de [Copy/COPY.md](Copy/COPY.md): tipo de lead pelo público da campanha, fórmulas testadas, modelos visuais e uma variável por teste (hook, ângulo ou oferta).
-
-Se a ideia é a mesma copy em outro formato (como o 13), a copy não muda: pular para a Etapa 3 com o guia do formato novo.
-
-➡ **Aprovação:** roteiro inteiro, como na Etapa 2.
+Virou o processo de **Modelagem** ([MODELAGEM.md](MODELAGEM.md)): quebra em variáveis (M1), testes de conceito com as vencedoras da biblioteca (M2) e roteiro com o mesmo esqueleto e uma variável em teste (M3). Os criativos 14 a 28 citam a "Etapa 2b": é o mesmo raciocínio da M3, ainda sem a biblioteca.
 
 ## Etapa 3 — Imagens
 
@@ -282,14 +288,14 @@ Quando a referência é um anúncio nativo estático (uma foto + texto longo no 
 | Etapa | O que sai | Custo | Quem aprova |
 |-------|-----------|-------|-------------|
 | N0. Preparação | `Criativo NN/` na raiz, com `referencia/` e `imagens/` (sem `takes_config` nem `montagem`) | 0 | — |
-| N1. Análise | `analise.md`: a imagem e por que ela prende, roteiro anotado bloco a bloco, diagnóstico de copy, tabela de fontes das afirmações, 3 ideias de história, política, perguntas abertas | 0 | dono |
-| N2. Texto | `roteiro_<idioma>.md` (Etapa 2b, frases ⚠ com alternativa suave) + `comparativo_roteiro.md` + `prompts_imagens.md` | 0 | dono, texto inteiro |
+| N1. Análise | `analise.md` (Réplica) ou `quebra.md` + `conceito.md` (Modelagem): a imagem e por que ela prende, roteiro anotado bloco a bloco, diagnóstico de copy, tabela de fontes das afirmações, 3 ideias de história, política, perguntas abertas | 0 | dono |
+| N2. Texto | `roteiro_<idioma>.md` (Réplica: tradução; Modelagem: M2 e M3 do `MODELAGEM.md`; frases ⚠ com alternativa suave) + `comparativo_roteiro.md` + `prompts_imagens.md` | 0 | dono, texto inteiro |
 | N3. Imagem | `imagens/B1_vN.png`, no mesmo aspecto da referência (4:5 ou 3:4) | ~US$ 0,04 por tentativa | dono |
 | N4. Entrega | imagem + descrição do post (`copy_final_<idioma>.txt`), mostradas no chat | 0 | dono |
 
 1. **Referência**: ler o anúncio com o Claude in Chrome (`get_page_text`) e capturar a imagem: sobreposição em JavaScript com a imagem em tamanho natural numa camada branca, depois `zoom` com `save_to_disk`. Salvar em `referencia/imagem_anuncio.png`. O link, o título do link, a descrição e o botão vão em `referencia/fonte.md`. O texto original do anúncio (de terceiros) não vai para a pasta; o resumo bloco a bloco fica no `analise.md`.
 2. **Análise (N1)**: como na Etapa 1, adaptada: em vez de cenas e takes, a imagem (o que ela mostra e qual dos quatro tipos é: pessoa da história, cena final, quebra de padrão ou o problema em close) e a verificação de cada número, estudo e citação da referência. ➡ **Aprovação.**
-3. **Texto (N2)**: pela Etapa 2b. Mesmo esqueleto e tamanho, história nova, fatos só de `PRODUTOS.md`, citações só com fonte. ➡ **Aprovação do texto inteiro.**
+3. **Texto (N2)**: na Modelagem (o caso comum dos nativos), quebra e conceito pelo [MODELAGEM.md](MODELAGEM.md) e texto pela M3: mesmo esqueleto e tamanho, história nova, fatos só de `PRODUTOS.md`, citações só com fonte. Na Réplica, tradução fiel como na Etapa 2. ➡ **Aprovação do texto inteiro.**
 4. **Imagem (N3)**: Nano Banana com `--aspect` da referência, **sem a imagem da referência como `--ref`** (pode ser pessoa real). Pedir no prompt que não haja texto nem logo, e conferir à mão. ➡ **Aprovação.**
 5. **Entrega (N4)**:
    - Gravar `copy_final_<idioma>.txt` com o título do link, a descrição do link ("Lire la suite"), o botão, o arquivo da imagem e o texto do post **sem as marcas ⚠**.
@@ -315,8 +321,9 @@ O jeito mais barato de fazer um criativo novo é reaproveitar o que já foi apro
   2. Mover a pasta para `Criativos Exemplo/<formato>/` e trocar, no `montagem*.json`, os caminhos `../Vídeos Prontos/` e `../assets/` por `../../../Vídeos Prontos/` e `../../../assets/`. Primeiro criativo de um formato: acrescentar a tabela de exemplos e o que ele ensinou ao `FORMATO.md` da pasta.
   3. Acrescentar a linha dele em [CRIATIVOS.md](CRIATIVOS.md) (formato, custo, lições) e o que ele ensinou no `FORMATO.md`.
   4. Fato do produto confirmado vai em [PRODUTOS.md](PRODUTOS.md); ferramenta ou opção nova, neste arquivo.
-  5. Registrar no Google Drive do time (ver "Registro no Google Drive", abaixo).
-  6. Commit e push dos textos.
+  5. Biblioteca da marca (`Variáveis/<Marca>.md`): conferir que as variáveis do criativo estão lá; na Modelagem, o teste passa a "entregue" e o nome do anúncio no Gerenciador leva o ID dele (`C<NN> | <ID do teste> | <variável>: <valor>`).
+  6. Registrar no Google Drive do time (ver "Registro no Google Drive", abaixo).
+  7. Commit e push dos textos.
 
 ## Registro no Google Drive
 
@@ -358,7 +365,7 @@ Todo criativo entregue vai também para o Drive do dono, que o time usa como reg
 
 | Script | Etapa | Função |
 |--------|-------|--------|
-| `analisar_referencia.py` | 1 | transcrição, cortes e folhas de frames da referência |
+| `analisar_referencia.py` | 1, M1 | transcrição com tempo por palavra, cortes, folhas com tempo, hook denso (0,25 s) e `evidencias.md` (ritmo de cortes, palavras nos 3 s, palavras/s, pausas, volume, fundo sob a voz) |
 | `prompt_de.py` | 3 | lê o prompt de uma seção `## ID` de `prompts_imagens.md` |
 | `gerar_imagem.py` | 3 | gera ou edita imagem com Nano Banana (aceita vários `--ref`) |
 | `gerar_take.py` | 4–5 | gera um take a partir de uma imagem; `--resume` recupera job; `--no-audio` (o Omni 1.2 recusa com HTTP 400: gerar com áudio e descartar na montagem) |

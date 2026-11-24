@@ -77,7 +77,7 @@ Toda análise identifica a estrutura da referência; o roteiro traduzido mantém
 
 ## Roteiro novo a partir de um vencedor
 
-O quadro usa um "agente de roteiros": recebe um roteiro que funcionou com a análise anotada e cria **uma ideia nova com o mesmo esqueleto** (mesma estrutura, mesmos elementos nas mesmas posições, mesmo peso emocional), sem copiar o tema. Usamos o mesmo raciocínio quando o dono pede variações de um criativo que vendeu (novo hook, novo ângulo, outro formato com copy nova). Etapa "2b" do [PROCESSO.md](PROCESSO.md).
+O quadro usa um "agente de roteiros": recebe um roteiro que funcionou com a análise anotada e cria **uma ideia nova com o mesmo esqueleto** (mesma estrutura, mesmos elementos nas mesmas posições, mesmo peso emocional), sem copiar o tema. Usamos o mesmo raciocínio quando o dono pede variações de um criativo que vendeu (novo hook, novo ângulo, outro formato com copy nova). Hoje isso é o processo de **Modelagem** ([MODELAGEM.md](MODELAGEM.md)), que acrescenta a biblioteca de variáveis e uma variável testada por criativo. Na quebra, a anotação ganha uma coluna de **função** do trecho (hook, UMP, prova, callback, CTA...).
 
 Regras (adaptadas do quadro para anúncio):
 1. Partir da anotação frase a frase do vencedor; o roteiro novo vem anotado do mesmo jeito.

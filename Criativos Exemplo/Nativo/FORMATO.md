@@ -33,7 +33,7 @@ As referências vieram da Biblioteca de Anúncios da Meta, todas da **Elmora** (
 
 ## Como escrever o texto
 
-Sempre pela **Etapa 2b** do `PROCESSO.md`: o dono pede para "modelar" e o texto novo mantém o esqueleto da referência, com outra história.
+Pelo processo de **Modelagem** ([MODELAGEM.md](../../MODELAGEM.md), a antiga Etapa 2b): o dono pede para "modelar" e o texto novo mantém o esqueleto da referência, com outra história. Antes de escrever, ler a biblioteca da marca ([Variáveis/](../../Variáveis/)) e registrar nela as variáveis do anúncio (tipo de imagem, avatar, entrada da autoridade, UMP, UMS, fecho), todas Candidate por serem swipe.
 1. Ler o anúncio inteiro com o Claude in Chrome (`get_page_text`) e anotar **bloco a bloco** (32 a 65 blocos), com os elementos de [FORMATOS.md](../../FORMATOS.md).
 2. Propor 3 ideias: a mais fiel (mesmo enredo, outras pessoas), uma variação de personagem e uma versão mais segura para política.
 3. Escrever com a mesma ordem de blocos, os mesmos elementos e o mesmo tamanho. Trocar nomes, cidades, lojas e referências por equivalentes franceses (Croix-Rousse, Monoprix, roquefort, Lanzarote, EHPAD).

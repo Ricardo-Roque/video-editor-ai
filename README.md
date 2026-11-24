@@ -6,7 +6,10 @@ O trabalho é conduzido pelo [Claude Code](https://claude.com/claude-code) dentr
 
 | Documento | Para quê |
 |-----------|----------|
-| [PROCESSO.md](PROCESSO.md) | o passo a passo completo, da referência ao vídeo final |
+| [PROCESSO.md](PROCESSO.md) | processo de **Réplica** (refazer a referência fiel) e a produção: da referência ao vídeo final |
+| [MODELAGEM.md](MODELAGEM.md) | processo de **Modelagem**: quebrar anúncios em variáveis, empilhar as vencedoras e testar uma variável por criativo |
+| [Variáveis/](Variáveis/) | biblioteca de variáveis por marca: vencedoras, perdedoras e testes de conceito |
+| [Quebras/](Quebras/) | quebras de anúncios feitas sem produzir criativo |
 | [FORMATOS.md](FORMATOS.md) | os 16 formatos criativos do Trello, como anotar e escrever roteiros, estruturas e elementos que prendem a atenção |
 | [Criativos Exemplo/](Criativos%20Exemplo/) | uma pasta por formato com o guia `FORMATO.md` (roteiro, produção, custo, riscos) e os criativos entregues naquele formato |
 | [Copy/COPY.md](Copy/COPY.md) | o método de copy tirado de 58 livros clássicos (Schwartz, Hopkins, Ogilvy, Caples, Halbert...): diagnóstico, hook, corpo, oferta, checklist. Resumos por livro em [Copy/livros/](Copy/livros/) |
@@ -48,6 +51,8 @@ python -I -X utf8 tools/<script>.py ...
    Ou digite `/novo-criativo`.
 3. O Claude identifica o formato da referência (pelo `FORMATO.md` do exemplo mais próximo), analisa a referência, propõe o roteiro (com tradução de volta para o português), gera as imagens, os takes e monta o vídeo, parando para você aprovar cada etapa e mostrando o custo antes de cada geração paga.
 4. O vídeo final sai em `Vídeos Prontos/`.
+
+Dois processos: **Réplica** ("refazer", "traduzir") segue a referência o mais fiel possível; **Modelagem** ("modelar", "conceito novo") quebra a referência em variáveis e monta um conceito novo com as variáveis vencedoras da biblioteca, testando uma de cada vez. Para só analisar um anúncio, sem produzir: "quebra do anúncio <link ou arquivo>".
 
 Para continuar um criativo começado por outra pessoa, diga "continuar o Criativo NN": o Claude descobre a etapa pelos arquivos da pasta.
 
