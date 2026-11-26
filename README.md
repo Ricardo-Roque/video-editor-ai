@@ -60,7 +60,7 @@ Para continuar um criativo começado por outra pessoa, diga "continuar o Criativ
 
 No Git: ferramentas (`tools/`), documentação, skills do Claude (`.claude/skills/`), modelo de criativo (`_Modelo Criativo/`), fonte das legendas, foto do produto e os textos de cada criativo entregue, em `Criativos Exemplo/<formato>/` (análise, roteiro, comparativo, prompts, configurações).
 
-Fora do Git (ver [.gitignore](.gitignore)): vídeos de referência, imagens, takes, intermediários de montagem e vídeos prontos. São arquivos grandes; ficam na pasta compartilhada do time, na mesma estrutura de pastas. Para continuar um criativo antigo, copie as pastas `imagens/` e `takes/` dele da pasta compartilhada para cá.
+Fora do Git (ver [.gitignore](.gitignore)): vídeos de referência, imagens, takes, intermediários de montagem e vídeos prontos. São arquivos grandes. Ficam no Cloudflare R2 do time ([R2.md](R2.md)), e o painel os mostra em qualquer computador. Para continuar um criativo antigo: `python -I -X utf8 tools/midia.py baixar C<NN>`.
 
 ## Regras do time
 

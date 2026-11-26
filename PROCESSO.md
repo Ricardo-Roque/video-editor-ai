@@ -363,7 +363,7 @@ O `anuncio` (texto principal, título, descrição e botão) é obrigatório tam
 
 - Cada pessoa usa a própria chave do OpenRouter no `.env` (nunca commitar). O limite de gasto é por chave.
 - Antes de criar a pasta, rodar `painel.py proximo --tipo ...` e avisar o código no grupo para não haver duas pastas iguais.
-- No Git vão só os textos (`.md`, `.json`) e as ferramentas. Imagens, takes e vídeos ficam na pasta compartilhada do time, na mesma estrutura de pastas.
+- No Git vão só os textos (`.md`, `.json`) e as ferramentas. Imagens, takes, vídeos e uma cópia dos textos de cada criativo ficam no **Cloudflare R2** ([R2.md](R2.md)), com o índice na tabela `arquivos`. O `painel.py entregar` sobe sozinho o que a etapa produziu, e o painel mostra a mídia em qualquer computador. Para continuar um criativo feito em outra máquina: `midia.py baixar C<NN>`.
 - Ao entregar um criativo:
   1. Atualizar as "Notas de produção" do roteiro.
   2. Mover a pasta para `Criativos Exemplo/<formato>/` e trocar, no `montagem*.json`, os caminhos `../Vídeos Prontos/` e `../assets/` por `../../../Vídeos Prontos/` e `../../../assets/`. Primeiro criativo de um formato: acrescentar a tabela de exemplos e o que ele ensinou ao `FORMATO.md` da pasta.
@@ -371,11 +371,11 @@ O `anuncio` (texto principal, título, descrição e botão) é obrigatório tam
   4. Fato do produto confirmado vai em [PRODUTOS.md](PRODUTOS.md); ferramenta ou opção nova, neste arquivo.
   5. Biblioteca da marca (`Variáveis/<Marca>.md`): conferir que as variáveis do criativo estão lá e marcá-las no painel (detalhe do criativo); na Modelagem, o teste passa a "entregue". O nome do anúncio no Gerenciador **sempre começa com o ID do criativo** (`C<NN> | <ID do teste> | <variável>: <valor>`): é assim que a sincronização da Meta liga os números ao criativo.
   6. Conferir o título no painel (`Criativo #NN`, `Criativo Nativo #NN` ou `Criativo de Imagem #NN`) e usar esse nome ao falar do criativo com o time. O registro no Google Drive foi descontinuado em 2026-11-26.
-  7. Commit e push dos textos.
+  7. `midia.py subir C<NN>`, para atualizar no R2 a pasta nova e o vídeo final, e depois commit e push dos textos.
 
 ## Registro no Google Drive (descontinuado)
 
-> **Descontinuado em 2026-11-26.** Os criativos passam a ficar no projeto (painel e banco); a forma de guardar a mídia para o time está em definição (ARQUITETURA.md). Os títulos agora vêm do painel: uma sequência por tipo, sem buracos, gravada em `criativo_titulos` (o Criativo Nativo 05 do projeto é o **Criativo Nativo #05**, não mais o "Nativo #11" do Drive). O texto abaixo fica só como histórico.
+> **Descontinuado em 2026-11-26.** Os criativos passam a ficar no projeto (painel e banco); a mídia fica no Cloudflare R2 ([R2.md](R2.md)). Os títulos agora vêm do painel: uma sequência por tipo, sem buracos, gravada em `criativo_titulos` (o Criativo Nativo 05 do projeto é o **Criativo Nativo #05**, não mais o "Nativo #11" do Drive). O texto abaixo fica só como histórico.
 
 Todo criativo entregue vai também para o Drive do dono, que o time usa como registro: `Meu Drive > Business > Bisglicinato de Magnésio > Criativos`. Não há conector do Google nesta máquina: o registro é feito pelo **Claude in Chrome**, na conta já logada.
 
@@ -417,6 +417,7 @@ Todo criativo entregue vai também para o Drive do dono, que o time usa como reg
 |--------|-------|--------|
 | `dados.py` | todas | ponte com o banco do negócio (Supabase, ver [ARQUITETURA.md](ARQUITETURA.md)): `contexto <oferta>` (portão de contexto), `buscar <link/arquivo>` ("já vi?"), `parecidos "<texto>"`, `capturar <oferta> <etapa>` (página do funil; Shopify bloqueia, então `--arquivo` com o texto do Chrome), `gravar <tabela> <json>`, `embeddings`, `sql` (só leitura). Precisa de `SUPABASE_DB_URL` no `.env` |
 | `painel.py` | todas | painel local (produção, biblioteca, anotação por tempo, métricas, comparação, variáveis); `esteira` lista o que está com o Claude; `entrar C<NN>` põe na esteira; `entregar C<NN> --etapa --custo` manda a etapa para aprovação; `fila` lista os pedidos de refação; `feita <ids> --resposta` fecha |
+| `midia.py` | todas | mídia no Cloudflare R2 ([R2.md](R2.md)): `verificar`, `subir C<NN>` / `--todos` (só o novo ou mudado; `--ensaio`), `baixar C<NN> [--papel take]`, `estado`. O `painel.py entregar` já sobe |
 | `meta.py` | entrega, resultados | Marketing API ([META.md](META.md)): `verificar`, `sincronizar` (números diários por anúncio), `ligar <ad_id> <CN05>`, `sem-criativo`, `publicar` (sempre PAUSADO; ensaio sem `--confirmar`) |
 | `analisar_referencia.py` | 1, M1 | transcrição com tempo por palavra, cortes, folhas com tempo, hook denso (0,25 s) e `evidencias.md` (ritmo de cortes, palavras nos 3 s, palavras/s, pausas, volume, fundo sob a voz) |
 | `prompt_de.py` | 3 | lê o prompt de uma seção `## ID` de `prompts_imagens.md` |

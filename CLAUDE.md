@@ -32,6 +32,6 @@ Este projeto produz criativos de vídeo (anúncios 9:16) a partir de um vídeo d
 - Rode os scripts Python com `python -I -X utf8 tools/<script>.py ...` a partir da raiz do projeto (`-I` ignora `PYTHONIOENCODING`, então use `-X utf8`).
 - Chave do OpenRouter em `.env` (`OPENROUTER_API_KEY`); nunca exibir nem copiar a chave. O `.env` não vai para o Git.
 - FFmpeg, Python 3.13 com as dependências de `requirements.txt`, Node 24 e HyperFrames (skills em `.claude/skills/`, opcional).
-- Imagens, takes e vídeos não estão no Git: se faltarem num criativo antigo, peça ao usuário para copiá-los da pasta compartilhada do time.
+- Imagens, takes e vídeos não estão no Git: ficam no Cloudflare R2 ([R2.md](R2.md)). Se faltarem num criativo, use `python -I -X utf8 tools/midia.py baixar C<NN>`; o `painel.py entregar` sobe o que a etapa produziu. Credenciais `R2_*` no `.env`, nunca exibidas.
 - Lotes de takes e montagem completa podem passar de 10 minutos: rode em segundo plano. No máximo 2 takes em paralelo.
 - Arquivos temporários vão no scratchpad da sessão, não nas pastas do criativo.

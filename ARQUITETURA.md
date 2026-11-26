@@ -87,7 +87,7 @@ As lições de formato que hoje citam a Cinnarae continuam no `FORMATO.md`, escr
    └─ registro/                    índice gerado (ver "Registro")
 ```
 
-Mídia (vídeos, imagens, takes) continua fora do Git, na pasta compartilhada do time, espelhando a mesma estrutura.
+Mídia (vídeos, imagens, takes) continua fora do Git, no Cloudflare R2 do time (decisão de 2026-11-26, ver [R2.md](R2.md)).
 
 ### O briefing da oferta (`oferta.md`)
 
@@ -251,7 +251,7 @@ Tomadas em 2026-11-24:
 - **Três níveis: marca > produto > oferta.** A oferta é a unidade de trabalho.
 - **Validade da captura do funil: 14 dias**, e sempre recapturar antes de citar preço ou oferta.
 
-- **Supabase desde já** (substitui a pasta no Drive para os dados do negócio): o sistema web vai ser Vercel + Supabase, então os dados nascem no banco. **Mídia fica no Google Drive**, com o link no banco. A estrutura de pastas descrita em "Camada 2" vale como modelo lógico; o esquema real está em [supabase/migrations/](supabase/migrations/).
+- **Supabase desde já** (substitui a pasta no Drive para os dados do negócio): o sistema web vai ser Vercel + Supabase, então os dados nascem no banco. Mídia: ~~Google Drive~~ trocado em 2026-11-26 por **Cloudflare R2** (bucket privado, índice na tabela `arquivos`, links assinados; [R2.md](R2.md)): 10 GB grátis, saída de dados sem custo (o painel toca vídeo), e o Drive não serve vídeo bem para uma página web. A estrutura de pastas descrita em "Camada 2" vale como modelo lógico; o esquema real está em [supabase/migrations/](supabase/migrations/).
 
 ## Supabase desde já
 
@@ -261,8 +261,8 @@ O sistema web vai ter banco próprio (Supabase) e interface na Vercel. Em vez de
 |---|---|
 | Registro e dados estruturados (marcas, produtos, ofertas, fontes, referências, quebras, variáveis, testes, criativos, resultados) | Postgres do Supabase, uma tabela por entidade da seção "Registro" |
 | Textos longos (quebra, roteiro, análise, captura do funil, copy final) | coluna de texto em Markdown na própria linha |
-| Mídia (vídeos, imagens, takes) | Google Drive (já usado pelo time, sem custo) com o link na linha; ou Supabase Storage (exige plano pago com volume de vídeo) |
-| Criativo em produção | pasta local de trabalho, como hoje (FFmpeg e os scripts precisam dos arquivos no disco); na entrega, textos e links sobem para o banco |
+| Mídia (vídeos, imagens, takes) e cópia dos textos de cada criativo | Cloudflare R2, bucket privado; índice na tabela `arquivos` (migração 0008); a interface abre por link assinado |
+| Criativo em produção | pasta local de trabalho, como hoje (FFmpeg e os scripts precisam dos arquivos no disco); a cada etapa entregue, o que é novo sobe para o R2 (`painel.py entregar`) |
 | Interface | Vercel, lendo e escrevendo no mesmo banco |
 | Motor de produção (Claude Code, geração de imagens e takes, montagem) | local, ou num servidor próprio mais tarde; a Vercel não roda tarefas longas como montagem de vídeo |
 

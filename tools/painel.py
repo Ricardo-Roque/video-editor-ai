@@ -32,6 +32,7 @@ import traceback
 import webbrowser
 from datetime import date, datetime
 from decimal import Decimal
+from fnmatch import fnmatch
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, quote, unquote, urlsplit
 
@@ -39,6 +40,7 @@ from dotenv import dotenv_values
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import dados  # noqa: E402
+import midia  # noqa: E402
 from dados import ROOT  # noqa: E402
 
 WEB = ROOT / "painel"
@@ -165,13 +167,20 @@ _thumb_sem = threading.Semaphore(4)
 
 
 def miniatura(arquivo: str, t: float, largura: int) -> pathlib.Path | None:
-    """Quadro do vídeo no tempo t (ou a imagem reduzida), em JPG, com cache em disco."""
+    """Quadro do vídeo no tempo t (ou a imagem reduzida), em JPG, com cache em disco.
+    Arquivo que só está no R2: o ffmpeg lê pelo link assinado (só o trecho que precisa)."""
     import hashlib
     p = (ROOT / arquivo).resolve()
-    if not p.is_relative_to(ROOT_RES) or not p.is_file() or p.suffix.lower() not in VIDEO_EXT | IMG_EXT:
+    if not p.is_relative_to(ROOT_RES) or p.suffix.lower() not in VIDEO_EXT | IMG_EXT:
         return None
-    st = p.stat()
-    h = hashlib.sha1(f"{p}|{st.st_mtime_ns}|{t:.2f}|{largura}".encode()).hexdigest()[:20]
+    if p.is_file():
+        st = p.stat()
+        fonte, marca = str(p), f"{p}|{st.st_mtime_ns}"
+    elif (r := remoto(arquivo)) and midia.configurado():
+        fonte, marca = midia.assinar(r["chave"], 600), r["sha256"]
+    else:
+        return None
+    h = hashlib.sha1(f"{marca}|{t:.2f}|{largura}".encode()).hexdigest()[:20]
     out = THUMBS / f"{h}.jpg"
     if out.exists():
         return out
@@ -182,7 +191,7 @@ def miniatura(arquivo: str, t: float, largura: int) -> pathlib.Path | None:
             return out
         tmp = out.with_suffix(".tmp.jpg")
         cmd = ["ffmpeg", "-v", "error", "-y"] + (["-ss", f"{t:.2f}"] if video else []) + [
-            "-i", str(p), "-frames:v", "1", "-vf", f"scale={largura}:-2", "-q:v", "4", str(tmp)]
+            "-i", fonte, "-frames:v", "1", "-vf", f"scale={largura}:-2", "-q:v", "4", str(tmp)]
         r = subprocess.run(cmd, capture_output=True)
         if r.returncode != 0 or not tmp.exists():
             if video and t > 0:                      # tempo além do fim: tenta o começo
@@ -305,18 +314,81 @@ def prontos_por_codigo() -> dict:
     return _PRONTOS.pegar(calcular)
 
 
+# ---------------------------------------------------------------- arquivos no R2 (tabela arquivos, tools/midia.py)
+# Cada linha vira um caminho "virtual" no projeto, o mesmo que o arquivo teria aqui: pasta local do criativo
+# (ou a pasta de quem enviou) + caminho. Assim URL (/media/...), miniatura e anotação são iguais em todo computador.
+
+_REM = memo(5)
+
+
+def _indice_remoto() -> dict:
+    def calcular():
+        locais, por_rel, por_cid = pastas_locais(), {}, {}
+        for r in banco_lista()["arq"]:
+            if r["caminho"].startswith("prontos/"):
+                rr = rel(PRONTOS) + "/" + r["caminho"][len("prontos/"):]
+            else:
+                base = rel(locais[r["criativo_id"]]) if r["criativo_id"] in locais else (r["pasta"] or r["criativo_id"])
+                rr = base + "/" + r["caminho"]
+            r = dict(r, rel=rr)
+            por_rel[rr] = r
+            por_cid.setdefault(r["criativo_id"], []).append(r)
+        return {"por_rel": por_rel, "por_cid": por_cid}
+    return _REM.pegar(calcular)
+
+
+def remoto(arquivo: str) -> dict | None:
+    """Linha do R2 de um caminho relativo do projeto ('Criativo 20/takes/T01_v1.mp4'), se houver."""
+    return _indice_remoto()["por_rel"].get(arquivo)
+
+
+def remotos_de(cid: str) -> list[dict]:
+    return _indice_remoto()["por_cid"].get(cid, [])
+
+
+def url_rel(r: str) -> str:
+    return "/media/" + quote(r)
+
+
+def texto_de(cid: str, pasta: pathlib.Path | None, padrao: str) -> list[tuple[str, str]]:
+    """Textos da pasta do criativo que casam com o padrão: os locais e, se faltarem aqui, os do R2."""
+    out, nomes = [], set()
+    if pasta:
+        for p in sorted(pasta.glob(padrao)):
+            if p.is_file():
+                nomes.add(p.name)
+                out.append((p.name, p.read_text(encoding="utf-8", errors="replace")))
+    if midia.configurado():
+        for r in remotos_de(cid):
+            if r["papel"] == "documento" and r["caminho"] not in nomes and fnmatch(r["caminho"], padrao):
+                try:
+                    out.append((r["caminho"], midia.ler_texto(r["chave"], r["sha256"])))
+                except Exception:  # noqa: BLE001 - sem rede: o painel segue sem o texto
+                    pass
+    return sorted(out)
+
+
 def midias(cid: str, pasta: pathlib.Path | None, completo: bool = True) -> dict:
-    """completo=False (lista): sem ffprobe, só os arquivos. completo=True (detalhe): duração e takes."""
+    """completo=False (lista): sem ffprobe, só os arquivos. completo=True (detalhe): duração e takes.
+    O que não está no computador mas está no R2 entra também (marcado com remoto=True)."""
     videos, vistos = [], set()
 
     def add(p: pathlib.Path, cfg: pathlib.Path | None):
         p = norm(p)
-        if p.suffix.lower() in VIDEO_EXT and p not in vistos and p.is_relative_to(ROOT_RES) and p.exists():
-            vistos.add(p)
-            v = {"nome": p.name, "url": url_midia(p), "arquivo": rel(p)}
-            if completo:
-                v |= {"duracao": round(duracao(p), 2), "takes": linha_do_tempo(cfg) if cfg else []}
-            videos.append(v)
+        if p.suffix.lower() not in VIDEO_EXT or p in vistos or not p.is_relative_to(ROOT_RES):
+            return
+        r = rel(p)
+        local = p.exists()
+        rm = remoto(r)
+        if not local and not rm:
+            return
+        vistos.add(p)
+        v = {"nome": p.name, "url": url_rel(r), "arquivo": r, "remoto": not local}
+        if completo:      # sem os seg_NN.mp4 aqui, a linha do tempo vem do R2 (gravada no envio)
+            takes = linha_do_tempo(cfg) if local and cfg else []
+            v |= {"duracao": round(duracao(p), 2) if local else num(rm["duracao_s"]) or 0,
+                  "takes": takes or (rm or {}).get("linha_do_tempo") or []}
+        videos.append(v)
 
     if pasta:
         for cfg in sorted(pasta.glob("montagem*.json")):
@@ -330,15 +402,31 @@ def midias(cid: str, pasta: pathlib.Path | None, completo: bool = True) -> dict:
             add(p, pasta / "montagem.json" if pasta and (pasta / "montagem.json").exists() else None)
     if pasta and not videos and (pasta / "montagem" / "final.mp4").exists():
         add(pasta / "montagem" / "final.mp4", pasta / "montagem.json")
+    for r in remotos_de(cid):                    # finais que só estão no R2
+        if r["papel"] == "final" and r["caminho"] != "montagem/final.mp4":
+            add(ROOT / r["rel"], None)
+    if not videos:
+        for r in remotos_de(cid):
+            if r["caminho"] == "montagem/final.mp4":
+                add(ROOT / r["rel"], None)
 
     imagens, copy = [], None
     if pasta:
         for p in sorted((pasta / "imagens").glob("*")) if (pasta / "imagens").exists() else []:
             if p.suffix.lower() in IMG_EXT:
                 imagens.append({"nome": p.name, "url": url_midia(p), "arquivo": rel(p)})
-        cp = sorted(pasta.glob("copy_final*.txt"))
-        if cp:
-            copy = cp[0].read_text(encoding="utf-8", errors="replace")
+    locais = {i["arquivo"] for i in imagens}
+    for r in remotos_de(cid):
+        nome = r["caminho"][len("imagens/"):]
+        if r["caminho"].startswith("imagens/") and "/" not in nome and r["rel"] not in locais \
+                and pathlib.Path(nome).suffix.lower() in IMG_EXT:
+            imagens.append({"nome": nome, "url": url_rel(r["rel"]), "arquivo": r["rel"], "remoto": True})
+    imagens.sort(key=lambda i: i["nome"])
+    if completo:                                 # detalhe: também do R2; a lista lê só o local (sem rede)
+        cp = texto_de(cid, pasta, "copy_final*.txt")
+        copy = cp[0][1] if cp else None
+    elif pasta and (cp := sorted(pasta.glob("copy_final*.txt"))):
+        copy = cp[0].read_text(encoding="utf-8", errors="replace")
     return {"videos": videos, "imagens": imagens, "copy": copy}
 
 
@@ -393,6 +481,8 @@ def banco_lista() -> dict:
             "vars": ("""select cv.criativo_id, cv.papel, v.id, v.categoria, v.variavel, v.valor, v.status
                         from criativo_variaveis cv join variaveis v on v.id = cv.variavel_id order by v.id""", None),
             "esteira": ("select * from esteira", None),
+            "arq": ("""select criativo_id, caminho, papel, chave, pasta, bytes, sha256, duracao_s, linha_do_tempo
+                       from arquivos""", None),
         })
         anot, vars_ = {}, {}
         for x in r["anot"]:
@@ -401,7 +491,7 @@ def banco_lista() -> dict:
             vars_.setdefault(x["criativo_id"], []).append(x)
         return {"banco": {x["id"]: x for x in r["criativos"]}, "tot": {x["criativo_id"]: x for x in r["totais"]},
                 "notas": {x["criativo_id"]: x for x in r["notas"]}, "anot": anot, "vars": vars_,
-                "est": {x["criativo_id"]: x for x in r["esteira"]}}
+                "est": {x["criativo_id"]: x for x in r["esteira"]}, "arq": r.get("arq", [])}
     return _BANCO_LISTA.pegar(calcular)
 
 
@@ -599,29 +689,35 @@ def esteira_acao(b: dict, autor: str) -> dict:
     raise ValueError("Ação desconhecida.")
 
 
-def ficha_e_documentos(pasta: pathlib.Path | None) -> dict:
-    """ficha.json (roteiro dissecado e anúncio, escrita pelo Claude) + os textos da pasta + os takes."""
+def ficha_e_documentos(cid: str, pasta: pathlib.Path | None) -> dict:
+    """ficha.json (roteiro dissecado e anúncio, escrita pelo Claude) + os textos da pasta + os takes.
+    O que falta no computador vem do R2."""
     out = {"ficha": None, "ficha_erro": None, "documentos": [], "takes_arquivos": []}
-    if not pasta:
-        return out
-    f = pasta / "ficha.json"
-    if f.exists():
+    f = texto_de(cid, pasta, "ficha.json")
+    if f:
         try:
-            out["ficha"] = json.loads(f.read_text(encoding="utf-8"))
+            out["ficha"] = json.loads(f[0][1])
         except ValueError as e:
             out["ficha_erro"] = f"ficha.json inválida: {e}"
     vistos = set()
     for padrao in DOCS:
-        for p in sorted(pasta.glob(padrao)):
-            if p not in vistos and p.is_file():
-                vistos.add(p)
-                out["documentos"].append({"nome": p.name, "texto": p.read_text(encoding="utf-8", errors="replace")})
-    if (pasta / "takes").exists():
+        for nome, texto in texto_de(cid, pasta, padrao):
+            if nome not in vistos:
+                vistos.add(nome)
+                out["documentos"].append({"nome": nome, "texto": texto})
+    takes = {}
+    if pasta and (pasta / "takes").exists():
         for p in sorted((pasta / "takes").glob("*")):
             if p.suffix.lower() in VIDEO_EXT:
-                m = re.match(r"(T\d+[a-z]?)", p.name)
-                out["takes_arquivos"].append({"nome": p.name, "take": m.group(1) if m else p.stem,
-                                              "url": url_midia(p), "arquivo": rel(p)})
+                takes[p.name] = {"url": url_midia(p), "arquivo": rel(p)}
+    for r in remotos_de(cid):
+        nome = r["caminho"][len("takes/"):]
+        if r["caminho"].startswith("takes/") and "/" not in nome and nome not in takes \
+                and pathlib.Path(nome).suffix.lower() in VIDEO_EXT:
+            takes[nome] = {"url": url_rel(r["rel"]), "arquivo": r["rel"], "remoto": True}
+    for nome in sorted(takes):
+        m = re.match(r"(T\d+[a-z]?)", nome)
+        out["takes_arquivos"].append({"nome": nome, "take": m.group(1) if m else pathlib.Path(nome).stem, **takes[nome]})
     return out
 
 
@@ -636,7 +732,7 @@ def detalhe(cid: str) -> dict:
     base.update(m)
     base["media"] = media_geral(tot)
     base.update(detalhe_banco(cid))
-    base.update(ficha_e_documentos(pasta))
+    base.update(ficha_e_documentos(cid, pasta))
     base["etapas"] = etapas_de(base.get("tipo"))
     return base
 
@@ -1015,7 +1111,10 @@ class Handler(BaseHTTPRequestHandler):
             if u.path == "/api/usuarios":
                 return self._json({"usuarios": DB.q("select id, email, nome, ativo, criado_em, ultimo_login from usuarios order by id")})
             if u.path.startswith("/media/"):
-                return self._arquivo(ROOT / unquote(u.path[len("/media/"):]))
+                alvo = unquote(u.path[len("/media/"):])
+                if not (ROOT / alvo).is_file() and (r := remoto(alvo)) and midia.configurado():
+                    return self._redirecionar(midia.assinar(r["chave"]))     # só no R2: link assinado de 6 h
+                return self._arquivo(ROOT / alvo)
             if u.path == "/thumb":
                 larg = max(80, min(720, int(qs.get("w") or 320)))
                 p = miniatura(qs.get("arquivo", ""), float(qs.get("t") or 0), larg)
@@ -1024,7 +1123,7 @@ class Handler(BaseHTTPRequestHandler):
                 self._cache_longo = True
                 return self._arquivo(p, raiz=WEB)
             if u.path == "/api/estado":
-                return self._json({"banco": DB.ok(), "banco_erro": DB.erro, "meta": meta_configurada(), **ESTADO})
+                return self._json({"banco": DB.ok(), "banco_erro": DB.erro, "meta": meta_configurada(), "r2": midia.configurado(), **ESTADO})
             if u.path == "/api/criativos":
                 reler_pastas()                    # arquivos novos aparecem; o banco vem do cache até o próximo POST
                 tot = totais()
@@ -1256,6 +1355,16 @@ def cmd_entregar(a):
               atualizado_por = 'Claude', atualizado_em = now()""", (cid, a.etapa, a.custo or 0))
     esteira_evento(cid, a.etapa, "entregou", "Claude", a.nota, a.custo)
     print(f"{cid}: {ROTULO[a.etapa]} entregue para aprovação no painel.")
+    if not midia.configurado():
+        print("Aviso: R2 não configurado (ver R2.md): a mídia desta etapa ficou só neste computador.")
+        return
+    try:                       # o time vê a etapa em qualquer computador: sobe o que é novo ou mudou
+        t = midia.subir([cid], log=lambda s: print("  " + s))
+        print(f"  R2: {t['enviados']} arquivo(s) enviados ({t['bytes'] / 1048576:,.1f} MB)"
+              + (f", {t['erros']} com erro: rode 'midia.py subir {cid}' de novo" if t["erros"] else "") + ".")
+        print("  " + midia.linha_uso(midia.uso()))
+    except Exception as e:  # noqa: BLE001 - a entrega já foi gravada; o envio pode ser repetido
+        print(f"Aviso: a etapa foi entregue, mas o envio ao R2 falhou ({str(e)[:200]}). Rode: midia.py subir {cid}")
 
 
 def cmd_entrar(a):

@@ -8,3 +8,4 @@ beautifulsoup4
 onnxruntime
 tokenizers
 huggingface-hub
+boto3

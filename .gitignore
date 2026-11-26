@@ -5,6 +5,7 @@
 tools/jobs.log
 painel/.cache_duracoes.json
 painel/.thumbs/
+painel/.r2_sha.json
 __pycache__/
 *.pyc
 .DS_Store
