@@ -1,0 +1,24 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_360p_v1",
+  "size": "360x640",
+  "price_per_sec": 0.023172,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "images": {
+    "V1": "imagens/cenas/C04_v1.png"
+  },
+  "image_persona": {
+    "V1": "V1"
+  },
+  "personas": {
+    "V1": {
+      "seed": 3901,
+      "scene": "Slow, smooth camera push-in on the still illustration. The illustration stays exactly the same, nothing moves except the slow camera. The narration is an off-screen voiceover: no person appears and nobody on screen speaks.",
+      "voice": "Voice: off-screen male narrator, French man in his fifties, native French from France, deep, grave and serious documentary voice, calm but urgent, clear articulate pace, speaking fluent French."
+    }
+  },
+  "suffix": "Only the narrator's voice, no music, no sound effects, no subtitles, no text on screen."
+}

@@ -3,7 +3,27 @@
 Fatos confirmados de cada produto, para não perguntar de novo a cada criativo e não inventar o que não foi confirmado.
 Ao confirmar um fato novo com o dono do produto, acrescente aqui com a data.
 
-## Cinnarae (França)
+## Cinnarae — Cayenne Softgels (França) — produto novo desde 2026-11-25
+
+Produto novo vendido com a marca Cinnarae. Os fatos abaixo vêm da PDP americana que o dono enviou (Vitalia, mesmo produto) e ainda precisam ser confirmados para a França.
+
+| Item | Valor |
+|------|-------|
+| O que é | cápsulas moles (softgels) de pimenta-caiena com blend botânico, 1 por dia |
+| Formato da cápsula | **softgel vermelha translúcida, brilhante**. Foto: [Referências/Cayenne Softgels - Softgels.jpg](Referências/) |
+| Embalagem | sachê stand-up **vermelho-tijolo fosco**. **Versão Cinnarae aprovada em 2026-11-25**: [Referências/Cinnarae Cayenne - Sachê FR.png](Referências/), logo Cinnarae em creme, "PIMENT DE CAYENNE / Formule botanique avancée", ingredientes em francês, "1 capsule par jour", "30 capsules molles · Complément alimentaire"; sem "circulation" nem "3 000 mg" no rótulo. Usar como `--ref` em toda imagem com o produto. Original da Vitalia: `Referências/Cayenne Softgels - Pouch.png` |
+| Composição (rótulo, por softgel) | *Capsicum annuum* 300 mg ("from 30,000 fresh cayenne pepper"), óleo de semente de uva 100 mg, vitamina D3 1000 UI, vitamina K2 150 mcg, vitamina A, blend proprietário 15 mg (cúrcuma 95%, pimenta-do-reino, espinheiro-alvar/hawthorn, canela, berberina, beterraba, ginseng). Outros: gelatina bovina, glicerina, água, óleo MCT de coco, cera de abelha. Sem glúten, laticínios, ovos, peixe, frutos do mar, amendoim, castanhas. Fotos: `Cayenne Softgels - Supplement Facts.jpg`, `Cayenne Softgels - Ingredientes.jpg` |
+| Modo de uso | 1 softgel por dia, com comida. Uso contínuo |
+| Promessa da PDP | "Supports healthy circulation", circulação e disposição (stamina), absorção rápida (formato líquido) |
+| Oferta na PDP EUA (2026-11-25) | 1 = US$ 24,99; "Buy 2 Get 1 Free" = US$ 49,99; "Buy 3 Get 2 Free" = US$ 74,99; assinatura -20% a cada 30 dias, cancela quando quiser. **Preço em euro e PDP francesa: não informados** |
+| Garantia | PDP: 30 dias, "send it back" e reembolso total. O rodapé diz que **não aceita devolução** e pede contato por e-mail para reembolso. **Conflito: confirmar qual vale** |
+| Frete | PDP EUA: 7 a 10 dias úteis. França: não informado |
+| Não usar sem confirmar | "3 000 mg" (o sachê diz "equal to 3,000 mg", o rótulo diz 300 mg "from 30,000"); alegações das imagens da PDP (pressão arterial, calcificação, fígado, cérebro); diabetes/glicemia (aparece no nome de um arquivo da PDP); vitamina A (rótulo em "mg β-TE", unidade de vitamina E) |
+| Página do produto | PDP de referência (EUA): https://shopvitalia.co/products/cayenne-softgels. PDP Cinnarae: **não informada** |
+
+Política (UE/França): suplemento só pode usar alegação de saúde autorizada. Vitamina D e K2 têm alegações autorizadas (ossos, músculos, imunidade, coagulação); circulação, pressão e glicemia ligadas a plantas não são autorizadas. Avisar na análise de cada criativo.
+
+## Cinnarae — gomas de magnésio (França)
 
 | Item | Valor |
 |------|-------|

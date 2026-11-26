@@ -1,0 +1,90 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "takes_dir": "takes",
+  "work_dir": "montagem",
+  "output": "../Vídeos Prontos/Criativo 39 - FR (prévia sem T17).mp4",
+  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "clips": [
+    {
+      "take": "T01",
+      "file": "T01_ilus_v1.mp4"
+    },
+    {
+      "take": "T02",
+      "file": "T02_ilus_v1.mp4"
+    },
+    {
+      "take": "T03",
+      "file": "T03_ilus_v1.mp4"
+    },
+    {
+      "take": "T04",
+      "file": "T04_ilus_v1.mp4"
+    },
+    {
+      "take": "T05",
+      "file": "T05_ilus_v1.mp4"
+    },
+    {
+      "take": "T06",
+      "file": "T06_ilus_v1.mp4"
+    },
+    {
+      "take": "T07",
+      "file": "T07_ilus_v1.mp4"
+    },
+    {
+      "take": "T08",
+      "file": "T08_ilus_v1.mp4"
+    },
+    {
+      "take": "T09",
+      "file": "T09_ilus_v1.mp4"
+    },
+    {
+      "take": "T10",
+      "file": "T10_ilus_v1.mp4"
+    },
+    {
+      "take": "T11",
+      "file": "T11_ilus_v1.mp4"
+    },
+    {
+      "take": "T12",
+      "file": "T12_ilus_v1.mp4"
+    },
+    {
+      "take": "T13",
+      "file": "T13_ilus_v1.mp4"
+    },
+    {
+      "take": "T14",
+      "file": "T14_ilus_v1.mp4"
+    },
+    {
+      "take": "T15",
+      "file": "T15_ilus_v1.mp4"
+    },
+    {
+      "take": "T16",
+      "file": "T16_ilus_v1.mp4"
+    },
+    {
+      "take": "T18",
+      "file": "T18_ilus_v1.mp4"
+    },
+    {
+      "take": "T19",
+      "file": "T19_ilus_v1.mp4"
+    },
+    {
+      "take": "T20",
+      "file": "T20_ilus_v1.mp4"
+    },
+    {
+      "take": "T21",
+      "file": "T21_ilus_v1.mp4"
+    }
+  ]
+}

@@ -1,0 +1,180 @@
+{
+ "size": [
+  1080,
+  1080
+ ],
+ "background": "#F3ECDF",
+ "out": "Criativos Exemplo/Imagem/Criativo 32/imagens/final_v3.png",
+ "layers": [
+  {
+   "type": "image",
+   "src": "Criativos Exemplo/Imagem/Criativo 32/imagens/B1_v2.png",
+   "box": [
+    0,
+    0,
+    1080,
+    1080
+   ]
+  },
+  {
+   "type": "rotulo",
+   "src": "Referências/Cinnarae Cayenne - Sachê FR.png",
+   "base": "Criativos Exemplo/Imagem/Criativo 32/imagens/B1_v2.png",
+   "box": [
+    0,
+    0,
+    1080,
+    1080
+   ],
+   "src_pouch": [
+    524,
+    181,
+    437
+   ],
+   "dst_pouch": [
+    [
+     521,
+     324,
+     343
+    ]
+   ],
+   "rows": [
+    [
+     640,
+     735,
+     0.06,
+     0.94
+    ]
+   ]
+  },
+  {
+   "type": "rotulo",
+   "src": "Referências/Cinnarae Cayenne - Sachê FR.png",
+   "base": "Criativos Exemplo/Imagem/Criativo 32/imagens/B1_v2.png",
+   "box": [
+    0,
+    0,
+    1080,
+    1080
+   ],
+   "src_pouch": [
+    524,
+    181,
+    437
+   ],
+   "dst_pouch": [
+    [
+     241,
+     329,
+     333
+    ]
+   ],
+   "rows": [
+    [
+     640,
+     735,
+     0.06,
+     0.8
+    ]
+   ]
+  },
+  {
+   "type": "rotulo",
+   "src": "Referências/Cinnarae Cayenne - Sachê FR.png",
+   "base": "Criativos Exemplo/Imagem/Criativo 32/imagens/B1_v2.png",
+   "box": [
+    0,
+    0,
+    1080,
+    1080
+   ],
+   "src_pouch": [
+    524,
+    181,
+    437
+   ],
+   "dst_pouch": [
+    [
+     801,
+     329,
+     333
+    ]
+   ],
+   "rows": [
+    [
+     640,
+     735,
+     0.47,
+     0.94
+    ]
+   ]
+  },
+  {
+   "type": "text",
+   "text": "ÉDITION HIVER",
+   "font": "georgia.ttf",
+   "size": 28,
+   "fill": "#A8843A",
+   "xy": [
+    540,
+    38
+   ],
+   "anchor": "ma",
+   "tracking": 9
+  },
+  {
+   "type": "text",
+   "text": "2 achetés. 1 offert.",
+   "font": "georgiab.ttf",
+   "size": 104,
+   "fill": "#2A1A14",
+   "xy": [
+    540,
+    82
+   ],
+   "anchor": "ma",
+   "max_width": 1000,
+   "fit": true
+  },
+  {
+   "type": "text",
+   "text": "Trois sachets pour le prix de deux.",
+   "font": "georgiai.ttf",
+   "size": 48,
+   "fill": "#2A1A14",
+   "xy": [
+    540,
+    214
+   ],
+   "anchor": "ma",
+   "max_width": 980,
+   "fit": true
+  },
+  {
+   "type": "line",
+   "xy": [
+    475,
+    300,
+    605,
+    300
+   ],
+   "fill": "#B8923A",
+   "width": 3
+  },
+  {
+   "type": "text",
+   "text": "SATISFAIT OU REMBOURSÉ 30 JOURS  ·  UNE CAPSULE PAR JOUR",
+   "font": "georgia.ttf",
+   "size": 24,
+   "fill": "#3A2A22",
+   "xy": [
+    540,
+    1012
+   ],
+   "anchor": "ma",
+   "tracking": 2,
+   "max_width": 1020,
+   "fit": true
+  }
+ ]
+}

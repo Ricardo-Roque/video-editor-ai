@@ -31,6 +31,8 @@ Formato sem exemplo: na análise, dizer qual é, seguir o `FORMATO.md` dele e av
 
 **Fora do Trello: [Nativo](Criativos%20Exemplo/Nativo/FORMATO.md)** (exemplos 15 a 28). É um anúncio estático, não vídeo: uma foto + uma história longa em primeira pessoa no post + link. As referências vêm da Biblioteca de Anúncios da Meta. Sem takes nem montagem; o custo é só da imagem.
 
+**Fora do Trello: [Imagem](Criativos%20Exemplo/Imagem/FORMATO.md)** (exemplos 32 a 34). Anúncio estático com o texto dentro da imagem (título, oferta, selo) e post curto. Foto do Nano Banana sem texto + texto composto localmente por `compor_imagem.py`.
+
 ## Como analisar um roteiro: anotação frase a frase
 
 O quadro analisa cada roteiro viral frase por frase, marcando entre colchetes **qual elemento segura a atenção naquela frase e por quê**. Esse é o método da nossa análise (seção "Roteiro anotado" do `analise.md`):

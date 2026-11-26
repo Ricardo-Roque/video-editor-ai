@@ -1,0 +1,61 @@
+{
+ "size": [
+  1080,
+  1920
+ ],
+ "transparent": true,
+ "out": "Criativo 38/imagens/cenas/O1_faixas_v1.png",
+ "layers": [
+  {
+   "type": "text",
+   "text": "OFFRE EN COURS",
+   "font": "arialbd.ttf",
+   "size": 46,
+   "fill": "#111111",
+   "xy": [
+    540,
+    112
+   ],
+   "anchor": "ma",
+   "bg": "#FFFFFF",
+   "pad": [
+    22,
+    8
+   ]
+  },
+  {
+   "type": "text",
+   "text": "3 SACHETS POUR LE PRIX DE 2",
+   "font": "arialbd.ttf",
+   "size": 50,
+   "fill": "#E0141E",
+   "xy": [
+    540,
+    196
+   ],
+   "anchor": "ma",
+   "bg": "#FFFFFF",
+   "pad": [
+    22,
+    8
+   ]
+  },
+  {
+   "type": "text",
+   "text": "2 ACHETÉS = 1 OFFERT",
+   "font": "arialbd.ttf",
+   "size": 50,
+   "fill": "#FFFFFF",
+   "xy": [
+    540,
+    286
+   ],
+   "anchor": "ma",
+   "bg": "#E0141E",
+   "pad": [
+    22,
+    8
+   ]
+  }
+ ]
+}

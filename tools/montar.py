@@ -392,9 +392,16 @@ def main() -> int:
             card = work / f"card_{k}.png"
             shutil.copy(base / ov["image"], card)
             inputs += ["-loop", "1", "-i", card.name]
-            chain.append(f"[{last}][{k + 1}:v]overlay={ov['x']}:{ov['y']}:shortest=1[v{k}]")
+            # optional time range by clip: from the start of clip "from_clip" to the start of clip "to_clip"
+            # (e.g. the question box of the Caixinha format, only during the hook)
+            enable = ""
+            if "from_clip" in ov or "to_clip" in ov:
+                a = timeline[ov["from_clip"]]["offset"] if "from_clip" in ov else 0.0
+                b = timeline[ov["to_clip"]]["offset"] if "to_clip" in ov else total
+                enable = f":enable='between(t,{a:.2f},{b:.2f})'"
+            chain.append(f"[{last}][{k + 1}:v]overlay={ov['x']}:{ov['y']}{enable}:shortest=1[v{k}]")
             last = f"v{k}"
-            print(f"patch {ov['image']} at {ov['x']},{ov['y']}")
+            print(f"patch {ov['image']} at {ov['x']},{ov['y']}{enable}")
             continue
         t = timeline[ov["clip_index"]]
         ws = t["words"]

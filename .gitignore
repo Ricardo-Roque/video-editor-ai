@@ -3,6 +3,8 @@
 
 # Logs e cache locais
 tools/jobs.log
+painel/.cache_duracoes.json
+painel/.thumbs/
 __pycache__/
 *.pyc
 .DS_Store

@@ -1,0 +1,88 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "takes_dir": "takes",
+  "work_dir": "montagem",
+  "output": "../Vídeos Prontos/Criativo 37 - FR.mp4",
+  "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
+  "clips": [
+    {
+      "take": "T01",
+      "file": "T01_360p_v1.mp4"
+    },
+    {
+      "take": "T02",
+      "file": "T02_omni11_v1.mp4"
+    },
+    {
+      "take": "T03",
+      "file": "T03_360p_v1.mp4"
+    },
+    {
+      "take": "T04",
+      "file": "T04_omni11_v1.mp4"
+    },
+    {
+      "take": "T05",
+      "file": "T05_360p_v1.mp4"
+    },
+    {
+      "take": "T06",
+      "file": "T06_360p_v1.mp4"
+    },
+    {
+      "take": "T07a",
+      "file": "T07a_omni11_v1.mp4"
+    },
+    {
+      "take": "T07b",
+      "file": "T07b_omni11_v1.mp4"
+    },
+    {
+      "take": "T08",
+      "file": "T08_omni11_v1.mp4"
+    },
+    {
+      "take": "T09",
+      "file": "T09_360p_v1.mp4"
+    },
+    {
+      "take": "T10a",
+      "file": "T10a_omni11_v1.mp4"
+    },
+    {
+      "take": "T10b",
+      "file": "T10b_360p_v1.mp4"
+    },
+    {
+      "take": "T11",
+      "file": "T11_360p_v1.mp4"
+    },
+    {
+      "take": "T12",
+      "file": "T12_360p_v1.mp4"
+    },
+    {
+      "take": "T13",
+      "file": "T13_omni11_v1.mp4"
+    },
+    {
+      "take": "T14a",
+      "file": "T14a_omni11_v1.mp4"
+    },
+    {
+      "take": "T14b",
+      "file": "T14b_omni11_v1.mp4"
+    }
+  ],
+  "overlays": [
+    {
+      "mode": "patch",
+      "image": "imagens/cenas/O1_selo_v1.png",
+      "x": 0,
+      "y": 0,
+      "from_clip": 0,
+      "to_clip": 1
+    }
+  ]
+}

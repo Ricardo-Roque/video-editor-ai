@@ -311,6 +311,54 @@ O jeito mais barato de fazer um criativo novo é reaproveitar o que já foi apro
 - **Copy vencedora em outro formato** (13, copy do 05): a copy é copiada sem mudança; só o formato muda.
 - **Referência da concorrência no mesmo idioma** (11, 12): só a marca muda.
 
+## Painel: revisão, refação e métricas
+
+O painel local (`python -I -X utf8 tools/painel.py`, abre em http://127.0.0.1:8765) junta tudo num lugar só: biblioteca de criativos (pastas locais + banco), player com a linha dos takes, anotação no ponto exato do vídeo, nota de 0 a 10, métricas da Meta com comparação à média, curva de retenção com as trocas de take, comparação de até 4 criativos, ranking por variável da biblioteca e ligação de anúncios a criativos. Configuração da Meta em [META.md](META.md).
+
+**Login e escopo.** O painel pede e-mail e senha (usuários no Supabase; no primeiro acesso, sem usuário, ele pede para criar o seu; o do sócio se cria na aba Equipe ou com `tools/painel.py usuario --email ... --nome ...`). Anotações e notas ficam com o nome de quem entrou. O filtro de escopo (marca › produto › oferta) fica no cabeçalho de Produção, Biblioteca, Métricas, Variáveis e Anúncios; o valor vale para todas essas telas e para as médias. Todo cadastro abre num pop-up por botão: a aba "Marcas e ofertas" cria e edita marca, produto e oferta; a aba "Equipe" cria usuário e troca senha (também pelo ícone de chave ao lado do nome, no menu). Criativo novo aparece "sem oferta" até ser registrado: no detalhe dele, o botão "Definir oferta" grava a linha em `criativos`; "Marcar variável" e "Lançar número manual" também abrem pop-up. O Claude não escolhe a oferta de um criativo sozinho: pergunta ao dono quando não for óbvio pelo produto.
+
+**Esteira de produção (as aprovações acontecem no painel).** O menu tem duas telas de esteira: **Produção** (quadro por etapa com tudo que está sendo feito) e **Biblioteca** (só o acervo pronto: entregue, no ar, pausado, descartado). Cada card da Produção diz com quem está a vez: "aguardando você" (o dono ou o sócio aprova) ou "com o Claude". Etapas do vídeo: Fila → Análise → Roteiro → Imagens → Takes → Montagem → Revisão → entregue. Nativo: Fila → Análise → Texto → Imagem → Revisão → entregue. O estado mora nas tabelas `esteira` e `esteira_eventos` (histórico de quem fez o quê, com custo); criativo ainda sem linha tem a etapa deduzida pelos arquivos da pasta.
+
+O Claude trabalha assim, em toda etapa de todo criativo:
+
+1. Criativo novo entra na esteira com `python -I -X utf8 tools/painel.py entrar C<NN>` (até existir o Garimpo, que vai criar o card ao aprovar uma referência).
+2. Ao terminar uma etapa, **atualiza a `ficha.json`** da pasta (formato abaixo) e roda `python -I -X utf8 tools/painel.py entregar C<NN> --etapa <etapa> --custo <US$ real> --nota "o que foi feito"`. O card vai para "aguardando você". No chat, só um aviso curto com o link do painel; o conteúdo para aprovar fica no card.
+3. Quando o dono disser **"continue a esteira"**: `python -I -X utf8 tools/painel.py esteira` lista o que está com o Claude (aprovado, ou com ajuste pedido) e os pedidos de cada um. Para cada card: informar o plano e o custo estimado, esperar o "pode" (gasto continua pedindo aprovação no chat), fazer, conferir (`checar_takes.py`, olhar frames e imagens), e voltar ao passo 2. Ajuste pedido: corrigir só o que foi pedido e marcar as anotações com `feita`.
+4. O dono aprova a última etapa (Revisão) no painel: o criativo sai da Produção e vai para a Biblioteca como entregue. A partir daí segue a lista "Ao entregar um criativo".
+
+Aprovação dada no chat continua valendo: nesse caso o Claude registra com `entregar` e o dono move o card, ou o Claude segue e entrega a etapa seguinte.
+
+**`ficha.json`** (na pasta do criativo): o que o painel mostra na aba "Copy e roteiro" e o que fica guardado depois da entrega. O Claude cria na análise e completa a cada etapa. Todo texto em outro idioma leva a tradução em `pt`.
+
+```json
+{
+  "versao": 1, "criativo": "C29", "titulo": "frase curta", "resumo": "o conceito em uma ou duas frases",
+  "processo": "replica | modelagem", "formato": "Narrado", "idioma": "fr", "duracao_s": 63,
+  "referencia": { "rotulo": "Criativo 05 / anunciante + tema", "link": "URL ou null", "o_que_vem_dela": "..." },
+  "teste": { "id": "CIN-T002", "variavel": "...", "hipotese": "...", "vitoria": "...", "corte": "..." },
+  "estrategia": { "consciencia": "...", "sofisticacao": "...", "lead": "...", "crenca": "...", "promessa": "...", "avatar": "..." },
+  "anuncio": { "texto_principal": "...", "titulo": "...", "descricao": "...", "botao": "Acheter", "url": "...",
+               "pt": { "texto_principal": "...", "titulo": "...", "descricao": "..." } },
+  "roteiro": [ { "bloco": "hook | body | cta", "take": "T01a", "duracao_s": 6, "fala": "texto no idioma do criativo",
+                 "pt": "tradução", "funcao": "função da frase (COPY.md / FORMATOS.md)", "elementos": ["Identificação", "..."],
+                 "visual": "o que aparece", "texto_tela": "texto na tela", "alerta": "risco de política, se houver" } ],
+  "adaptacoes": ["toda mudança em relação à referência, com o motivo"],
+  "riscos": ["riscos de política e alegações"],
+  "checklist": [ { "item": "checklist da seção 9 do COPY.md", "ok": true, "nota": "..." } ]
+}
+```
+
+O `anuncio` (texto principal, título, descrição e botão) é obrigatório também para vídeo: o dono copia dali para o Gerenciador. Enquanto não estiver escrito, use `"anuncio": { "pendente": "motivo" }`. Nativo continua gravando o `copy_final_<idioma>.txt` (o painel lê os dois). Exemplo completo: `Criativo 29/ficha.json`.
+
+**Refação pedida no painel.** "Pedir ajuste" (card em produção) e "Refazer com anotações" (Visão geral) põem o pedido na fila; nada é gerado sozinho. Criativo já pronto com refação pedida continua na Biblioteca e aparece na coluna "Refação" da Produção até ser feito. Quando o dono disser "refaça os pedidos do painel" (ou "continue a esteira"):
+
+1. `python -I -X utf8 tools/painel.py fila`: lista criativo, arquivo, tempo, take e o pedido.
+2. Para cada pedido, abrir o take indicado (o tempo do vídeo final cai num take pelo `montagem.json`) e decidir o conserto mais barato: montagem só (corte, legenda, overlay: custo 0), trecho do take (divisão Ta/Tb), take novo, ou imagem nova. Pedido sem take (imagem do nativo ou "peça inteira") segue a etapa correspondente.
+3. Informar o plano e o custo estimado; esperar aprovação. Mesmas regras de sempre: conferir com `checar_takes.py`, olhar os frames, mostrar antes de montar.
+4. Remontar e, ao terminar, `python -I -X utf8 tools/painel.py feita <ids> --resposta "o que foi feito, US$ x"`. Se o criativo está na Produção, também `painel.py entregar C<NN> --etapa <etapa> --custo <US$>` para o card voltar ao dono.
+
+**Variáveis no painel.** Marque no detalhe de cada criativo as variáveis da biblioteca que ele usa (`base`, ou `em teste` para a variável testada na Modelagem). A aba Variáveis soma os números dos criativos de cada variável. É um indicador para escolher o próximo teste, não um veredito: Winner continua exigindo número contra o controle (MODELAGEM.md).
+
 ## Trabalho em equipe
 
 - Cada pessoa usa a própria chave do OpenRouter no `.env` (nunca commitar). O limite de gasto é por chave.
@@ -321,7 +369,7 @@ O jeito mais barato de fazer um criativo novo é reaproveitar o que já foi apro
   2. Mover a pasta para `Criativos Exemplo/<formato>/` e trocar, no `montagem*.json`, os caminhos `../Vídeos Prontos/` e `../assets/` por `../../../Vídeos Prontos/` e `../../../assets/`. Primeiro criativo de um formato: acrescentar a tabela de exemplos e o que ele ensinou ao `FORMATO.md` da pasta.
   3. Acrescentar a linha dele em [CRIATIVOS.md](CRIATIVOS.md) (formato, custo, lições) e o que ele ensinou no `FORMATO.md`.
   4. Fato do produto confirmado vai em [PRODUTOS.md](PRODUTOS.md); ferramenta ou opção nova, neste arquivo.
-  5. Biblioteca da marca (`Variáveis/<Marca>.md`): conferir que as variáveis do criativo estão lá; na Modelagem, o teste passa a "entregue" e o nome do anúncio no Gerenciador leva o ID dele (`C<NN> | <ID do teste> | <variável>: <valor>`).
+  5. Biblioteca da marca (`Variáveis/<Marca>.md`): conferir que as variáveis do criativo estão lá e marcá-las no painel (detalhe do criativo); na Modelagem, o teste passa a "entregue". O nome do anúncio no Gerenciador **sempre começa com o ID do criativo** (`C<NN> | <ID do teste> | <variável>: <valor>`): é assim que a sincronização da Meta liga os números ao criativo.
   6. Registrar no Google Drive do time (ver "Registro no Google Drive", abaixo).
   7. Commit e push dos textos.
 
@@ -365,6 +413,9 @@ Todo criativo entregue vai também para o Drive do dono, que o time usa como reg
 
 | Script | Etapa | Função |
 |--------|-------|--------|
+| `dados.py` | todas | ponte com o banco do negócio (Supabase, ver [ARQUITETURA.md](ARQUITETURA.md)): `contexto <oferta>` (portão de contexto), `buscar <link/arquivo>` ("já vi?"), `parecidos "<texto>"`, `capturar <oferta> <etapa>` (página do funil; Shopify bloqueia, então `--arquivo` com o texto do Chrome), `gravar <tabela> <json>`, `embeddings`, `sql` (só leitura). Precisa de `SUPABASE_DB_URL` no `.env` |
+| `painel.py` | todas | painel local (produção, biblioteca, anotação por tempo, métricas, comparação, variáveis); `esteira` lista o que está com o Claude; `entrar C<NN>` põe na esteira; `entregar C<NN> --etapa --custo` manda a etapa para aprovação; `fila` lista os pedidos de refação; `feita <ids> --resposta` fecha |
+| `meta.py` | entrega, resultados | Marketing API ([META.md](META.md)): `verificar`, `sincronizar` (números diários por anúncio), `ligar <ad_id> <C19>`, `sem-criativo`, `publicar` (sempre PAUSADO; ensaio sem `--confirmar`) |
 | `analisar_referencia.py` | 1, M1 | transcrição com tempo por palavra, cortes, folhas com tempo, hook denso (0,25 s) e `evidencias.md` (ritmo de cortes, palavras nos 3 s, palavras/s, pausas, volume, fundo sob a voz) |
 | `prompt_de.py` | 3 | lê o prompt de uma seção `## ID` de `prompts_imagens.md` |
 | `gerar_imagem.py` | 3 | gera ou edita imagem com Nano Banana (aceita vários `--ref`) |
@@ -376,3 +427,4 @@ Todo criativo entregue vai também para o Drive do dono, que o time usa como reg
 | `prancheta_zoom.py` | 5–6 | imagem nítida com zoom lento + voz do take, para cena com muito texto (05, 11, 12) |
 | `quadro_nitido.py` | 5–6 | troca o texto redesenhado do quadro pelo nítido da imagem, mantendo mãos e cabelo do take (13) |
 | `faixas_oferta.py` | 6 | faixas fixas de oferta em PNG transparente 1080x1920 (11, 12) |
+| `compor_imagem.py` | N3 | criativo de imagem a partir de um `imagem.json`: foto do Nano Banana (sem texto), rótulo nítido do sachê aprovado colado por cima, faixas, selo e todo o texto em fontes locais; trocar preço ou frase custa 0 (32, 33, 34) |

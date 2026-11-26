@@ -1,0 +1,44 @@
+{
+ "size": [
+  1080,
+  1920
+ ],
+ "transparent": true,
+ "out": "Criativo 37/imagens/cenas/O1_selo_v1.png",
+ "layers": [
+  {
+   "type": "rect",
+   "box": [
+    208,
+    256,
+    663,
+    81
+   ],
+   "fill": "#6B21E8"
+  },
+  {
+   "type": "text",
+   "text": "ALERTE GÉLULES",
+   "font": "Montserrat-ExtraBold.ttf",
+   "size": 56,
+   "fill": "#FFFFFF",
+   "xy": [
+    236,
+    262
+   ],
+   "anchor": "la"
+  },
+  {
+   "type": "text",
+   "text": "🚨",
+   "font": "seguiemj.ttf",
+   "size": 52,
+   "xy": [
+    766,
+    266
+   ],
+   "anchor": "la",
+   "emoji": true
+  }
+ ]
+}

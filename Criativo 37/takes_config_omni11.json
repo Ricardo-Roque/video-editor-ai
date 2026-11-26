@@ -1,0 +1,25 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_omni11_v1",
+  "size": "360x640",
+  "price_per_sec": 0.034,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "images": {
+    "B1": "imagens/cenas/B1_v2.png"
+  },
+  "image_persona": {
+    "B1": "B1"
+  },
+  "personas": {
+    "B1": {
+      "seed": 3701,
+      "scene": "Smartphone video. The woman walks slowly toward the camera down the warehouse aisle while the camera moves backward in front of her, keeping the same framing. She talks directly to the camera with natural open-hand gestures that match the words. Realistic lip sync.",
+      "voice": "Voice: French woman about 55 years old, native French from France, confident, warm and a little indignant but calm, clear articulate pace, speaking fluent French."
+    }
+  },
+  "suffix": "Only her voice, natural warehouse room tone, no music, no subtitles, no text on screen.",
+  "model": "google/gemini-omni-1.1-flash"
+}

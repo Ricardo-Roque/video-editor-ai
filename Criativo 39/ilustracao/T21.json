@@ -1,0 +1,55 @@
+{
+ "audio": "takes/T21_360p_v1.mp4",
+ "out": "takes/T21_ilus_v1.mp4",
+ "font": "../assets/fonts/Montserrat-ExtraBold.ttf",
+ "segments": [
+  {
+   "start": 0.0,
+   "image": "imagens/cenas/C34_v1.png",
+   "keys": [
+    [
+     0.0,
+     1.0,
+     384,
+     688
+    ],
+    [
+     2.024,
+     1.18,
+     332.0,
+     624.0
+    ],
+    [
+     2.025,
+     1.6,
+     280,
+     560
+    ],
+    [
+     4.0489999999999995,
+     1.75,
+     280,
+     560
+    ]
+   ]
+  },
+  {
+   "start": 4.05,
+   "image": "imagens/cenas/C01_v1.png",
+   "keys": [
+    [
+     4.05,
+     2.8,
+     205,
+     1170
+    ],
+    [
+     7.04,
+     1.0,
+     384,
+     688
+    ]
+   ]
+  }
+ ]
+}

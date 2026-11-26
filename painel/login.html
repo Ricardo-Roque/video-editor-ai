@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar · Painel de Criativos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="tela-login">
+  <div class="login-fundo"></div>
+  <form class="login-caixa spot" id="form" autocomplete="on">
+    <div class="marca" style="padding:0;margin-bottom:22px">
+      <span class="logo"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg></span>
+      <span>Criativos<small>esteira de produção</small></span>
+    </div>
+    <h1 id="titulo">Entrar</h1>
+    <p class="sec" id="sub">Use o e-mail e a senha do painel.</p>
+    <label id="campo-nome" hidden>Nome<input name="nome" autocomplete="name"></label>
+    <label>E-mail<input name="email" type="email" autocomplete="username" required></label>
+    <label>Senha<input name="senha" type="password" autocomplete="current-password" required minlength="10"></label>
+    <label id="campo-conf" hidden>Repita a senha<input name="conf" type="password" autocomplete="new-password"></label>
+    <p class="erro small" id="erro" hidden></p>
+    <button class="btn primario" id="enviar" type="submit" style="width:100%;justify-content:center;height:40px">Entrar</button>
+  </form>
+  <script src="/static/login.js"></script>
+</body>
+</html>

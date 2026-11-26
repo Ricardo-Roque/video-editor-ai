@@ -28,3 +28,4 @@ Fora dos 16 do Trello:
 | Formato | Criativos | Situação |
 |---------|-----------|----------|
 | [Nativo](Nativo/FORMATO.md) (anúncio estático: foto + história longa + link) | 15 a 28 | pronto |
+| [Imagem](Imagem/FORMATO.md) (anúncio estático com texto na imagem + post curto) | 32, 33, 34 | pronto |

@@ -1,0 +1,30 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_360p_v1",
+  "size": "360x640",
+  "price_per_sec": 0.023172,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "images": {
+    "Q1a": "imagens/cenas/Q1a_v1.png",
+    "Q1b": "imagens/cenas/Q1b_v1.png",
+    "Q1c": "imagens/cenas/Q1c_v1.png",
+    "Q2c": "imagens/cenas/Q2c_v1.png"
+  },
+  "image_persona": {
+    "Q1a": "board",
+    "Q1b": "board",
+    "Q1c": "board",
+    "Q2c": "board"
+  },
+  "personas": {
+    "board": {
+      "seed": 505,
+      "scene": "Static overhead smartphone video of the printed infographic on the clipboard lying on the wooden table. The camera does not move. The hand holding the thin wooden pointer stays almost still, the pointer tip resting where it is, with only tiny natural hand micro-movements. The printed paper, every word of its text and the illustrations stay perfectly still, sharp and unchanged. The narration is an off-screen voiceover: no person is visible on screen and nobody on screen speaks.",
+      "voice": "Voice: off-screen female narrator, French woman in her late thirties, native Parisian French, warm, confident and intimate social-media voiceover tone, natural conversational pace, speaking fluent French."
+    }
+  },
+  "suffix": "Only the narrator's voice, natural room tone, no music, no subtitles, no text added on screen."
+}

@@ -3,3 +3,8 @@ python-dotenv
 pillow
 numpy
 faster-whisper
+psycopg[binary]
+beautifulsoup4
+onnxruntime
+tokenizers
+huggingface-hub

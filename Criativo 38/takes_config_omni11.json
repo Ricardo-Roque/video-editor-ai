@@ -1,0 +1,25 @@
+{
+  "language": "fr",
+  "script": "roteiro_fr.md",
+  "out_dir": "takes",
+  "out_suffix": "_omni11_v1",
+  "size": "360x640",
+  "price_per_sec": 0.034,
+  "words_per_sec": 2.8,
+  "pad": 0.3,
+  "images": {
+    "H1": "imagens/cenas/H1_v2.png"
+  },
+  "image_persona": {
+    "H1": "H1"
+  },
+  "personas": {
+    "H1": {
+      "seed": 3802,
+      "scene": "Handheld first-person point-of-view smartphone video: the woman's own two hands hold the product pouch up in front of the camera over the kitchen counter, with gentle natural hand movement and slight handheld camera shake; now and then one thumb or index finger taps the label, then the hand goes back to holding the pouch. The pouch stays large and facing the camera. The narration is an off-screen voiceover: no face is visible and nobody on screen speaks. The pouch label stays sharp, readable and unchanged.",
+      "voice": "Voice: off-screen female narrator, French woman in her fifties, native French from France, warm, friendly and convincing, like telling a friend about a good deal she found, natural lively pace, speaking fluent French."
+    }
+  },
+  "suffix": "Only the narrator's voice, natural kitchen room tone, no music, no subtitles, no text added on screen.",
+  "model": "google/gemini-omni-1.1-flash"
+}

@@ -1,0 +1,3 @@
+stream|codec_type=video|width=360|height=640|r_frame_rate=30/1
+stream|codec_type=audio|r_frame_rate=0/0
+format|duration=129.010000
