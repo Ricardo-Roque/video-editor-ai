@@ -31,10 +31,10 @@ Política (UE/França): suplemento só pode usar alegação de saúde autorizada
 | Formato da goma | **ursinhos vermelhos (gummy bears)**, não cubos. Sempre escrever "red raspberry gummy bears" nos prompts de imagem |
 | Embalagem | sachê (pouch). Foto oficial: [Referências/Sachê de Gomas de Magnésio Premium.png](Referências/) |
 | Açúcar | sem açúcar (confirmado em 2026-11-18) |
-| Nome na fala | "gommes" (como no rótulo). Nos criativos 11 e 12 a fala diz "le bisglycinate de magnésium" porque a referência dizia assim |
+| Nome na fala | "gommes" (como no rótulo). Nos criativos 09 e 10 a fala diz "le bisglycinate de magnésium" porque a referência dizia assim |
 | Pronúncia | o modelo de vídeo fala "Si-na-rê". Aceita. A transcrição costuma ouvir "Sinaré" ou "Synaret": é só grafia |
 | Oferta padrão | -20% **só na primeira compra** + frete grátis. **Sem brindes** |
-| Oferta promocional | "2 achetés = 1 offert" (confirmada em 2026-11-19, criativos 11 e 12) |
+| Oferta promocional | "2 achetés = 1 offert" (confirmada em 2026-11-19, criativos 09 e 10) |
 | Oferta na PDP (2026-11-22, "Offre du Black Friday") | 1 sachê = 30 noites, 29 € (de 35 €); 2 sachês + 1 offert = 90 noites, 59 €; 3 + 2 offerts = 150 noites, 89 €. Conferir a PDP antes de citar preço |
 | Composição (PDP, 2026-11-22) | bisglicinato puro, **zéro oxyde**, 400 mg em 2 gomas, vegan, sem glúten, sem OGM, testado em laboratório |
 | Página do produto | https://cinnarae.store/products/gommes-au-bisglycinate-de-magnesium |
@@ -48,4 +48,4 @@ Padrões para criativos Cinnarae, salvo pedido diferente:
 - País França, idioma francês, tratamento **"vous"**.
 - Não acrescentar a menção "Image virtuelle".
 - Manter a copy da referência fiel, mesmo agressiva, quando o dono decidir assim (o aviso de política é dado uma vez, na análise).
-- O Criativo 05 fez a primeira venda (2026-11-20). A copy dele está sendo reaproveitada em outros formatos (Criativo 13 em diante).
+- O Criativo 03 fez a primeira venda (2026-11-20). A copy dele está sendo reaproveitada em outros formatos (Criativo 11 em diante).

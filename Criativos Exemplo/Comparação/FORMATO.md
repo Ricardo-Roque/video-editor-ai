@@ -1,6 +1,6 @@
 # Formato: Comparação
 
-Formato 13 do quadro do Trello (ver [FORMATOS.md](../../FORMATOS.md)). **Ainda sem criativo nosso como formato inteiro**; o hook do [Criativo 01](../Lo-fi/Criativo%2001/) (antes e depois) e os cards do [Criativo 07](../Lo-fi/Criativo%2007/) usam a mesma ideia.
+Formato 13 do quadro do Trello (ver [FORMATOS.md](../../FORMATOS.md)). **Ainda sem criativo nosso como formato inteiro**; o hook do [Criativo 01](../Lo-fi/Criativo%2001/) (antes e depois) e os cards do [Criativo 05](../Lo-fi/Criativo%2005/) usam a mesma ideia.
 
 ## O que é
 
@@ -20,7 +20,7 @@ A tela é dividida: de um lado o jeito errado, do outro o certo. Variações: er
 
 ## Como produzir aqui
 
-- Hoje: pares de **imagens** lado a lado como overlays (`width` 540, `x` 0 e 540), como os cards do 07; ou uma imagem única já dividida.
+- Hoje: pares de **imagens** lado a lado como overlays (`width` 540, `x` 0 e 540), como os cards do 05; ou uma imagem única já dividida.
 - Dois **vídeos** lado a lado ainda não são suportados pelo `montar.py`: seria uma ferramenta nova (`hstack`/`vstack` do FFmpeg).
 - Antes × depois da mesma pessoa: gerar o "depois" editando o "antes" (`--ref`), como no 01.
 

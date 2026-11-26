@@ -46,7 +46,7 @@ python -I -X utf8 tools/<script>.py ...
 
 1. Coloque o vídeo de referência em `Vídeo Bruto/`.
 2. Abra o Claude Code nesta pasta e diga, por exemplo:
-   > Novo criativo: Criativo 14, referência `Vídeo Bruto/<arquivo>.mp4`, francês, França, Cinnarae.
+   > Novo criativo: Criativo 12, referência `Vídeo Bruto/<arquivo>.mp4`, francês, França, Cinnarae.
 
    Ou digite `/novo-criativo`.
 3. O Claude identifica o formato da referência (pelo `FORMATO.md` do exemplo mais próximo), analisa a referência, propõe o roteiro (com tradução de volta para o português), gera as imagens, os takes e monta o vídeo, parando para você aprovar cada etapa e mostrando o custo antes de cada geração paga.
@@ -64,6 +64,6 @@ Fora do Git (ver [.gitignore](.gitignore)): vídeos de referência, imagens, tak
 
 ## Regras do time
 
-- Antes de criar `Criativo NN/`, avise no grupo o número que vai usar.
+- Antes de criar a pasta de um criativo novo, rode `python -I -X utf8 tools/painel.py proximo --tipo video` (ou `nativo`, `imagem`) e avise no grupo o código que vai usar.
 - Ao terminar um criativo, atualize [CRIATIVOS.md](CRIATIVOS.md) (e [PRODUTOS.md](PRODUTOS.md) se confirmou algo do produto) e faça commit dos textos.
 - Nunca commite o `.env` nem cole a chave em arquivos, prompts ou mensagens.

@@ -10,13 +10,14 @@ Configuração (passo a passo em META.md), no .env:
 Uso (a partir da raiz do projeto):
   python -I -X utf8 tools/meta.py verificar                       token, permissões, conta e página
   python -I -X utf8 tools/meta.py sincronizar [--dias 30]          anúncios + números diários -> Supabase
-  python -I -X utf8 tools/meta.py ligar <ad_id> <C19>              liga um anúncio a um criativo
+  python -I -X utf8 tools/meta.py ligar <ad_id> <CN05>              liga um anúncio a um criativo
   python -I -X utf8 tools/meta.py sem-criativo                     anúncios que ainda não têm criativo
-  python -I -X utf8 tools/meta.py publicar --criativo C19 --arquivo <video|imagem> --conjunto <adset_id>
+  python -I -X utf8 tools/meta.py publicar --criativo CN05 --arquivo <video|imagem> --conjunto <adset_id>
          --texto <arquivo.txt> --link <url> [--titulo T] [--descricao D] [--cta SHOP_NOW] [--nome N] [--confirmar]
 
-Ligação anúncio -> criativo: pelo nome do anúncio, que começa com o ID do criativo
-("C19 | CIN-T003 | variável: valor") ou contém "Criativo 19". Ligação manual nunca é sobrescrita.
+Ligação anúncio -> criativo: pelo nome do anúncio, que começa com o código do criativo
+("CN05 | CIN-T003 | variável: valor"; códigos C03, CN05, CI01) ou contém o título ("Criativo Nativo #05").
+Ligação manual nunca é sobrescrita.
 
 Publicar cria só o anúncio, num conjunto que já existe, com status PAUSED (fixo no código).
 Sem --confirmar é ensaio: mostra o que seria criado e não chama a API.
@@ -143,8 +144,15 @@ def linha_de_insight(i: dict) -> dict:
 
 
 def criativo_do_nome(nome: str) -> str | None:
-    m = re.match(r"^\s*\[?C(\d{2,3})\b", nome) or re.search(r"\bCriativo\s*#?\s*(\d{2,3})\b", nome, re.I)
-    return f"C{int(m.group(1)):02d}" if m else None
+    # "CN05 | ..." (código no começo) ou o título no meio do nome ("Criativo Nativo #05").
+    m = re.match(r"^\s*\[?(C[NI]?)(\d{2,3})\b", nome, re.I)
+    if m:
+        return f"{m.group(1).upper()}{int(m.group(2)):02d}"
+    m = re.search(r"\bCriativo( Nativo| de Imagem)?\s*#?\s*(\d{2,3})\b", nome, re.I)
+    if m:
+        pref = {"": "C", " nativo": "CN", " de imagem": "CI"}[(m.group(1) or "").lower()]
+        return f"{pref}{int(m.group(2)):02d}"
+    return None
 
 
 def sincronizar(dias: int = 30, log=print) -> dict:
@@ -203,7 +211,7 @@ def sincronizar(dias: int = 30, log=print) -> dict:
 
 def ligar(ad_id: str, criativo_id: str | None):
     if criativo_id and not re.fullmatch(r"C\d{2,3}", criativo_id):
-        raise ErroMeta("Criativo no formato C19.")
+        raise ErroMeta("Criativo no formato C03, CN05 ou CI01.")
     with conectar() as conn:
         cur = conn.execute("update anuncios_meta set criativo_id = %s, ligado_por = %s where ad_id = %s",
                            (criativo_id, "manual" if criativo_id else None, ad_id))
@@ -238,7 +246,7 @@ def publicar(a):
     video = arq.suffix.lower() in (".mp4", ".mov")
     nome = a.nome or f"{a.criativo} | {arq.stem}"
     if not nome.startswith(a.criativo):
-        raise ErroMeta("O nome do anúncio precisa começar com o ID do criativo (ex.: 'C19 | ...').")
+        raise ErroMeta("O nome do anúncio precisa começar com o ID do criativo (ex.: 'CN05 | ...').")
     plano = {"conta": c["conta"], "conjunto": a.conjunto, "nome": nome, "status": "PAUSED",
              "tipo": "vídeo" if video else "imagem", "arquivo": str(arq.relative_to(ROOT)) if arq.is_relative_to(ROOT) else str(arq),
              "link": a.link, "titulo": a.titulo, "descricao": a.descricao, "cta": a.cta,
@@ -313,7 +321,7 @@ def cmd_sem_criativo(a):
                              where a.criativo_id is null group by a.ad_id order by gasto desc""")
     for r in rs:
         print(f"{r['ad_id']}  {r['status'] or '':<16} gasto {float(r['gasto']):>9.2f}  {r['nome']}  [{r['campanha_nome'] or ''}]")
-    print(f"{len(rs)} anúncio(s) sem criativo. Ligue com: tools/meta.py ligar <ad_id> C19")
+    print(f"{len(rs)} anúncio(s) sem criativo. Ligue com: tools/meta.py ligar <ad_id> CN05")
 
 
 def main():

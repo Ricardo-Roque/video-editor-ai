@@ -1,31 +1,25 @@
 {
   "language": "fr",
-  "script": "roteiro.md",
+  "script": "roteiro_fr.md",
   "out_dir": "takes",
   "out_suffix": "_360p_v1",
   "size": "360x640",
-  "price_per_sec": 0.023172,
+  "price_per_sec": 0.034,
   "words_per_sec": 2.8,
   "pad": 0.3,
   "images": {
-    "H1": "imagens/cenas/H1_v1.png",
     "B1": "imagens/cenas/B1_v1.png"
   },
   "image_persona": {
-    "H1": "persona_hook",
-    "B1": "persona_body"
+    "B1": "selfie"
   },
   "personas": {
-    "persona_hook": {
-      "seed": 101,
-      "scene": "Handheld front-camera selfie video, slight natural shake. The person in the foreground talks to camera.",
-      "voice": "Voice: describe age, gender, accent, energy. Speaking fluent <LANGUAGE>."
-    },
-    "persona_body": {
-      "seed": 777,
-      "scene": "Handheld front-camera selfie video, phone at arm's length, gentle natural movement. The speaker talks directly to camera with natural hand gestures that match the words.",
-      "voice": "Voice: describe age, gender, accent, energy. Speaking fluent <LANGUAGE>, unhurried pace."
+    "selfie": {
+      "seed": 3030,
+      "scene": "Handheld front-camera selfie video in her bedroom at night, phone at arm's length, slight natural shake. The woman sitting in bed talks directly to camera like answering a friend's question, calm and sure of herself, with small natural head movements and occasional hand gestures that match the words. Same woman, same pyjamas, same room and warm lamp light throughout.",
+      "voice": "Voice: French woman in her mid-fifties, native French from Paris, warm, calm, confident and friendly, like a voice message to a friend, natural conversational pace, speaking fluent French."
     }
   },
-  "suffix": "Only spoken voice, natural room tone, no music, no subtitles, no text on screen. Realistic lip sync."
+  "suffix": "Only her spoken voice, natural quiet room tone, no music, no subtitles, no text on screen. Realistic lip sync.",
+  "model": "google/gemini-omni-1.1-flash"
 }

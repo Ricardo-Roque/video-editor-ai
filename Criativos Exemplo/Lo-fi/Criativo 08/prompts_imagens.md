@@ -1,29 +1,21 @@
 # Prompts de imagem — Criativo 08 (versão França)
 
-Adaptações para a França: quarto de apartamento francês (parquet em espinha "bâtons rompus", parede branca lisa, porta de madeira, cama com colcha xadrez azul-marinho e muitas almofadas brancas). Nada americano à vista.
+Adaptações para a França: cozinha clara e moderna, balcão de mármore branco, azulejo bege atrás, luminárias pendentes douradas. Pacote: **sachê Cinnarae** (`Referências/Sachê de Gomas de Magnésio Premium.png`) no lugar do pacote SP Nutrition.
 
-Estilo geral: foto de celular (UGC), luz de teto à noite, sem aspecto de estúdio, sem texto na imagem, 9:16.
+Estilo geral: celular apoiado no balcão (UGC), luz natural de dia, sem texto na imagem além do rótulo do pacote, 9:16.
 
 ---
 
-## P1 — Senhora de 72 anos (referência de personagem)
+## P1 — Mulher (referência de personagem)
 
 ```
-Photorealistic smartphone photo, 9:16. Full-body portrait of a slim, petite French woman aged 72, standing barefoot, smiling broadly with visible teeth, lively joyful eyes. Grey-white hair pulled back loosely in a low bun with a few loose strands framing her face, natural wrinkles, no makeup, thin silver bracelet and a simple ring. She wears a heather-grey marled cotton t-shirt with three-quarter sleeves and a matching heather-grey jersey midi skirt with a drawstring waist tie at the front. Plain light-grey neutral background, soft even indoor light, looking at the camera. Realistic skin texture, no retouching, no text.
+Photorealistic smartphone photo, 9:16. Portrait of a French woman in her early forties, slim, natural no-makeup look, light freckles, slightly tired but kind eyes, calm serious expression. Medium-brown hair with visible grey strands, pulled back in a loose low ponytail, a few loose strands around her face. She wears a colour-block half-zip fleece pullover: teal-blue body, hot-pink upper chest and collar panel, purple sleeves. Plain light-grey neutral background, soft natural daylight, head and shoulders, looking at the camera. Realistic skin texture, no text.
 ```
 
-## H1 — No chão (T01, hook sem fala)
+## B1 — Balcão com o pacote Cinnarae (T01–T06)
 
-Referências: P1. Formato 9:16. Salvar como `imagens/cenas/H1_v1.png`.
-
-```
-Use the attached image for the woman's identity, hair and clothes (same heather-grey t-shirt and drawstring skirt, barefoot). Photorealistic vertical smartphone photo, 9:16, handheld by someone standing, camera angled down from above. The 72-year-old woman is on all fours on a glossy honey-coloured herringbone parquet floor of a French apartment bedroom, palms flat on the floor, knees down, about to push herself up, looking up at the camera with a big playful grin. Behind her: the side of a bed with a navy-blue checked quilt and many white pillows, a small bedside table with a yellow note and a small dark object, a white wall and a wooden door. At the far left edge of the frame, partly cut off, a cheerful grey-haired man in his fifties wearing a white shirt is leaning in and laughing. Warm ceiling light at night, slight motion blur, casual amateur home-video framing, no text.
-```
-
-## B1 — Em pé falando (T02)
-
-Referências: P1 + H1 aprovada. Formato 9:16. Salvar como `imagens/cenas/B1_v1.png`.
+Referências: P1 + `Referências/Sachê de Gomas de Magnésio Premium.png`. Formato 9:16. Salvar como `imagens/cenas/B1_v1.png`.
 
 ```
-Use the first attached image for the woman's identity, hair and clothes, and the second attached image for the room and the man. Photorealistic vertical smartphone photo, 9:16, handheld at chest height by someone standing in front of her. The 72-year-old woman stands upright facing the camera in the same French apartment bedroom, framed from just above the knees to above her head, arms relaxed along her body, big warm smile, mouth slightly open as if about to speak, bright lively eyes. Same heather-grey t-shirt and drawstring skirt. Behind her: the bed with the navy-blue checked quilt and white pillows on the right, bedside table, white wall, wooden door on the left. At the far left edge of the frame, mostly cut off, the same grey-haired man in a white shirt, smiling. Warm ceiling light at night, a bright ceiling spotlight visible at the top of the frame, amateur home-video framing, no text.
+Use the first attached image for the woman's identity, hair and fleece pullover. Use the second attached image for the product pouch. Photorealistic vertical smartphone video frame, 9:16, phone propped on a white marble kitchen counter at chest height, static camera. The woman sits behind the counter facing the camera, framed from the waist up, her forearms crossed and resting flat on the marble countertop in the lower part of the frame, calm serious expression, mouth slightly open as if speaking. Standing upright on the counter on the right side of the frame, in front of her arm, is the Cinnarae magnesium gummies pouch from the second image, front label facing the camera, occupying about a third of the frame width: reproduce it exactly, same shape, light-turquoise and white colours, Cinnarae logo, text and gold badge, not distorted. Background: a bright modern kitchen with beige ceramic tile backsplash, two brass dome pendant lights, soft natural daylight. No other text added.
 ```

@@ -4,17 +4,17 @@ Formato 04 do quadro do Trello (ver [FORMATOS.md](../../FORMATOS.md)). Uma voz e
 
 Para nós é o formato mais barato e previsível: sem sincronia labial, o take do modelo serve só pela voz e o visual pode ser feito localmente.
 
-**O Criativo 05 fez a primeira venda do projeto.** A copy dele está sendo reaproveitada em outros formatos (ver [Palestrinha](../Palestrinha/FORMATO.md)).
+**O Criativo 03 fez a primeira venda do projeto.** A copy dele está sendo reaproveitada em outros formatos (ver [Palestrinha](../Palestrinha/FORMATO.md)).
 
 ## Exemplos
 
 | Criativo | Variação | Duração | Custo | Ver primeiro |
 |----------|----------|---------|-------|--------------|
-| [05](Criativo%2005/) | infográficos numa prancheta apontados com varinha + mulheres com o sachê + B-roll | 62,6 s | US$ 2,35 | `prancheta_zoom.py` nas pranchetas; montagem local das fotos de prova social (T07) |
-| [11](Criativo%2011/) | POV: mão segura o sachê num armazém, faixas de oferta, "último aviso" (urgência) | 22,4 s | US$ 4,06 (11+12) | `takes_config_veo.json`; voz do Veo sobre a imagem parada (`T02a_zoom_v1`) |
-| [12](Criativo%2012/) | mesmo POV, "eu menti, produzimos demais" (superestoque) | 23,0 s | (no lote do 11) | faixas + círculo vermelho (`faixas_oferta.py --style surstock`) |
+| [C03](Criativo%2003/) | infográficos numa prancheta apontados com varinha + mulheres com o sachê + B-roll | 62,6 s | US$ 2,35 | `prancheta_zoom.py` nas pranchetas; montagem local das fotos de prova social (T07) |
+| [C09](Criativo%2009/) | POV: mão segura o sachê num armazém, faixas de oferta, "último aviso" (urgência) | 22,4 s | US$ 4,06 (11+12) | `takes_config_veo.json`; voz do Veo sobre a imagem parada (`T02a_zoom_v1`) |
+| [C10](Criativo%2010/) | mesmo POV, "eu menti, produzimos demais" (superestoque) | 23,0 s | (no lote do 09) | faixas + círculo vermelho (`faixas_oferta.py --style surstock`) |
 
-As referências do 11 e do 12 eram anúncios da concorrente (Elmora) já em francês: a fala ficou palavra por palavra, só a marca mudou.
+As referências do 09 e do 10 eram anúncios da concorrente (Elmora) já em francês: a fala ficou palavra por palavra, só a marca mudou.
 
 ## Estrutura
 
@@ -28,7 +28,7 @@ Infográfico (05):
 | Prova social | 44–50 s | "mais de 120 000 mulheres": mulheres segurando o sachê |
 | CTA | 50–58 s | garantia de 30 dias e oferta |
 
-Promoção (11, 12), 20 a 25 s: hook de urgência ("dernier avertissement") ou confissão ("j'ai menti") → motivo da oferta (estoque acabando / sobrando) → "2 achetés = 1 offert" e CTA. Faixas fixas no topo o vídeo todo. A confissão do 12 usa **curiosidade e efeito "ahá"** do Trello: abre a pergunta "mentiu sobre o quê?" e só fecha depois.
+Promoção (11, 12), 20 a 25 s: hook de urgência ("dernier avertissement") ou confissão ("j'ai menti") → motivo da oferta (estoque acabando / sobrando) → "2 achetés = 1 offert" e CTA. Faixas fixas no topo o vídeo todo. A confissão do 10 usa **curiosidade e efeito "ahá"** do Trello: abre a pergunta "mentiu sobre o quê?" e só fecha depois.
 
 ## Como escrever o roteiro
 
@@ -54,4 +54,4 @@ Quando a copy não vem pronta da referência:
 - Produto parado: mesmo proibindo, o Veo pôs uma apresentadora atrás da caixa duas vezes. Sachê "flutuando" ou logo errado ("Cinnarac"): usar só a voz do take sobre a imagem nítida (`prancheta_zoom.py`).
 - O fundo pode mudar depois de ~4 s; se a fala já acabou, o corte de silêncio remove o trecho.
 - Confirmar a oferta com o dono antes do roteiro (ver [PRODUTOS.md](../../PRODUTOS.md)). Legenda não pode cobrir o rótulo: `caption_y`.
-- Copy agressiva do 05 (glicemia/insulina, "120 000 femmes") mantida por decisão do dono.
+- Copy agressiva do 03 (glicemia/insulina, "120 000 femmes") mantida por decisão do dono.

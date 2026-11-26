@@ -4,13 +4,13 @@ Formato 03 do quadro do Trello (ver [FORMATOS.md](../../FORMATOS.md)). O quadro 
 
 No nosso exemplo, uma apresentadora fala direto para a câmera, de pé na frente de um quadro branco escrito à mão, como numa mini-aula. Ela aponta para o que está escrito enquanto fala, e o quadro ganha linhas novas no meio do vídeo. O produto aparece na mão dela na apresentação e no CTA.
 
-Usado para levar uma copy que já vendeu para um visual novo: o Criativo 13 é a copy do [Criativo 05](../Narrado/Criativo%2005/) sem mudar uma palavra.
+Usado para levar uma copy que já vendeu para um visual novo: o Criativo 11 é a copy do [Criativo 03](../Narrado/Criativo%2003/) sem mudar uma palavra.
 
 ## Exemplo
 
 | Criativo | Duração | Custo | Ver primeiro |
 |----------|---------|-------|--------------|
-| [13](Criativo%2013/) | 62,0 s | ~US$ 3,02 | `referencia_formato/` (análise do formato), imagens de partida com o gesto de apontar, `quadro_nitido.py` |
+| [C11](Criativo%2011/) | 62,0 s | ~US$ 3,02 | `referencia_formato/` (análise do formato), imagens de partida com o gesto de apontar, `quadro_nitido.py` |
 
 A referência de formato foi `Vídeo Bruto/Criativo #10.mp4` (japonês, canela × metformina, apresentador homem). Não é a referência da pasta 10.
 
@@ -32,7 +32,7 @@ Quando a copy não vem pronta da referência:
 
 ## Receita de produção
 
-- **Personagem**: apresentadora nova (50+ no 13), visual realista de iPhone, nada de modelo. Passar um frame da referência como segundo `--ref` ajudou no enquadramento e na luz.
+- **Personagem**: apresentadora nova (50+ no 11), visual realista de iPhone, nada de modelo. Passar um frame da referência como segundo `--ref` ajudou no enquadramento e na luz.
 - **Imagens de partida**: uma por linha do quadro, já com o canetão na linha certa (C1 linha 1, C2 linha 2...). Variações saem editando a cena base. Manter também uma versão do quadro **sem mão sobre o texto**: é a base do `quadro_nitido.py`.
 - **Takes**: Omni 1.2 Flash 360p, mesma persona e seed; personas `point1`, `point2`... descrevem o gesto. Testar o T01 antes do lote (voz, rosto, gesto).
 - **Texto do quadro**: em 360p o modelo escreve errado ("Muits", "glycémie sinble"). Corrigir com `quadro_nitido.py`: cola o texto nítido da imagem quadro a quadro e mantém do take a mão, o canetão e o cabelo. Saída já em 1080x1920.

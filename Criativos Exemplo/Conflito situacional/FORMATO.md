@@ -1,6 +1,6 @@
 # Formato: Conflito situacional
 
-Formato 08 do quadro do Trello (ver [FORMATOS.md](../../FORMATOS.md)). **Ainda sem criativo nosso**; o hook do [Criativo 08](../Lo-fi/Criativo%2008/) (senhora levantando do chão) usa a mesma ideia de gancho visual.
+Formato 08 do quadro do Trello (ver [FORMATOS.md](../../FORMATOS.md)). **Ainda sem criativo nosso**; o hook do [Criativo 06](../Lo-fi/Criativo%2006/) (senhora levantando do chão) usa a mesma ideia de gancho visual.
 
 ## O que é
 
@@ -20,7 +20,7 @@ O vídeo abre com a encenação de uma situação forte que parece real (discuss
 
 ## Como produzir aqui
 
-- Take curto de ação sem fala (`gerar_take.py` de 3 s; no `montagem.json`, `"silent": true`), como no Criativo 08.
+- Take curto de ação sem fala (`gerar_take.py` de 3 s; no `montagem.json`, `"silent": true`), como no Criativo 06.
 - Evitar violência explícita e situações que pareçam reportagem real.
 
 ## Ângulo de anúncio (exemplo)

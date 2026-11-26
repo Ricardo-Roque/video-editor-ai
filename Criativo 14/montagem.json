@@ -1,15 +1,86 @@
 {
   "language": "fr",
-  "script": "roteiro.md",
+  "script": "roteiro_fr.md",
   "takes_dir": "takes",
   "work_dir": "montagem",
-  "output": "../Vídeos Prontos/Criativo NN - XX.mp4",
+  "output": "../Vídeos Prontos/Criativo 14 - FR.mp4",
   "font_file": "../assets/fonts/Montserrat-ExtraBold.ttf",
   "clips": [
-    {"take": "T01", "file": "T01_360p_v1.mp4"},
-    {"take": "T02", "file": "T02_360p_v1.mp4"}
+    {
+      "take": "T01a",
+      "file": "T01a_360p_v1.mp4"
+    },
+    {
+      "take": "T01b",
+      "file": "T01b_360p_v1.mp4"
+    },
+    {
+      "take": "T02a",
+      "file": "T02a_360p_v1.mp4"
+    },
+    {
+      "take": "T02b",
+      "file": "T02b_360p_v1.mp4"
+    },
+    {
+      "take": "T03a",
+      "file": "T03a_360p_v1.mp4"
+    },
+    {
+      "take": "T03b",
+      "file": "T03b_360p_v1.mp4"
+    },
+    {
+      "take": "T04",
+      "file": "T04_360p_v1.mp4"
+    },
+    {
+      "take": "T05",
+      "file": "T05_360p_v1.mp4"
+    },
+    {
+      "take": "T06",
+      "file": "T06_360p_v1.mp4"
+    },
+    {
+      "take": "T07",
+      "file": "T07_05_v2.mp4",
+      "text": "Plus de 120\\h000 femmes en prennent déjà tous les soirs dans leur routine du coucher, et elles partent toujours très vite."
+    },
+    {
+      "take": "T08",
+      "file": "T08_05_v2.mp4"
+    }
   ],
   "overlays": [
-    {"image": "imagens/cenas/O1_v1.png", "clip_index": 0, "from_word": "palavra_inicio", "to_word": "palavra_fim"}
+    {
+      "image": "imagens/cenas/K1_caixinha_v1.png",
+      "mode": "patch",
+      "x": 0,
+      "y": 0,
+      "from_clip": 0,
+      "to_clip": 6
+    },
+    {
+      "image": "../Criativos Exemplo/Narrado/Criativo 03/imagens/cenas/R1_v1.png",
+      "mode": "full",
+      "clip_index": 6,
+      "from_word": "gommes",
+      "to_word": "Elles"
+    },
+    {
+      "image": "../Criativos Exemplo/Narrado/Criativo 03/imagens/cenas/R4_v1.png",
+      "mode": "full",
+      "clip_index": 10,
+      "from_word": "rembourse",
+      "to_word": "pour"
+    },
+    {
+      "image": "../Criativos Exemplo/Narrado/Criativo 03/imagens/cenas/R5_v1.png",
+      "mode": "full",
+      "clip_index": 10,
+      "from_word": "pour",
+      "to_word": "__fim__"
+    }
   ]
 }

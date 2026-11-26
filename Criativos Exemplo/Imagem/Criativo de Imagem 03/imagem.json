@@ -1,0 +1,128 @@
+{
+ "size": [
+  1080,
+  1350
+ ],
+ "background": "#000000",
+ "out": "Criativos Exemplo/Imagem/Criativo de Imagem 03/imagens/final_v4.png",
+ "layers": [
+  {
+   "type": "text",
+   "text": "RE : NOTRE PREMIER CONTRAT DE FABRICATION",
+   "font": "consola.ttf",
+   "size": 27,
+   "fill": "#E8C25A",
+   "xy": [
+    72,
+    64
+   ],
+   "anchor": "la",
+   "tracking": 1
+  },
+  {
+   "type": "text",
+   "text": "DERNIÈRE\nSÉRIE.",
+   "font": "impact.ttf",
+   "size": 230,
+   "fill": "#FFFFFF",
+   "xy": [
+    66,
+    104
+   ],
+   "anchor": "la",
+   "max_width": 940,
+   "fit": true,
+   "line_spacing": 0.98
+  },
+  {
+   "type": "text",
+   "text": "LE DERNIER LOT À CE PRIX.\nENSUITE, LE PRIX AUGMENTE POUR DE BON.",
+   "font": "impact.ttf",
+   "size": 46,
+   "fill": "#FFFFFF",
+   "xy": [
+    72,
+    640
+   ],
+   "anchor": "la",
+   "max_width": 940,
+   "fit": true,
+   "line_spacing": 1.05
+  },
+  {
+   "type": "text",
+   "text": "C'est la dernière série de Cinnarae fabriquée sous notre premier contrat. Nous avons regardé le compteur baisser chaque matin pendant trois semaines. Nous savons ce qui se passe à zéro.",
+   "font": "arial.ttf",
+   "size": 29,
+   "fill": "#E8E8E8",
+   "xy": [
+    72,
+    778
+   ],
+   "anchor": "la",
+   "max_width": 940
+  },
+  {
+   "type": "text",
+   "text": "Elle ne sera pas réapprovisionnée à ce prix. C'est impossible. Nous nous sommes battus deux ans pour le tenir, et nous n'avons plus aucun moyen de le tenir.",
+   "font": "arial.ttf",
+   "size": 29,
+   "fill": "#E8E8E8",
+   "xy": [
+    72,
+    914
+   ],
+   "anchor": "la",
+   "max_width": 940
+  },
+  {
+   "type": "text",
+   "text": "Si vous attendiez une raison, c'est la dernière que nous avons.",
+   "font": "arial.ttf",
+   "size": 29,
+   "fill": "#E8E8E8",
+   "xy": [
+    72,
+    1050
+   ],
+   "anchor": "la",
+   "max_width": 940
+  },
+  {
+   "type": "text",
+   "text": "2 ACHETÉS = 1 OFFERT",
+   "font": "impact.ttf",
+   "size": 52,
+   "fill": "#FFFFFF",
+   "xy": [
+    72,
+    1104
+   ],
+   "anchor": "la"
+  },
+  {
+   "type": "image",
+   "src": "Criativos Exemplo/Imagem/Criativo de Imagem 03/imagens/A1_v1.png",
+   "box": [
+    44,
+    1148,
+    410,
+    174
+   ],
+   "blend": "lighten"
+  },
+  {
+   "type": "text",
+   "text": "CINNARAE",
+   "font": "arial.ttf",
+   "size": 22,
+   "fill": "#9A9A9A",
+   "xy": [
+    74,
+    1314
+   ],
+   "anchor": "la",
+   "tracking": 5
+  }
+ ]
+}

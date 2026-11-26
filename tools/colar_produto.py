@@ -6,8 +6,8 @@ take by brute-force search, colour-matched to the take, and given a feathered ro
 The output PNG goes into montagem.json as an overlay with "mode": "patch" and the printed x, y.
 
 Usage:
-  python -I -X utf8 tools/colar_produto.py --image "Criativo 10/imagens/cenas/B1_v1.png" \
-      --take "Criativo 10/takes/T01_360p_v1.mp4" --box 478,780,728,1172 --out "Criativo 10/imagens/cenas/pacote_patch.png"
+  python -I -X utf8 tools/colar_produto.py --image "Criativo 08/imagens/cenas/B1_v1.png" \
+      --take "Criativo 08/takes/T01_360p_v1.mp4" --box 478,780,728,1172 --out "Criativo 08/imagens/cenas/pacote_patch.png"
 
 --box is x0,y0,x1,y1 in the still's pixels, slightly inside the pouch edges.
 """

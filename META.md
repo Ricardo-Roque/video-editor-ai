@@ -57,17 +57,17 @@ Ele mostra de quem é o token, as permissões, a conta (moeda, fuso) e a página
 O anúncio é ligado ao criativo pelo **nome**, que começa com o ID do criativo:
 
 ```
-C19 | CIN-T003 | hook: três sintomas
+CN05 | CIN-T003 | hook: três sintomas
 ```
 
-(também vale "Criativo 19" em qualquer ponto do nome). Anúncios antigos com outro nome você liga na aba **Anúncios** do painel ou com `tools/meta.py ligar <ad_id> C19`. Ligação manual nunca é desfeita pela sincronização.
+(também vale "Criativo Nativo #05" em qualquer ponto do nome). Anúncios antigos com outro nome você liga na aba **Anúncios** do painel ou com `tools/meta.py ligar <ad_id> CN05`. Ligação manual nunca é desfeita pela sincronização.
 
 ## 6. Comandos
 
 ```
 python -I -X utf8 tools/meta.py sincronizar --dias 30     # puxa agora (o painel também faz)
 python -I -X utf8 tools/meta.py sem-criativo              # anúncios ainda sem criativo
-python -I -X utf8 tools/meta.py publicar --criativo C19 --arquivo "Vídeos Prontos/Criativo 19 - FR.mp4" \
+python -I -X utf8 tools/meta.py publicar --criativo C13 --arquivo "Vídeos Prontos/Criativo 13 - FR.mp4" \
     --conjunto <adset_id> --texto "<pasta do criativo>/copy_final_fr.txt" --link <url da página> \
     --titulo "..." [--descricao "..."] [--cta SHOP_NOW]   # ensaio: mostra o que seria criado
     ... --confirmar                                         # cria o anúncio PAUSADO

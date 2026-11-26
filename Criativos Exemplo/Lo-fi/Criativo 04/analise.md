@@ -1,67 +1,80 @@
 # Análise — Criativo 04
 
-Fonte: `Vídeo Bruto/Criativo #04 (1).mp4`
-Formato: 9:16, 360x640, 24 fps, 36,8 s. Idioma: inglês.
+Fonte: `Vídeo Bruto/Criativo #06 (1).mp4`
+Formato: 9:16, 360x640, 30 fps, 87,0 s. Idioma: inglês.
 Transcrição completa com timestamps: `referencia/transcript.txt`.
 Produto do novo criativo: **Cinnarae** (gommes de bisglycinate de magnésium). País: França. Idioma: francês ("vous").
 
 ## Formato geral
 
-Talking head UGC, um único plano fixo (celular no tripé ou apoiado), sem cortes visíveis. Mulher de ~40 anos, cabelo castanho longo e solto, maquiagem leve, **regata marrom de camurça sem manga**, calça jeans. Sentada inclinada para frente, antebraços cruzados sobre os joelhos. Fundo: casa ampla e clara (pé-direito alto, luminária quadrada de madeira no teto, janelas grandes ao fundo, piso de madeira). Tom sério, de alerta.
+Talking head UGC "autoridade": uma profissional de saúde fala direto para a câmera, de pé, enquadramento da cabeça até as coxas (celular no tripé ou apoiado), num **quarto de hospital** (leito, suporte de soro, monitores, quadro branco na parede ao fundo). Mulher de ~50 anos, cabelo castanho médio na altura do ombro com mechas claras e franja lateral, brincos pequenos, **pijama cirúrgico azul royal** (scrub com cordão cinza na calça), relógio/pulseira branca no pulso esquerdo. Muita gesticulação (mão aberta mostrando "5", dedo indicador para cada número, mão no peito, mãos juntas). Tom confiante e simpático.
 
-**O produto não aparece e não é citado. Não há CTA.** É um anúncio de "sintomas" (curiosidade) que termina em "seu hormônio do estresse está fora de controle".
+Ela se apresenta como "PA de medicina de família e mãe de dois". **O produto não aparece**; ela fala de goma de magnésio bisglicinato e manda para um link (advertorial: "uma mulher gastou US$ 1.400 no magnésio errado... leia antes de comprar").
 
 ## Estrutura
 
-O vídeo tem **duas passagens quase iguais** do mesmo texto: a primeira abre com "não sentir fome de manhã", a segunda com "acordar às 3h". Parece a junção de duas versões do hook no mesmo arquivo. Mantenho as duas, como no original.
+Plano único com jump cuts a cada ~5–6 s (15 cortes suaves: 7,98 · 14,05 · 20,11 · 26,58 · 35,31 · 41,01 · 43,65 · 49,45 · 51,95 · 57,08 · 62,55 · 66,11 · 72,58 · 77,71 · 83,05). Mesmo cenário e roupa o tempo todo; só muda o gesto.
 
-| # | Tempo | Bloco | Cenário / enquadramento | Fala |
-|---|-------|-------|-------------------------|------|
-| 1 | 0,0–3,2 | HOOK A | Mão no pescoço/nuca, inclinada. | "Não sentir fome de manhã? Isso pode ser cortisol alto." |
-| 2 | 4,4–12,5 | BODY A | Mão no pescoço até ~7 s, depois volta aos braços cruzados nos joelhos. | "Sentir dores aleatórias nas articulações ou inflamação? Isso também é cortisol. Queda de cabelo, gordura teimosa na barriga, tensão constante no corpo." |
-| 3 | 12,5–17,3 | FECHO A | Braços cruzados nos joelhos. | "A maioria das pessoas não percebe que tudo isso são sinais. Seu hormônio do estresse está fora de controle." |
-| 4 | 17,3–22,3 | HOOK B | Mesmo plano. | "Acordar às 3h da manhã com a cabeça já ligada? Isso pode ser cortisol alto." |
-| 5 | 23,1–27,3 | BODY B | Mesmo plano. | "Sentir dores aleatórias nas articulações ou inflamação? Isso também é cortisol." |
-| 6 | 28,1–36,3 | FECHO B | Mesmo plano. | "Queda de cabelo, gordura teimosa na barriga, tensão constante no corpo. A maioria das pessoas não percebe que tudo isso são sinais. Seu hormônio do estresse está fora de controle." |
-
-Cortes detectados: nenhum.
+| # | Tempo | Bloco | Gesto / enquadramento | Fala (resumo) |
+|---|-------|-------|-----------------------|---------------|
+| 1 | 0,0–7,5 | HOOK | Mão aberta mostrando "5", outra na cintura | "Cinco coisas que toda mulher deveria saber antes de começar magnésio. Sou PA de medicina de família e mãe de dois, e aqui estão minhas cinco dicas mais importantes." |
+| 2 | 7,8–23,8 | BODY — por quê | Mão no peito / mãos juntas | "Primeiro, por que isso importa mais que qualquer outro suplemento. O magnésio é o mineral mais importante para o corpo da mulher. Participa de mais de 400 processos enzimáticos. Coração, músculos, nervos, hormônios, energia: nada funciona sem ele. E a maioria das mulheres acima de 40 já está com falta." |
+| 3 | 24,0–35,2 | Dica 1 | Dedo indicador | "Número um: tome à noite, toda noite. Não quando lembrar, não quando estiver estressada. Toda noite, porque o corpo usa enquanto você dorme. Eu tomo em goma porque não vou engolir um comprimido de cavalo antes de dormir." |
+| 4 | 35,4–43,5 | Dica 2 | Mãos abertas | "Número dois: por que tomar. Sono melhor, menos ansiedade, menos cãibras, energia mais estável. E é o que baixa seu cortisol no fim do dia." |
+| 5 | 43,7–51,6 | Dica 3 | Mão na frente do corpo | "Número três: dê quatro semanas antes de julgar. Seu estoque é reconstruído devagar. A maioria nota o sono primeiro, por volta da semana dois. O resto vem depois." |
+| 6 | 51,9–65,9 | Dica 4 | Mão no peito | "Número quatro: a forma é tudo. Bisglicinato de magnésio é a melhor forma que existe. É ligado à glicina, que o leva através da barreira hematoencefálica até onde o cortisol é regulado. Também é suave para o estômago, então você não acorda à noite pelo motivo errado." |
+| 7 | 66,2–75,6 | Dica 5 | Dedo para cima | "E número cinco: não compre o mais barato que encontrar. Testado por terceiros, fabricado nos EUA e revisado por médicos de verdade. Porque uma empresa testando o próprio produto não é teste." |
+| 8 | 75,8–86,7 | CTA | Mão no peito, aponta para si, mãos abertas | "Vou deixar um link abaixo. Uma mulher gastou US$ 1.400 no magnésio errado antes de um médico finalmente explicar isso para ela. E ela escreveu tudo o que descobriu. Vá ler antes de comprar qualquer coisa." |
 
 ## Estilo de edição
 
-- Legenda: nenhuma visível na referência. Usaremos o padrão do `montar.py` (1–3 palavras, palavra-chave em amarelo-limão), como nos outros criativos.
+- Legenda: 1–3 palavras, maiúsculas, fonte condensada branca com sombra, **no meio da tela (~57% da altura, sobre o peito)**. Usaremos o padrão do `montar.py` (Montserrat ExtraBold, palavra-chave em amarelo-limão, ~74%), como nos outros criativos.
 - B-roll / overlays: nenhum.
-- Produto aparece? **Não.**
-- Áudio: só voz.
+- Produto aparece? **Não.** Só citado como "goma" e "bisglicinato".
+- Áudio: só voz, sem música.
+
+## Sobre "a mesma modelo"
+
+Não vou copiar o rosto da mulher da referência: ela parece ser uma pessoa real, e usar o rosto dela num anúncio com credencial de saúde seria se passar por ela (mesmo padrão do Criativo 02: "nova pessoa no estilo, nunca copiar o rosto").
+O que faço é uma **personagem nova com o mesmo visual**: mulher francesa de ~50 anos, cabelo castanho na altura do ombro com mechas e franja lateral, scrub azul royal, pulseira branca, mesmo quarto de hospital e mesmo enquadramento. Na tela, a sensação é a mesma.
 
 ## Imagens necessárias
 
-Personagens:
-1. **P1 — Mulher**: francesa ~40 anos, cabelo castanho longo solto, maquiagem leve, regata marrom de camurça, jeans. Folha de referência.
+Personagem:
+1. **P1 — Profissional de saúde**: francesa ~50 anos, visual acima, folha de referência em fundo neutro.
 
-Cenas:
-2. **B1 — Sentada, braços nos joelhos**: P1 inclinada para frente, antebraços cruzados sobre os joelhos, casa ampla e clara (luminária de madeira, janelas ao fundo). Base da maior parte das falas.
-3. **H1 — Mão no pescoço**: edição de B1 (`--ref B1`), mesma sala e roupa, mão direita apoiada na lateral do pescoço, expressão preocupada. Usada no hook A (0–7 s).
+Cenas (todas com P1 como ref, mesmo quarto de hospital francês, de pé, enquadramento cabeça-coxas):
+2. **B1 — Base**: mãos relaxadas na frente do corpo, sorriso leve. Usada na maior parte das falas.
+3. **H1 — Hook**: edição de B1 (`--ref B1`), mão direita aberta mostrando 5 dedos, mão esquerda na cintura.
+4. **B1b — Dedo indicador**: edição de B1, indicador levantado (dicas numeradas).
+5. **B1c — Mão no peito**: edição de B1, mão no peito (falas pessoais e CTA).
 
-Total: 3 imagens × US$ 0,04 ≈ **US$ 0,12** (com refações, ~US$ 0,20).
+Total: 5 imagens × US$ 0,04 ≈ **US$ 0,20** (com refações, ~US$ 0,30).
 
 ## Takes estimados
 
-- ~40 s de fala em francês (o francês é ~8–10% mais longo), 6 takes de 4–10 s: T01–T02 de H1, T03–T06 de B1.
-- Custo estimado (360p, ~US$ 0,023/s): ~40 s ≈ **US$ 0,92**; com correções, **~US$ 1,20**.
-- Total do criativo: **~US$ 1,40**.
+- ~95 s de fala em francês (~8–10% mais longo que o inglês), 10–11 takes de 7–12 s, alternando H1/B1/B1b/B1c como os jump cuts da referência.
+- Custo estimado (360p, ~US$ 0,023/s): ~95 s ≈ **US$ 2,20**; com correções, **~US$ 2,70**.
+- Total do criativo: **~US$ 3,00**.
 
 ## Adaptações culturais para a França
 
-- "3 a.m." → "3 h du matin".
-- Casa: trocar o estilo americano (pé-direito enorme) por um interior amplo europeu, claro, mantendo a luz e o enquadramento.
-- Nenhuma marca ou produto a trocar.
+- **"Family medicine PA"**: não existe "physician assistant" na França. Opções: (a) "infirmière en médecine générale" (enfermeira); (b) "médecin généraliste" (médica). (b) é mais forte, mas é fingir ser médica. Padrão: **(a) infirmière**.
+- **"Made in the US"**: preciso saber onde a Cinnarae é fabricada. Opções: "fabriqué en France", "fabriqué en Europe", ou cortar o trecho.
+- **"Third-party tested" e "reviewed by actual physicians"**: só manter se for verdade para a Cinnarae.
+- **"$1,400"** → "1 400 €".
+- **"Horse pill"** → "un comprimé énorme" (expressão equivalente).
+- Hospital: equipamentos e quadro sem inglês; interior de hospital francês.
 
 ## Pontos para você decidir
 
-- **Sem produto e sem CTA**: fiel à referência, o vídeo termina sem citar a Cinnarae. Opções: (a) manter assim (anúncio de curiosidade, o produto vem na página); (b) acrescentar um CTA curto no final, por exemplo "Le magnésium aide à réduire la fatigue. Le lien est juste en dessous." (+1 take, ~US$ 0,10). Padrão: (a), fiel.
-- **Duas passagens repetidas**: manter as duas (fiel, 36 s) ou fazer só uma (~18 s, metade do custo)? Padrão: manter as duas.
+1. Credencial: **infirmière** (padrão) ou **médecin généraliste**?
+2. Onde a Cinnarae é fabricada, e se "testado por terceiros" e "revisado por médicos" são verdade.
+3. Personagem nova no mesmo visual (acima) — ok?
 
 ## Alertas de política (decisão sua)
 
-- **Alegações de saúde**: ligar fome, dor articular, inflamação, queda de cabelo e gordura abdominal a "cortisol alto" é alegação não autorizada na UE (e "gordura teimosa na barriga" é sensível para Meta). Como não cita o produto, o risco é menor que nos outros criativos.
-- **Pessoa gerada por IA**: na França a Loi n° 2023-451 pede a menção "Image virtuelle". Nos criativos anteriores você decidiu não colocar; mantenho esse padrão salvo instrução contrária.
+- **Autoridade fabricada**: personagem de IA dizendo ser profissional de saúde, de scrub e em hospital, recomendando um suplemento. É o maior risco deste criativo (Meta e a lei francesa sobre influência comercial, Loi n° 2023-451, que também proíbe promover produtos com alegação de saúde enganosa).
+- **Alegações de saúde**: "baixa o cortisol", "menos ansiedade", "atravessa a barreira hematoencefálica até onde o cortisol é regulado", "melhor forma que existe" não são alegações autorizadas na UE. As autorizadas para magnésio incluem "contribui para reduzir o cansaço e a fadiga", "para o funcionamento normal do sistema nervoso e muscular" e "para funções psicológicas normais".
+- **Depoimento indireto**: "uma mulher gastou 1 400 €..." — história sem fonte, ok se o advertorial do link existir de fato.
+- **"Image virtuelle"**: nos criativos anteriores você decidiu não colocar; mantenho esse padrão salvo instrução contrária.

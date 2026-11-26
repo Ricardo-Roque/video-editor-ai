@@ -83,7 +83,7 @@ As lições de formato que hoje citam a Cinnarae continuam no `FORMATO.md`, escr
    ├─ variaveis.md                 biblioteca de variáveis (formato fixo de hoje, sem mudança)
    ├─ quebras/                     quebras avulsas (formato de hoje)
    ├─ criativos/
-   │  └─ C14/                      pasta do criativo (formato de hoje) + criativo.md com o cabeçalho de registro
+   │  └─ C12/                      pasta do criativo (formato de hoje) + criativo.md com o cabeçalho de registro
    └─ registro/                    índice gerado (ver "Registro")
 ```
 
@@ -178,9 +178,9 @@ O registro responde, antes de qualquer gasto de tempo: **essa referência já fo
 | Quebra | `<PREFIXO>-Q###` | `CIN-Q001` | referência(s) |
 | Variável | `<PREFIXO>-V###` (já existe) | `CIN-V014` | quebra ou criativo |
 | Teste | `<PREFIXO>-T###` (já existe) | `CIN-T001` | criativo, variáveis |
-| Criativo | `C<NN>` (numeração única do projeto, já existe) | `C19` | oferta, referência(s), quebra, teste |
+| Criativo | `C<NN>` vídeo, `CN<NN>` nativo, `CI<NN>` imagem (igual ao título, uma sequência por tipo) | `CN05` | oferta, referência(s), quebra, teste |
 | Entrega | número do Drive | `Criativo Nativo #11` | criativo |
-| Resultado | criativo + período | `C19 2026-11-25..2026-12-01` | criativo, teste |
+| Resultado | criativo + período | `CN05 2026-11-25..2026-12-01` | criativo, teste |
 
 ### Formato agora: cabeçalho nos arquivos + índice gerado
 
@@ -191,7 +191,7 @@ Cada `quebra.md` e cada `criativo.md` ganha um cabeçalho YAML com os IDs acima 
 Uma ferramenta nova, `tools/registro.py`, faz duas coisas:
 
 - `registro.py indexar`: varre o espaço da oferta e gera `registro/indice.json` (e um `registro/REGISTRO.md` legível, que substitui o `CRIATIVOS.md`).
-- `registro.py buscar <link | arquivo | ID>`: calcula a chave e diz se ela já existe e onde ("`meta:1655441989385274`: quebrada em CIN-Q004, virou C19, entregue como Criativo Nativo #11, teste CIN-T003 inconclusivo").
+- `registro.py buscar <link | arquivo | ID>`: calcula a chave e diz se ela já existe e onde ("`meta:1655441989385274`: quebrada em CIN-Q004, virou CN05, entregue como Criativo Nativo #11, teste CIN-T003 inconclusivo").
 
 O passo "já vi?" entra no processo logo depois do portão de contexto. Se a referência já foi quebrada, a quebra é reaproveitada, não refeita.
 

@@ -56,8 +56,8 @@ Editor de Vídeo/
 ├─ _Modelo Criativo/      modelos de arquivos para começar um criativo
 ├─ Criativos Exemplo/     uma pasta por formato do Trello (16) + Nativo, cada uma com o guia FORMATO.md
 │  ├─ Lo-fi/          FORMATO.md + Criativo 01, 04, 06, 07, 08, 09, 10
-│  ├─ Narrado/        FORMATO.md + Criativo 05, 11, 12
-│  ├─ Palestrinha/    FORMATO.md + Criativo 13
+│  ├─ Narrado/        FORMATO.md + Criativo 03, 11, 12
+│  ├─ Palestrinha/    FORMATO.md + Criativo 11
 │  └─ Tela dividida/, Cine/, Caixinha de perguntas/...   só o FORMATO.md (sem exemplo ainda)
 └─ Criativo NN/           criativo em produção (vai para Criativos Exemplo/ ao ser entregue)
    ├─ referencia/         transcrição, cortes, frames e evidencias.md da referência
@@ -75,7 +75,7 @@ Editor de Vídeo/
 
 Nomes usados em todos os criativos:
 - **P1, P2...** personagens (folha de referência de rosto e roupa).
-- **H1, H2...** cenas do hook. **B1, B1b, B1c...** cena base do body e variações. **O1, O2...** cards e overlays. Outras letras quando o formato pedir (ex.: Q = quadro/prancheta, F = fotos, C = cenas do quadro no 13), sempre explicadas no `analise.md`.
+- **H1, H2...** cenas do hook. **B1, B1b, B1c...** cena base do body e variações. **O1, O2...** cards e overlays. Outras letras quando o formato pedir (ex.: Q = quadro/prancheta, F = fotos, C = cenas do quadro no 11), sempre explicadas no `analise.md`.
 - **T01, T02...** takes, na ordem do roteiro. Take dividido vira **T10a / T10b**.
 - Versões: `_v1`, `_v2`... **Nunca sobrescrever**; a aprovada é a que entra no config. Sufixo do take indica o modelo: `_360p_v1` (Omni), `_veo720_v1` (Veo), `_zoom_v1` / `_prancheta_v1` / `_quadro_v1` (feito localmente).
 - Versão alternativa de um criativo (ex.: 07 Sono): arquivos com sufixo próprio (`roteiro_fr_sono.md`, `takes_config_sono.json`, `montagem_sono.json`), sem mexer nos da versão original.
@@ -84,7 +84,7 @@ Nomes usados em todos os criativos:
 
 1. Coloque o vídeo de referência em `Vídeo Bruto/`.
 2. Abra o Claude Code na pasta do projeto e diga, por exemplo:
-   > Novo criativo: Criativo 14, referência `Vídeo Bruto/<arquivo>.mp4`, francês, França, Cinnarae.
+   > Novo criativo: Criativo 12, referência `Vídeo Bruto/<arquivo>.mp4`, francês, França, Cinnarae.
    Ou use `/novo-criativo`. Para um criativo nativo, mande o link da Biblioteca de Anúncios no lugar do vídeo:
    > Novo criativo nativo: modelar https://www.facebook.com/ads/library/?id=<ID>, francês, Cinnarae.
 
@@ -94,14 +94,14 @@ Nomes usados em todos os criativos:
    Só a quebra, sem criativo: "quebra do anúncio <link ou arquivo>" (ver "Quebra avulsa" no [MODELAGEM.md](MODELAGEM.md)).
 3. O Claude lê `CLAUDE.md`, este documento, `PRODUTOS.md` e `CRIATIVOS.md`, identifica o formato da referência, lê o `FORMATO.md` dele e segue as etapas, parando em cada aprovação.
 
-O que o Claude pergunta se faltar: número do criativo, idioma, país, produto (e se a embalagem muda), se a copy é a mesma ou adaptada, e se o formato é o da referência ou outro (ex.: copy do 05 no formato "palestrinha").
+O que o Claude pergunta se faltar: número do criativo, idioma, país, produto (e se a embalagem muda), se a copy é a mesma ou adaptada, e se o formato é o da referência ou outro (ex.: copy do 03 no formato "palestrinha").
 
 ---
 
 ## Etapa 0 — Preparação
 
 1. Escolher o número: o próximo livre, contando a raiz e `Criativos Exemplo/` (não o número do arquivo de referência). Em equipe, avisar no grupo qual número vai usar antes de criar a pasta.
-2. Criar `Criativo NN/` na raiz do projeto copiando `_Modelo Criativo/`. O criativo fica na raiz enquanto está em produção.
+2. Criar a pasta na raiz do projeto copiando `_Modelo Criativo/`. O nome segue o tipo, com uma sequência por tipo e sem buracos: `Criativo NN` (vídeo, código `CNN`), `Criativo Nativo NN` (código `CNNN`) ou `Criativo de Imagem NN` (código `CINN`); o título no painel é o mesmo com `#`. O próximo livre: `python -I -X utf8 tools/painel.py proximo --tipo video|nativo|imagem`. O criativo fica na raiz enquanto está em produção.
 3. Conferir a chave no `.env` e o saldo no OpenRouter.
 4. Conferir se os modelos estão no ar: `https://openrouter.ai/api/v1/models/google/gemini-omni-1.2-flash/endpoints` mostra a disponibilidade. O Omni 1.2 já ficou fora do ar por horas (2026-11-19); com ele fora, todo envio volta "Video generation failed" (sem cobrança).
 
@@ -163,8 +163,8 @@ Ferramenta: Nano Banana via OpenRouter (`google/gemini-nano-banana-2.1`, ~US$ 0,
 3. **Cenas**, sempre com os aprovados como `--ref` (primeira ref = personagem principal; produto como ref quando aparece).
 4. Gastar menos imagem:
    - **Editar em vez de gerar do zero**: o "depois" do antes/depois sai editando o "antes"; variações (gesto, posição da varinha, linha do quadro) saem editando a cena base.
-   - **Gesto vai no prompt do take**, não numa imagem nova: no 06, uma única imagem serviu para todos os takes (personas `nurse_point`, `nurse_chest`...).
-   - **Recorte local custa 0** (ex.: enquadrar do joelho para cima no 08).
+   - **Gesto vai no prompt do take**, não numa imagem nova: no 04, uma única imagem serviu para todos os takes (personas `nurse_point`, `nurse_chest`...).
+   - **Recorte local custa 0** (ex.: enquadrar do joelho para cima no 06).
    - **Reaproveitar** imagens entre takes e entre versões.
    - Cenário da referência sem a pessoa: cobrir a pessoa num frame da referência e passar como `--ref` só para o cenário (06, `sala_mascarada.png`).
 5. Regras de conteúdo: produto sempre com a descrição de [PRODUTOS.md](PRODUTOS.md) (Cinnarae = "red raspberry gummy bears"); texto em outro idioma que o modelo inventar (ex.: "You Got This!" no quadro) deve ser apagado por edição.
@@ -247,7 +247,7 @@ Opções do `montagem.json`:
 
 | Onde | Campo | Uso |
 |------|-------|-----|
-| raiz | `caption_y` | sobe a legenda quando algo fica na altura padrão (ex.: 1000 no 10, para não cobrir o sachê) |
+| raiz | `caption_y` | sobe a legenda quando algo fica na altura padrão (ex.: 1000 no 08, para não cobrir o sachê) |
 | clipe | `take`, `file` | qual take e qual arquivo (versão aprovada) |
 | clipe | `text` | texto da legenda quando difere do roteiro: corte de trecho (Ta/Tb), número junto ("3h", "70%", "1400€", `120\h000` com espaço que não quebra) |
 | clipe | `"silent": true`, `start`, `end` | take sem fala (ação no hook, 08): entra inteiro, sem legenda |
@@ -256,7 +256,7 @@ Opções do `montagem.json`:
 | overlay | `"mode": "full"` | imagem em tela cheia (B-roll) |
 | overlay | `"mode": "patch"`, `x`, `y` | PNG transparente fixo por cima do vídeo inteiro (rótulo nítido, faixas de oferta, texto do quadro) |
 
-Para ajustar só legenda ou overlay sem refazer os segmentos: `--stage final`. Versões e cortes alternativos (ex.: hook A e hook B do 04) usam um `montagem_<nome>.json` próprio.
+Para ajustar só legenda ou overlay sem refazer os segmentos: `--stage final`. Versões e cortes alternativos (ex.: hook A e hook B do 02) usam um `montagem_<nome>.json` próprio.
 
 ### Texto na tela
 
@@ -273,7 +273,7 @@ O modelo de vídeo redesenha letras pequenas, principalmente em 360p. Escolher a
 
 ### Conferência antes de entregar
 
-Olhar frames do hook, dos cards e do body: legenda legível, nada cobrindo rosto ou boca (cards de 470 px cobriam a boca no 07; 380 px resolveu), rótulo nítido, sem palavra em outro idioma na tela.
+Olhar frames do hook, dos cards e do body: legenda legível, nada cobrindo rosto ou boca (cards de 470 px cobriam a boca no 05; 380 px resolveu), rótulo nítido, sem palavra em outro idioma na tela.
 
 ➡ **Aprovação:** o dono assiste o vídeo inteiro e pede ajustes.
 
@@ -300,7 +300,7 @@ Quando a referência é um anúncio nativo estático (uma foto + texto longo no 
 5. **Entrega (N4)**:
    - Gravar `copy_final_<idioma>.txt` com o título do link, a descrição do link ("Lire la suite"), o botão, o arquivo da imagem e o texto do post **sem as marcas ⚠**.
    - Na mensagem de entrega, mostrar sempre: o caminho da imagem aprovada; o título do link com a tradução em português; a descrição do post inteira num bloco de código pronto para copiar; o link da tradução de volta (`comparativo_roteiro.md`); e a lista das frases que ainda dependem de confirmação do dono, cada uma com a troca pronta.
-   - Depois, seguir "Ao entregar um criativo" (pasta `Criativos Exemplo/Nativo/`), incluindo o registro no Google Drive do time.
+   - Depois, seguir "Ao entregar um criativo" (pasta `Criativos Exemplo/Nativo/`), e conferir o título no painel.
 
 ## Reaproveitamento
 
@@ -308,7 +308,7 @@ O jeito mais barato de fazer um criativo novo é reaproveitar o que já foi apro
 
 - **Nova versão de um criativo** (ex.: 07 Sono, sem alegação de emagrecimento): roteiro novo, takes antigos recortados em arquivos novos (`T03b_360p_v1.mp4`, nunca sobrescrevendo o original), só os takes que faltam são gerados. Custou US$ 0,70.
 - **Vários hooks, mesmo body** (04): o body é gerado uma vez e entra em todos os cortes.
-- **Copy vencedora em outro formato** (13, copy do 05): a copy é copiada sem mudança; só o formato muda.
+- **Copy vencedora em outro formato** (13, copy do 03): a copy é copiada sem mudança; só o formato muda.
 - **Referência da concorrência no mesmo idioma** (11, 12): só a marca muda.
 
 ## Painel: revisão, refação e métricas
@@ -332,9 +332,9 @@ Aprovação dada no chat continua valendo: nesse caso o Claude registra com `ent
 
 ```json
 {
-  "versao": 1, "criativo": "C29", "titulo": "frase curta", "resumo": "o conceito em uma ou duas frases",
+  "versao": 1, "criativo": "C13", "titulo": "frase curta", "resumo": "o conceito em uma ou duas frases",
   "processo": "replica | modelagem", "formato": "Narrado", "idioma": "fr", "duracao_s": 63,
-  "referencia": { "rotulo": "Criativo 05 / anunciante + tema", "link": "URL ou null", "o_que_vem_dela": "..." },
+  "referencia": { "rotulo": "Criativo 03 / anunciante + tema", "link": "URL ou null", "o_que_vem_dela": "..." },
   "teste": { "id": "CIN-T002", "variavel": "...", "hipotese": "...", "vitoria": "...", "corte": "..." },
   "estrategia": { "consciencia": "...", "sofisticacao": "...", "lead": "...", "crenca": "...", "promessa": "...", "avatar": "..." },
   "anuncio": { "texto_principal": "...", "titulo": "...", "descricao": "...", "botao": "Acheter", "url": "...",
@@ -348,7 +348,7 @@ Aprovação dada no chat continua valendo: nesse caso o Claude registra com `ent
 }
 ```
 
-O `anuncio` (texto principal, título, descrição e botão) é obrigatório também para vídeo: o dono copia dali para o Gerenciador. Enquanto não estiver escrito, use `"anuncio": { "pendente": "motivo" }`. Nativo continua gravando o `copy_final_<idioma>.txt` (o painel lê os dois). Exemplo completo: `Criativo 29/ficha.json`.
+O `anuncio` (texto principal, título, descrição e botão) é obrigatório também para vídeo: o dono copia dali para o Gerenciador. Enquanto não estiver escrito, use `"anuncio": { "pendente": "motivo" }`. Nativo continua gravando o `copy_final_<idioma>.txt` (o painel lê os dois). Exemplo completo: `Criativo 13/ficha.json`.
 
 **Refação pedida no painel.** "Pedir ajuste" (card em produção) e "Refazer com anotações" (Visão geral) põem o pedido na fila; nada é gerado sozinho. Criativo já pronto com refação pedida continua na Biblioteca e aparece na coluna "Refação" da Produção até ser feito. Quando o dono disser "refaça os pedidos do painel" (ou "continue a esteira"):
 
@@ -362,7 +362,7 @@ O `anuncio` (texto principal, título, descrição e botão) é obrigatório tam
 ## Trabalho em equipe
 
 - Cada pessoa usa a própria chave do OpenRouter no `.env` (nunca commitar). O limite de gasto é por chave.
-- Antes de criar `Criativo NN/`, avisar o número no grupo para não haver duas pastas iguais.
+- Antes de criar a pasta, rodar `painel.py proximo --tipo ...` e avisar o código no grupo para não haver duas pastas iguais.
 - No Git vão só os textos (`.md`, `.json`) e as ferramentas. Imagens, takes e vídeos ficam na pasta compartilhada do time, na mesma estrutura de pastas.
 - Ao entregar um criativo:
   1. Atualizar as "Notas de produção" do roteiro.
@@ -370,10 +370,12 @@ O `anuncio` (texto principal, título, descrição e botão) é obrigatório tam
   3. Acrescentar a linha dele em [CRIATIVOS.md](CRIATIVOS.md) (formato, custo, lições) e o que ele ensinou no `FORMATO.md`.
   4. Fato do produto confirmado vai em [PRODUTOS.md](PRODUTOS.md); ferramenta ou opção nova, neste arquivo.
   5. Biblioteca da marca (`Variáveis/<Marca>.md`): conferir que as variáveis do criativo estão lá e marcá-las no painel (detalhe do criativo); na Modelagem, o teste passa a "entregue". O nome do anúncio no Gerenciador **sempre começa com o ID do criativo** (`C<NN> | <ID do teste> | <variável>: <valor>`): é assim que a sincronização da Meta liga os números ao criativo.
-  6. Registrar no Google Drive do time (ver "Registro no Google Drive", abaixo).
+  6. Conferir o título no painel (`Criativo #NN`, `Criativo Nativo #NN` ou `Criativo de Imagem #NN`) e usar esse nome ao falar do criativo com o time. O registro no Google Drive foi descontinuado em 2026-11-26.
   7. Commit e push dos textos.
 
-## Registro no Google Drive
+## Registro no Google Drive (descontinuado)
+
+> **Descontinuado em 2026-11-26.** Os criativos passam a ficar no projeto (painel e banco); a forma de guardar a mídia para o time está em definição (ARQUITETURA.md). Os títulos agora vêm do painel: uma sequência por tipo, sem buracos, gravada em `criativo_titulos` (o Criativo Nativo 05 do projeto é o **Criativo Nativo #05**, não mais o "Nativo #11" do Drive). O texto abaixo fica só como histórico.
 
 Todo criativo entregue vai também para o Drive do dono, que o time usa como registro: `Meu Drive > Business > Bisglicinato de Magnésio > Criativos`. Não há conector do Google nesta máquina: o registro é feito pelo **Claude in Chrome**, na conta já logada.
 
@@ -385,7 +387,7 @@ Todo criativo entregue vai também para o Drive do dono, que o time usa como reg
    - Duplicar a última aba do mesmo tipo (menu ⋮ > Duplicar) e renomear.
    - Nativo: na linha **IMAGEM**, trocar o link pelo do arquivo novo (`https://drive.google.com/file/d/<ID>/view?usp=drive_link`; o ID está no atributo `data-id` da linha do arquivo no Drive).
    - Trocar o texto abaixo: cursor no início da segunda linha, Ctrl+Shift+End e **Ctrl+Shift+V** (texto simples, mantém a formatação do documento). O texto vai para a área de transferência abrindo o `.txt` num servidor local (`python -m http.server --bind 127.0.0.1`) e usando `navigator.clipboard.writeText` naquela aba.
-   - Conferir cada aba depois de colar (primeira linha e link). No 19–28, uma colagem falhou e foi refeita.
+   - Conferir cada aba depois de colar (primeira linha e link). No Nativo 05–14, uma colagem falhou e foi refeita.
 
 ## Regras que valem para todo criativo
 
@@ -415,7 +417,7 @@ Todo criativo entregue vai também para o Drive do dono, que o time usa como reg
 |--------|-------|--------|
 | `dados.py` | todas | ponte com o banco do negócio (Supabase, ver [ARQUITETURA.md](ARQUITETURA.md)): `contexto <oferta>` (portão de contexto), `buscar <link/arquivo>` ("já vi?"), `parecidos "<texto>"`, `capturar <oferta> <etapa>` (página do funil; Shopify bloqueia, então `--arquivo` com o texto do Chrome), `gravar <tabela> <json>`, `embeddings`, `sql` (só leitura). Precisa de `SUPABASE_DB_URL` no `.env` |
 | `painel.py` | todas | painel local (produção, biblioteca, anotação por tempo, métricas, comparação, variáveis); `esteira` lista o que está com o Claude; `entrar C<NN>` põe na esteira; `entregar C<NN> --etapa --custo` manda a etapa para aprovação; `fila` lista os pedidos de refação; `feita <ids> --resposta` fecha |
-| `meta.py` | entrega, resultados | Marketing API ([META.md](META.md)): `verificar`, `sincronizar` (números diários por anúncio), `ligar <ad_id> <C19>`, `sem-criativo`, `publicar` (sempre PAUSADO; ensaio sem `--confirmar`) |
+| `meta.py` | entrega, resultados | Marketing API ([META.md](META.md)): `verificar`, `sincronizar` (números diários por anúncio), `ligar <ad_id> <CN05>`, `sem-criativo`, `publicar` (sempre PAUSADO; ensaio sem `--confirmar`) |
 | `analisar_referencia.py` | 1, M1 | transcrição com tempo por palavra, cortes, folhas com tempo, hook denso (0,25 s) e `evidencias.md` (ritmo de cortes, palavras nos 3 s, palavras/s, pausas, volume, fundo sob a voz) |
 | `prompt_de.py` | 3 | lê o prompt de uma seção `## ID` de `prompts_imagens.md` |
 | `gerar_imagem.py` | 3 | gera ou edita imagem com Nano Banana (aceita vários `--ref`) |

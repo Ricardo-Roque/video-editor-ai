@@ -2,9 +2,9 @@
 frame by frame, while hands, markers and hair that pass in front of the board stay from the take.
 
 Usage:
-  python -I -X utf8 tools/quadro_nitido.py --take "Criativo 13/takes/T05_360p_v2.mp4" \
-      --image "Criativo 13/imagens/cenas/C5_v2.png" --region 0,55,360,305 \
-      --out "Criativo 13/takes/T05_quadro_v1.mp4"
+  python -I -X utf8 tools/quadro_nitido.py --take "Criativo 11/takes/T05_360p_v2.mp4" \
+      --image "Criativo 11/imagens/cenas/C5_v2.png" --region 0,55,360,305 \
+      --out "Criativo 11/takes/T05_quadro_v1.mp4"
 
 --region is x0,y0,x1,y1 in take pixels (360x640): the part of the board to replace.
 How it works:

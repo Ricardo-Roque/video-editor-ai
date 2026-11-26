@@ -1,0 +1,119 @@
+{
+ "size": [
+  1080,
+  1350
+ ],
+ "background": "#FFFFFF",
+ "out": "Criativos Exemplo/Imagem/Criativo de Imagem 02/imagens/final_v10.png",
+ "layers": [
+  {
+   "type": "image",
+   "src": "Criativos Exemplo/Imagem/Criativo de Imagem 02/imagens/E5_v1.png",
+   "box": [
+    0,
+    0,
+    1080,
+    1350
+   ]
+  },
+  {
+   "type": "rect",
+   "box": [
+    0,
+    0,
+    1080,
+    300
+   ],
+   "fill": "#A3261C"
+  },
+  {
+   "type": "text",
+   "text": "PIEDS GELÉS AU LIT APRÈS 55 ANS ?\nC'EST LA CIRCULATION.",
+   "font": "impact.ttf",
+   "size": 84,
+   "fill": "#FFFFFF",
+   "xy": [
+    540,
+    28
+   ],
+   "anchor": "ma",
+   "max_width": 1010,
+   "fit": true,
+   "line_spacing": 1.0
+  },
+  {
+   "type": "text",
+   "text": "« Les analyses sont bonnes », vos pieds disent le contraire",
+   "font": "arial.ttf",
+   "size": 38,
+   "fill": "#FFFFFF",
+   "xy": [
+    540,
+    232
+   ],
+   "anchor": "ma",
+   "max_width": 1010,
+   "fit": true
+  },
+  {
+   "type": "circle",
+   "center": [
+    140,
+    420
+   ],
+   "r": 92,
+   "fill": "#D4A63A",
+   "outline": "#9C7420",
+   "width": 6
+  },
+  {
+   "type": "text",
+   "text": "30 JOURS",
+   "font": "impact.ttf",
+   "size": 44,
+   "fill": "#7A1E14",
+   "xy": [
+    140,
+    366
+   ],
+   "anchor": "ma"
+  },
+  {
+   "type": "text",
+   "text": "SATISFAIT OU\nREMBOURSÉ",
+   "font": "arialbd.ttf",
+   "size": 20,
+   "fill": "#7A1E14",
+   "xy": [
+    140,
+    418
+   ],
+   "anchor": "ma",
+   "line_spacing": 1.05
+  },
+  {
+   "type": "rect",
+   "box": [
+    0,
+    1250,
+    1080,
+    100
+   ],
+   "fill": "#F3E9D8"
+  },
+  {
+   "type": "text",
+   "text": "2 ACHETÉS = 1 OFFERT  ·  UNE CAPSULE PAR JOUR",
+   "font": "impact.ttf",
+   "size": 50,
+   "fill": "#A3261C",
+   "xy": [
+    540,
+    1270
+   ],
+   "anchor": "ma",
+   "max_width": 1020,
+   "fit": true
+  }
+ ]
+}

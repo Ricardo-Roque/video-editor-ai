@@ -31,7 +31,7 @@ Variável que reaparece ganha a evidência nova na mesma linha; não duplicar.
 
 `| Teste | Data | Criativo | Vencedoras empilhadas | Variável em teste | Hipótese | Vence se | Perde se | Status | Resultado |`
 
-- **Teste**: prefixo + `T` + número (`CIN-T001`). O mesmo ID vai no nome do anúncio no Gerenciador: `C<NN> | <ID> | <variável>: <valor>`.
+- **Teste**: prefixo + `T` + número (`CIN-T001`). O mesmo ID vai no nome do anúncio no Gerenciador: `<código> | <ID> | <variável>: <valor>` (código do criativo: C03, CN05, CI01).
 - **Vencedoras empilhadas**: IDs das variáveis da tabela acima.
 - **Variável em teste**: `<variável>: <valor atual> → <valor novo>`.
 - **Status**: `proposto`, `em produção`, `entregue` (pronto, sem confirmação de que está no ar), `no ar`, `vencedor`, `perdedor`, `inconclusivo`.

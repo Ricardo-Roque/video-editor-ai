@@ -44,8 +44,13 @@ async function api(path, body) {
   return j;
 }
 
-// Nome de exibição: "Criativo #05" (o ID C05 continua por baixo).
-const nomeC = (id) => (id ? "Criativo #" + String(id).replace(/^C/, "") : "");
+// Título de exibição: "Criativo #13", "Criativo Nativo #05", "Criativo de Imagem #01" (uma sequência por tipo, vem do
+// próprio código: C03 / CN05 / CI01). O código é também o começo do nome da pasta e do anúncio na Meta ("CN05 | ...").
+const SERIE_COD = { C: ["Criativo", "#"], CN: ["Criativo Nativo", "Nativo #"], CI: ["Criativo de Imagem", "Imagem #"] };
+const partesCod = (id) => { const m = /^(C[NI]?)(\d{2,3})$/.exec(id || ""); return m ? [SERIE_COD[m[1]], m[2]] : null; };
+const nomeC = (id) => { const p = partesCod(id); return p ? `${p[0][0]} #${p[1]}` : id || ""; };
+// Versão curta para gráficos e listas apertadas: "#13", "Nativo #05", "Imagem #01".
+const curtoC = (id) => { const p = partesCod(id); return p ? p[0][1] + p[1] : id || ""; };
 let toastT;
 function toast(msg, ms = 4000) {
   const t = $("#toast"); t.textContent = msg; t.hidden = false;
@@ -182,7 +187,7 @@ const miniImg = (c, cls = "mini") => {
   return u ? `<img class="${cls}" src="${u}" loading="lazy" alt="" data-espiar="${c.id}">` : `<span class="${cls}"></span>`;
 };
 
-// Prévia flutuante: qualquer elemento com data-espiar="C05" mostra o criativo tocando ao lado do cursor.
+// Prévia flutuante: qualquer elemento com data-espiar="C03" mostra o criativo tocando ao lado do cursor.
 const espiar = $("#espiar");
 let espiarId = null;
 document.addEventListener("mouseover", (e) => {
@@ -194,7 +199,7 @@ document.addEventListener("mouseover", (e) => {
   const img = capaDe(c, 400);
   espiar.innerHTML = (img ? `<img src="${img}" alt="">` : "")
     + (c.capa_video && !reduzMovimento ? `<video src="${c.capa_video}#t=1.5" muted autoplay loop playsinline></video>` : "")
-    + `<div class="leg">${c.id} · ${esc(c.formato || "")}</div>`;
+    + `<div class="leg">${esc(nomeC(c.id))} · ${esc(c.formato || "")}</div>`;
   espiar.classList.add("on");
 });
 document.addEventListener("mousemove", (e) => {
@@ -496,7 +501,7 @@ function cardCriativo(c, i) {
       ${c.capa_video ? `<span class="play">${ICONE.play}</span>` : ""}
     </div>
     <div class="pe">
-      <div class="linha">${badgeStatus(c.status)}<span class="muted small">${c.drive_nome ? esc(c.drive_nome.replace("Criativo ", "")) : c.nota != null ? "nota " + c.nota : ""}</span></div>
+      <div class="linha">${badgeStatus(c.status)}<span class="muted small">${c.nota != null ? "nota " + c.nota : ""}</span></div>
       ${m.tem_dados ? `<div class="kpis-mini"><div><b>${F.money(m.gasto)}</b><span>gasto</span></div><div><b>${F.int(m.compras)}</b><span>compras</span></div><div><b>${F.x(m.roas)}</b><span>ROAS</span></div></div>`
       : `<div class="muted small">${c.tipo === "video" ? "vídeo" : "imagem"} · sem números ainda</div>`}
     </div></a>`;
@@ -534,7 +539,7 @@ async function telaBiblioteca(vivo) {
       <div class="tile spot entra" style="--i:3"><div class="rot">${ICONE.lapis}Anotações</div><div class="val">${numero(abertas, "int")}</div><div class="sub">${fila} na fila de refação</div></div>
     </div>
     <div class="barra-ferramentas">
-      <div class="busca">${ICONE.busca}<input id="f-busca" placeholder="Buscar #05, formato, oferta, variável…" value="${esc(f.busca)}"></div>
+      <div class="busca">${ICONE.busca}<input id="f-busca" placeholder="Buscar Nativo #05, formato, oferta, variável…" value="${esc(f.busca)}"></div>
       <div class="segmentado" id="f-tipo"><button data-v="">Todos</button><button data-v="video">Vídeo</button><button data-v="nativo">Imagem</button></div>
       <select id="f-status"><option value="">Todos os status</option>${Object.entries(STATUS).filter(([k]) => k !== "em_producao").map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}</select>
       <label class="chave"><input type="checkbox" id="f-rodou" ${f.rodou ? "checked" : ""}><span class="trilho"></span>Só os que rodaram</label>
@@ -550,7 +555,7 @@ async function telaBiblioteca(vivo) {
     let l = cs.filter((c) =>
       (!g.tipo || (g.tipo === "video" ? c.tipo === "video" : c.tipo !== "video")) &&
       (!g.status || c.status === g.status) && (!g.rodou || c.metricas.tem_dados) &&
-      (!g.busca || [c.id, nomeC(c.id), "#" + c.id.slice(1), c.formato, c.descricao, c.drive_nome, c.marca_nome, c.produto_nome, c.oferta_id, c.oferta_nome, ...c.variaveis.map((v) => v.valor + " " + v.id)].join(" ").toLowerCase().includes(g.busca)));
+      (!g.busca || [c.titulo, curtoC(c.id), c.formato, c.descricao, c.marca_nome, c.produto_nome, c.oferta_id, c.oferta_nome, ...c.variaveis.map((v) => v.valor + " " + v.id)].join(" ").toLowerCase().includes(g.busca)));
     const k = { compras: (c) => c.metricas.compras || 0, roas: (c) => c.metricas.roas || 0, gasto: (c) => c.metricas.gasto || 0, nota: (c) => c.nota || 0, anot: (c) => (c.anotacoes.aberta || 0) + (c.anotacoes.pedida || 0) }[g.ordem];
     if (k) l = [...l].sort((a, b) => k(b) - k(a));
     $("#grade").innerHTML = l.map(cardCriativo).join("") || vazio("Nada com esses filtros.");
@@ -738,7 +743,7 @@ async function telaCriativo(cid, vivo) {
   const abaInicial = !naProducao ? "geral" : ["analise", "roteiro"].includes(d.esteira.etapa) ? "copy" : ["imagens", "takes"].includes(d.esteira.etapa) ? "midia" : "geral";
   app.innerHTML = `
     <a class="voltar" href="${naProducao ? "#/producao" : "#/"}">${ICONE.voltar}${naProducao ? "Produção" : "Biblioteca"}</a>
-    ${cabeca(`${nomeC(d.id)} <span style="margin-left:8px;vertical-align:middle">${badgeStatus(d.status)}</span>`, [d.ficha?.titulo, d.formato, d.drive_nome, d.processo && (d.processo === "modelagem" ? "Modelagem" : "Réplica"), d.pasta].filter(Boolean).map(esc).join(" · "))}
+    ${cabeca(`${nomeC(d.id)} <span style="margin-left:8px;vertical-align:middle">${badgeStatus(d.status)}</span>`, [d.ficha?.titulo, d.formato, d.processo && (d.processo === "modelagem" ? "Modelagem" : "Réplica")].filter(Boolean).map(esc).join(" · ") + ` · <span class="muted" title="Código interno: pasta ${esc(d.pasta || "")}; o nome do anúncio na Meta começa com ${d.id} |">código ${d.id}</span>`)}
     <div style="margin:-8px 0 18px">${tagsDe(d)}</div>
     ${naProducao ? barraEsteira(d) : ""}
     <nav class="abas" id="abas">${abas.map(([k, r]) => `<button data-aba="${k}" class="${k === abaInicial ? "ativa" : ""}">${r}</button>`).join("")}</nav>
@@ -784,7 +789,7 @@ async function telaCriativo(cid, vivo) {
         <div class="caixa">
           <h2>Retenção <span class="direita">de quem deu play</span></h2>
           ${m.curva ? graficoRetencao([
-            { nome: "#" + d.id.slice(1), cor: "var(--series-1)", pontos: pontosCurva(m, v0.duracao) },
+            { nome: curtoC(d.id), cor: "var(--series-1)", pontos: pontosCurva(m, v0.duracao) },
             { nome: "Média " + (d.oferta_id ? "da oferta" : "geral"), cor: "var(--ref)", ref: true, pontos: pontosCurva(media, null) },
           ], { dur: v0.duracao, takes: v0.takes || [], marcas: d.anotacoes_lista.filter((a) => a.arquivo === v0.arquivo) })
             + `<p class="small muted" style="margin:8px 0 0">Linhas verticais: troca de take. Triângulos: anotações. Pontos: 3 s, 25%, 50%, 75%, 95% e 100%.</p>`
@@ -1126,17 +1131,17 @@ async function telaComparar(ids, vivo) {
     const validos = vals.filter((v) => v != null);
     const melhor = x.melhor && validos.length > 1 ? (x.melhor === "alto" ? Math.max(...validos) : Math.min(...validos)) : null;
     return `<div class="caixa spot" style="margin:0"><h2>${x.rot}<span class="direita">média ${F[x.f](media[x.k])}</span></h2>
-      ${ds.map((d, i) => `<div class="barra" style="--c:${cores[i]}"><b>#${d.id.slice(1)}${vals[i] != null && vals[i] === melhor ? " ★" : ""}</b>
+      ${ds.map((d, i) => `<div class="barra" style="--c:${cores[i]}"><b>${esc(curtoC(d.id))}${vals[i] != null && vals[i] === melhor ? " ★" : ""}</b>
         <div class="trilho"><div class="enche" style="width:${vals[i] == null ? 0 : (vals[i] / max) * 100}%"></div></div><span class="num" style="text-align:right">${F[x.f](vals[i])}</span></div>`).join("")}
     </div>`;
   }).join("");
   app.innerHTML = `<a class="voltar" href="#/metricas">${ICONE.voltar}Métricas</a>`
-    + cabeca(`Comparando ${ds.map((d) => "#" + d.id.slice(1)).join(" × ")}`, `★ = melhor do grupo · média de ${esc(rotuloEscopo())}. Com pouco gasto a diferença pode ser acaso.`, `<button class="btn" id="tocar">${ICONE.play}Tocar todos juntos</button>`)
+    + cabeca(`Comparando ${ds.map((d) => esc(curtoC(d.id))).join(" × ")}`, `★ = melhor do grupo · média de ${esc(rotuloEscopo())}. Com pouco gasto a diferença pode ser acaso.`, `<button class="btn" id="tocar">${ICONE.play}Tocar todos juntos</button>`)
     + `<div class="comp-cards" style="grid-template-columns:repeat(${ds.length}, minmax(150px, 230px));margin-bottom:16px">
         ${ds.map((d, i) => `<a class="comp-card entra" style="--i:${i}" href="#/c/${d.id}"><div class="thumb" style="--c:${cores[i]}">${d.capa_video ? `<video src="${d.capa_video}" muted playsinline preload="metadata" poster="${capaDe(d, 360)}"></video>` : capaDe(d) ? `<img src="${capaDe(d, 360)}" alt="">` : `<div class="sem-midia">sem mídia</div>`}<div class="vinheta"></div>${tagsDe(d, { curto: true })}<div class="base"><div class="id">${nomeC(d.id)}</div><div class="fmt">${esc(d.formato || "")}</div></div></div></a>`).join("")}
       </div>
       <div class="caixa"><h2>Retenção</h2>${graficoRetencao([
-        ...ds.map((d, i) => ({ nome: "#" + d.id.slice(1), cor: cores[i], pontos: pontosCurva(d.metricas, null) })),
+        ...ds.map((d, i) => ({ nome: curtoC(d.id), cor: cores[i], pontos: pontosCurva(d.metricas, null) })),
         { nome: "Média", cor: "var(--ref)", ref: true, pontos: pontosCurva(media, null) },
       ])}</div>
       <div class="comparar spot-area">${barras}</div>`;
@@ -1202,7 +1207,7 @@ async function telaAnuncios(vivo) {
   const opcoes = l.criativos.filter((c) => !escopoAtivo() || noEscopo(c));
   const sem = lista.filter((x) => !x.criativo_id).length;
   app.innerHTML = cabeca("Anúncios", `${escopoAtivo() ? `<b>${esc(rotuloEscopo())}</b> · ` : ""}${lista.length} anúncio(s) · ${sem} sem criativo`, filtroEscopo())
-    + `<div class="aviso">O anúncio liga sozinho quando o nome começa com o ID do criativo ("C19 | ..."). Os outros, clique em "Ligar". A ligação manual não é desfeita pela sincronização.</div>
+    + `<div class="aviso">O anúncio liga sozinho quando o nome começa com o código do criativo ("CN05 | ..."). Os outros, clique em "Ligar". A ligação manual não é desfeita pela sincronização.</div>
     <div class="tabela-wrap"><table class="tabela-padrao">
       <thead><tr><th class="previa">Prévia</th><th class="esq">Criativo</th><th class="esq">Anúncio</th><th class="esq">Campanha</th><th>Status</th><th>Gasto</th><th></th></tr></thead>
       <tbody>${lista.map((x, i) => { const c = porId(x.criativo_id); return `<tr class="entra" style="--i:${Math.min(i, 20)}">
@@ -1221,7 +1226,7 @@ async function telaAnuncios(vivo) {
     modal({
       titulo: x.criativo_id ? "Trocar criativo do anúncio" : "Ligar anúncio a um criativo", sub: esc(x.nome), botao: "Ligar",
       corpo: `<div class="modal-campos">
-          ${campo("Buscar", `<input id="lg-busca" placeholder="#19, oferta, formato" autocomplete="off">`, "inteiro")}
+          ${campo("Buscar", `<input id="lg-busca" placeholder="Nativo #05, oferta, formato" autocomplete="off">`, "inteiro")}
           ${campo("Criativo", `<select name="criativo_id" size="8">${opc(opcoes)}</select>`, "inteiro")}
         </div>${escopoAtivo() ? `<p class="small muted" style="margin:10px 0 0">Mostrando só os criativos de <b>${esc(rotuloEscopo())}</b>.</p>` : ""}`,
       aoAbrir: (f) => {
@@ -1342,7 +1347,7 @@ async function telaOfertas(vivo) {
       `<button class="btn" data-nova="marca">${ICONE.mais}Nova marca</button>
        <button class="btn" data-nova="produto" ${semMarca ? "disabled title='Crie uma marca antes'" : ""}>${ICONE.mais}Novo produto</button>
        <button class="btn primario" data-nova="oferta" ${semProduto ? "disabled title='Crie um produto antes'" : ""}>${ICONE.mais}Nova oferta</button>`)
-    + (semOferta.length ? `<div class="aviso">${semOferta.length} criativo(s) sem oferta: ${semOferta.slice(0, 12).map((c) => `<a href="#/c/${c.id}"><b>#${c.id.slice(1)}</b></a>`).join(", ")}${semOferta.length > 12 ? "…" : ""}. Abra cada um e clique em "Definir oferta".</div>` : "")
+    + (semOferta.length ? `<div class="aviso">${semOferta.length} criativo(s) sem oferta: ${semOferta.slice(0, 12).map((c) => `<a href="#/c/${c.id}"><b>${esc(curtoC(c.id))}</b></a>`).join(", ")}${semOferta.length > 12 ? "…" : ""}. Abra cada um e clique em "Definir oferta".</div>` : "")
     + `<div class="arvore">${marcas.map((mc) => `
       <div class="caixa"><h2><span class="tag marca"><i></i>${esc(mc.nome)}</span><span class="muted small">prefixo ${esc(mc.prefixo)}</span>
         <span class="acoes-linha direita"><button class="btn mini fantasma" data-editar-marca="${esc(mc.id)}">${ICONE.lapis}Editar</button><button class="btn mini fantasma" data-nova="produto" data-marca="${esc(mc.id)}">${ICONE.mais}Produto</button><button class="btn mini" data-escopo-marca="${esc(mc.id)}">${ICONE.filtro}Ver criativos</button></span></h2>
@@ -1493,8 +1498,8 @@ async function rota() {
   $$("video", app).forEach((v) => { v.pause(); v.removeAttribute("src"); v.load(); });
   try {
     let m;
-    if ((m = h.match(/^#\/c\/(C\d{2,3})$/))) await telaCriativo(m[1], vivo);
-    else if ((m = h.match(/^#\/comparar\/([C\d,]+)$/))) await telaComparar(m[1].split(","), vivo);
+    if ((m = h.match(/^#\/c\/(C[NI]?\d{2,3})$/))) await telaCriativo(m[1], vivo);
+    else if ((m = h.match(/^#\/comparar\/([CNI\d,]+)$/))) await telaComparar(m[1].split(","), vivo);
     else if (h === "#/metricas") await telaMetricas(vivo);
     else if (h === "#/variaveis") await telaVariaveis(vivo);
     else if (h === "#/anuncios") await telaAnuncios(vivo);

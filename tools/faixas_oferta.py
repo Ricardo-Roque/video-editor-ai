@@ -3,8 +3,8 @@
 They are pasted over the whole video with a montagem.json overlay {"mode": "patch", "x": 0, "y": 0}.
 
 Usage:
-  python -I -X utf8 tools/faixas_oferta.py --style stock --out "Criativo 11/imagens/cenas/O1_faixas_v1.png"
-  python -I -X utf8 tools/faixas_oferta.py --style surstock --brand Cinnarae --out "Criativo 12/imagens/cenas/O1_faixas_v1.png"
+  python -I -X utf8 tools/faixas_oferta.py --style stock --out "Criativo 09/imagens/cenas/O1_faixas_v1.png"
+  python -I -X utf8 tools/faixas_oferta.py --style surstock --brand Cinnarae --out "Criativo 10/imagens/cenas/O1_faixas_v1.png"
 """
 import argparse
 
@@ -46,7 +46,7 @@ def box(img, x, y, text, font, fg, bg, pad=(18, 10), radius=6, emoji_ch=None):
 
 
 def stock(img):
-    """Criativo 11: red '2 ACHETÉS = 1 OFFERT 🚨' over white 'DANS LA LIMITE DES STOCKS', top left."""
+    """Criativo 09: red '2 ACHETÉS = 1 OFFERT 🚨' over white 'DANS LA LIMITE DES STOCKS', top left."""
     f = ImageFont.truetype(BOLD, 50)
     y = 150
     h = box(img, 30, y, "2 ACHETÉS = 1 OFFERT", f, "white", RED, emoji_ch="🚨")
@@ -54,7 +54,7 @@ def stock(img):
 
 
 def surstock(img, brand):
-    """Criativo 12: white 'On a produit trop de <brand> 😭', dark 'AIDEZ-NOUS À VIDER / NOTRE ENTREPÔT', red circle."""
+    """Criativo 10: white 'On a produit trop de <brand> 😭', dark 'AIDEZ-NOUS À VIDER / NOTRE ENTREPÔT', red circle."""
     y = 150
     h = box(img, "center", y, f"On a produit trop de {brand}", ImageFont.truetype(BOLD, 44), "black", "white",
             emoji_ch="😭")

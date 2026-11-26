@@ -65,7 +65,7 @@ def main() -> int:
             dur = next((d for d in allowed if d >= dur), allowed[-1])
         total_s += dur
         persona = cfg["personas"][cfg["image_persona"][image]]
-        # "say" lets off-screen narration avoid "She says", which made Veo add a woman on screen (Criativo 11).
+        # "say" lets off-screen narration avoid "She says", which made Veo add a woman on screen (Criativo 09).
         prompt = f'{persona["scene"]} {persona["voice"]} {cfg.get("say", "She says:")} "{text}" {cfg["suffix"]}'
         out = base / cfg["out_dir"] / f'{take}{cfg.get("out_suffix", "")}.mp4'
         jobs.append((take, base / cfg["images"][image], dur, prompt, out, persona.get("seed")))

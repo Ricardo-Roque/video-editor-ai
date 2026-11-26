@@ -164,7 +164,7 @@ Para o teste escolhido:
 3. **Nada inventado que pareça fato**: número, estudo, pessoa real e citação só com fonte verificável (link no roteiro); fato do produto só de `PRODUTOS.md`; sem fonte, fica de fora.
 4. Entregar anotado frase a frase (função + elementos) e com a tradução de volta para o português (`comparativo_roteiro.md`). Quando a ideia ainda está aberta, propor antes 2 ou 3 ideias curtas (tema novo, estrutura, formato) para o dono escolher. Seguir "Como escrever o roteiro" do `FORMATO.md` do formato escolhido.
 5. Hooks e ângulos: seções 3 e 7 do `COPY.md`. Checklist da seção 9 antes de aprovar.
-6. Mesma copy em outro formato (como o 13, copy do 05 em Palestrinha): a copy não muda, a variável em teste é o formato; pular para M4.
+6. Mesma copy em outro formato (como o 11, copy do 03 em Palestrinha): a copy não muda, a variável em teste é o formato; pular para M4.
 
 ➡ **Aprovação:** roteiro inteiro.
 
@@ -175,7 +175,7 @@ Igual à Réplica: vídeo pelas Etapas 3 a 6 do `PROCESSO.md` (imagens uma a uma
 ## M5. Registro do teste
 
 - Na entrega, o teste muda para "no ar" na tabela de testes da biblioteca, com o número do criativo.
-- Nome do anúncio no Gerenciador: `C<NN> | <ID do teste> | <variável>: <valor>` (ex.: `C31 | CIN-T004 | autoridade: idade 40 → 65`). É o que liga o resultado ao teste, à mão hoje e automaticamente quando o projeto subir campanhas.
+- Nome do anúncio no Gerenciador: `<código> | <ID do teste> | <variável>: <valor>`, com o código do criativo (C03, CN05, CI01) (ex.: `C15 | CIN-T004 | autoridade: idade 40 → 65`). É o que liga o resultado ao teste, à mão hoje e automaticamente quando o projeto subir campanhas.
 - Seguir "Ao entregar um criativo" do `PROCESSO.md`.
 
 ## M6. Resultados

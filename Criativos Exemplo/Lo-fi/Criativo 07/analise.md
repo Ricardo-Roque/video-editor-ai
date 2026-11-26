@@ -1,64 +1,55 @@
 # Análise — Criativo 07
 
-Fonte: `Vídeo Bruto/Criativo #07.mp4`
-Formato: 9:16, 360x640, 30 fps, 1:11 (71,3 s), áudio AAC. Idioma: inglês.
+Fonte: `Vídeo Bruto/91e91073da204059ac8826d05643a76f.mp4`
+Formato: 9:16, 716x1284, 24 fps, 14,1 s. Idioma: inglês.
 Transcrição completa com timestamps: `referencia/transcript.txt`.
-Produto do novo criativo: **Cinnarae**. País: França. Idioma: francês.
+Produto do novo criativo: **Cinnarae** (gommes de bisglycinate de magnésium). País: França. Idioma: francês.
 
 ## Formato geral
 
-Depoimento "falso reclamão" (UGC): uma cliente diz que está "de saco cheio" da marca, mas a reclamação é só porque pagou preço cheio e agora há promoção. O resultado do produto aparece como prova social no meio da reclamação. Um único personagem, um único cenário.
+Selfie de "farmacêutica": mulher ~40 anos, cabelo castanho escuro longo ondulado, jaleco branco sobre suéter cor de ferrugem, gravando na frente das prateleiras de uma farmácia. Fala direto para a câmera, com um aceno de mão no meio. Um único plano, sem cortes.
 
 ## Estrutura
 
-| # | Tempo | Bloco | Cenário / enquadramento | Fala (resumo) |
-|---|-------|-------|-------------------------|---------------|
-| 1 | 0,0–11,7 | HOOK — reclamação | Selfie handheld, mulher ~40 anos, loira, cabelo ondulado no ombro, suéter cinza, cozinha americana (armários de madeira, geladeira com ímãs, plafon no teto). Gesto de "pare" com a mão. | "Estou de saco cheio das gomas de magnésio da SP Nutrition. Meninas, não comprem antes de ver isto. Comecei a tomar mês passado e..." |
-| 2 | 11,9–18,6 | PROVA — resultados | 11,85–13,98: B-roll da barriga lisa de jeans (corpo, sem rosto). 13,98–16,35: selfie com PiP de dois rostos (inchado × desinchado, antes/depois). Depois volta à selfie. | "...perdi 19 libras. Meu rosto está menos inchado de manhã e não acordo às 3h há semanas." |
-| 3 | 18,9–36,8 | VIRADA — oferta | Selfie; segura o pacote do produto (21,9–25,5). | "O problema não são os resultados. Descobri que estão com 20% off, brinde D3+K2 e frete grátis. Paguei preço cheio e sem brinde. Tá de brincadeira?" |
-| 4 | 36,9–59,6 | BODY — mecanismo e uso | Selfie; segura uma goma entre os dedos (43,5–59,6). | "Mas estou feliz mesmo assim. Foi a primeira coisa que parou meus despertares às 3h e tirou minha barriga. Tomo duas gomas toda noite. O bisglicinato de magnésio baixa meu cortisol à noite. Sem dieta maluca, sem rotina complicada." |
-| 5 | 60,0–71,0 | CTA — escassez | Selfie; segura o pacote (62,3–71). | "Estou um pouco brava por ter pago preço cheio. Mas se você ainda não tentou, não cometa meu erro. Fazem em pequenos lotes, esgota rápido. Garanta a oferta enquanto pode." |
+| # | Tempo | Bloco | Cenário / enquadramento | Fala |
+|---|-------|-------|-------------------------|------|
+| 1 | 0,0–3,2 | HOOK — dado | Selfie, close (peito para cima), prateleiras de remédios ao fundo. | "Mais de 70% das pessoas têm deficiência de magnésio." |
+| 2 | 3,5–7,0 | BODY — recomendação | Mesmo plano. | "Por isso eu recomendo o bisglicinato de magnésio da SP Nutrition." |
+| 3 | 7,4–12,1 | BODY — benefício | Mesmo plano; mão aberta entra no quadro (gesto). | "Ele acalma o cérebro e ajuda você a dormir até de manhã, sem acordar às 3h." |
+| 4 | 12,2–12,8 | CTA | Mesmo plano, sorriso final. | "Experimente." |
 
-Cortes secos: 11,85 · 13,98 · 16,35 · 18,91 · 21,95 · 25,55 · 36,35 · 43,48 · 62,25 s. Entre eles, jump cuts curtos (troca de take a cada 2–5 s).
+Cortes detectados: nenhum.
 
 ## Estilo de edição
 
-- Legenda: frase inteira (não palavra a palavra), caixa branca com texto preto bold, no centro-baixo do quadro. No Criativo 01 usamos legenda 1–3 palavras amarela/branca; aqui a referência usa caixa branca. **Decidir na montagem** (sugestão: manter nosso padrão, que já está pronto no `montar.py`).
-- B-roll: 1 plano de barriga de jeans (2 s) + PiP antes/depois de rosto (2,4 s).
-- Produto aparece: sim, pacote (pouch) e a goma na mão, em ~40% do vídeo.
-- Áudio: só voz, ritmo rápido, muita expressão facial e gestos.
+- Legenda: nenhuma na referência. Usaremos o padrão do `montar.py`.
+- B-roll / overlays: nenhum.
+- Produto aparece? Não.
+- Áudio: só voz.
 
 ## Imagens necessárias
 
-Personagem:
-1. **P1 — Cliente**: mulher francesa ~40 anos, cabelo castanho-claro/loiro-escuro ondulado no ombro, maquiagem leve, suéter de tricô cinza. Folha de referência.
+Personagens:
+1. **P1 — Farmacêutica**: francesa ~40 anos, cabelo castanho escuro longo ondulado, jaleco branco sobre suéter ferrugem, colar fino. Folha de referência.
 
 Cenas:
-2. **B1 — Selfie cozinha**: P1 em selfie, cozinha francesa (ver adaptações), mãos livres/gesto. Base de hook, virada, body e CTA.
-3. **B1b — Selfie segurando o pacote Cinnarae**: precisa da **foto real da embalagem** como `--ref`.
-4. **B1c — Selfie segurando uma goma/cápsula**: depende do formato do produto.
-5. **O1 — Barriga de jeans** (B-roll, sem rosto). ⚠ política (ver abaixo).
-6. **O2a/O2b — Rosto inchado × desinchado** (PiP). ⚠ política.
+2. **B1 — Selfie na farmácia**: P1 em selfie, atrás do balcão de uma pharmacie francesa (prateleiras brancas com caixas de remédios, etiquetas, luz fria de teto). Sem marca real visível, sem cruz verde legível para não parecer farmácia real identificável.
 
-Total: ~6–7 imagens × US$ 0,04 ≈ **US$ 0,30** (com 1 refação cada, ~US$ 0,55).
+Total: 2 imagens × US$ 0,04 ≈ **US$ 0,08** (com refação, ~US$ 0,16).
 
 ## Takes estimados
 
-- ~65 s de fala em ~10 takes de 5–9 s (B1, B1b, B1c).
-- O1 e O2 são imagens estáticas com zoom leve na montagem (custo 0), ou 2 takes curtos sem fala.
-- Custo estimado (360p, ~US$ 0,023/s): ~70 s × 0,023 ≈ **US$ 1,60**; com testes e correções, **~US$ 2,50**.
+- ~13 s de fala em francês, 2 takes (T01 dado + recomendação; T02 benefício + CTA).
+- Custo estimado (360p, ~US$ 0,023/s): ~14 s ≈ **US$ 0,32**; com 1 correção, **~US$ 0,45**.
 
 ## Adaptações culturais para a França
 
-- Libras → quilos (19 lb ≈ 8,6 kg, "presque 9 kilos" ou valor real do produto).
-- "3 am" → "3 h du matin".
-- Cozinha americana (madeira escura, geladeira grande com ímãs) → cozinha francesa de apartamento/casa: armários claros, azulejo metrô, cafeteira italiana ou Nespresso, baguete/fruteira, janela com venezianas.
-- Palavrão do hook ("fucking"): na França "putain" é comum, mas reduz entrega/aprovação no Meta. Sugestão: "J'en ai ras-le-bol de..." (estou de saco cheio).
-- "Ladies" → "Les filles".
-- Brindes, desconto, frete: trocar pela oferta real da Cinnarae.
+- "SP Nutrition" → "Cinnarae". O nome do produto fica "gommes de bisglycinate de magnésium" (igual à embalagem).
+- "3 a.m." → "3 h du matin".
+- O dado "70%": na França o estudo SU.VI.MAX mostrou ~72% dos homens e ~77% das mulheres abaixo da ingestão recomendada de magnésio. A frase continua verdadeira para o público francês (com a nuance "ingestão insuficiente", não "deficiência" clínica).
+- Farmácia americana → pharmacie francesa.
 
 ## Alertas de política (decisão sua)
 
-- **Depoimento fabricado**: pessoa gerada por IA dizendo "eu tomei e perdi X kg". Na França, a lei dos influenciadores (Loi n° 2023-451) exige a menção "Image virtuelle" em conteúdo comercial com rosto gerado por IA, e a DGCCRF trata depoimento inventado como prática comercial enganosa. Meta também pode reprovar.
-- **Antes/depois de corpo e rosto** (O1, O2): Meta proíbe imagens de antes/depois em anúncios de perda de peso.
-- **Alegações de saúde** (perder peso, tirar barriga, baixar cortisol, parar de acordar às 3h): não estão na lista autorizada da UE (Reg. 1924/2006) para suplementos. Vou marcar com ⚠ no roteiro e sugerir versões seguras.
+- **Profissional de saúde fictício**: farmacêutica gerada por IA recomendando o produto. Na França, farmacêuticos não podem fazer publicidade de produto (código de deontologia), e usar "jaleco + farmácia" pode ser visto como prática comercial enganosa pela DGCCRF. Também exige a menção "Image virtuelle" (Loi n° 2023-451). Meta pode reprovar por "falsa autoridade".
+- **Alegações de saúde**: "acalma o cérebro", "dormir até de manhã sem acordar às 3h" não estão na lista autorizada da UE para magnésio (autorizadas: "contribui para o funcionamento normal do sistema nervoso", "funções psicológicas normais", "redução do cansaço").

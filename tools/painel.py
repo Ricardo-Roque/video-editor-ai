@@ -6,8 +6,9 @@ Uso (a partir da raiz do projeto):
   python -I -X utf8 tools/painel.py fila                 pedidos de refação vindos do painel (para o Claude)
   python -I -X utf8 tools/painel.py feita <id> [<id>...] --resposta "o que foi feito, custo"
   python -I -X utf8 tools/painel.py esteira              cards com o Claude (fazer) e com o dono (aprovar)
-  python -I -X utf8 tools/painel.py entregar C29 --etapa roteiro --custo 0.42 --nota "..."   etapa pronta para aprovar
-  python -I -X utf8 tools/painel.py entrar C42 [--etapa fila]   põe um criativo novo na esteira
+  python -I -X utf8 tools/painel.py entregar C13 --etapa roteiro --custo 0.42 --nota "..."   etapa pronta para aprovar
+  python -I -X utf8 tools/painel.py entrar C23 [--etapa fila]   põe um criativo novo na esteira
+  python -I -X utf8 tools/painel.py proximo --tipo nativo  próximo código livre (C23 / CN15 / CI04) e nome da pasta
   python -I -X utf8 tools/painel.py usuario --email a@b.com --nome "Nome"   cria login (pede a senha)
 
 Login: usuários e sessões no Supabase (senha em scrypt, cookie HttpOnly de 30 dias). No primeiro
@@ -217,15 +218,45 @@ def url_midia(p: pathlib.Path) -> str:
     return "/media/" + quote(rel(p))
 
 
+# Código interno = título, uma sequência por tipo (migração 0007):
+#   vídeo  C03  "Criativo #03"           pasta "Criativo 03"            anúncio "C03 | ..."
+#   nativo CN05 "Criativo Nativo #05"    pasta "Criativo Nativo 05"     anúncio "CN05 | ..."
+#   imagem CI01 "Criativo de Imagem #01" pasta "Criativo de Imagem 01"  anúncio "CI01 | ..."
+COD = r"C[NI]?\d{2,3}"
+SERIES = {"C": ("video", "Criativo"), "CN": ("nativo", "Criativo Nativo"), "CI": ("imagem", "Criativo de Imagem")}
+PREFIXO = {v[1]: k for k, v in SERIES.items()}            # "Criativo Nativo" -> "CN"
+RE_PASTA = re.compile(r"(Criativo(?: Nativo| de Imagem)?) (\d{2,3})")
+
+
+def codigo_da_pasta(nome: str) -> str | None:
+    """'Criativo Nativo 05' -> 'CN05' (também aceita o começo de um nome de arquivo, ex.: 'Criativo 03 - FR.mp4')."""
+    m = RE_PASTA.match(nome)
+    return f"{PREFIXO[m.group(1)]}{int(m.group(2)):02d}" if m else None
+
+
+def serie_numero(cid: str) -> tuple[str, int]:
+    m = re.fullmatch(r"(C[NI]?)(\d{2,3})", cid)
+    return SERIES[m.group(1)][0], int(m.group(2))
+
+
+def titulo_de(cid: str) -> str:
+    m = re.fullmatch(r"(C[NI]?)(\d{2,3})", cid)
+    return f"{SERIES[m.group(1)][1]} #{int(m.group(2)):02d}"
+
+
+def ordem(cid: str) -> tuple:
+    s, n = serie_numero(cid)
+    return ({"video": 0, "nativo": 1, "imagem": 2}[s], n)
+
+
 def pastas_locais() -> dict:
-    """C<NN> -> pasta. A pasta na raiz (em produção) vence a de Criativos Exemplo."""
+    """Código -> pasta. A pasta na raiz (em produção) vence a de Criativos Exemplo."""
     res = {}
     bases = [d for d in EXEMPLOS.iterdir() if d.is_dir()] if EXEMPLOS.exists() else []
     for base in bases + [ROOT]:
         for d in base.iterdir():
-            m = re.fullmatch(r"Criativo (\d{2,3})", d.name)
-            if d.is_dir() and m:
-                res[f"C{int(m.group(1)):02d}"] = d
+            if d.is_dir() and RE_PASTA.fullmatch(d.name):
+                res[codigo_da_pasta(d.name)] = d
     return res
 
 
@@ -261,15 +292,15 @@ def linha_do_tempo(cfg_path: pathlib.Path) -> list[dict]:
 _PRONTOS = memo(5)
 
 
-def prontos_por_numero() -> dict:
-    """Vídeos Prontos listados uma vez só (antes: dois glob por criativo a cada montagem da lista)."""
+def prontos_por_codigo() -> dict:
+    """Vídeos Prontos listados uma vez só ('Criativo 03 - FR.mp4' -> C03)."""
     def calcular():
         out: dict = {}
         if PRONTOS.exists():
             for p in sorted(PRONTOS.iterdir()):
-                m = re.fullmatch(r"Criativo (\d{2,3})( .*)?\.mp4", p.name)
-                if m:
-                    out.setdefault(int(m.group(1)), []).append(p)
+                m = RE_PASTA.match(p.name)
+                if m and p.suffix.lower() == ".mp4" and p.name[m.end():m.end() + 1] in (" ", "."):
+                    out.setdefault(codigo_da_pasta(p.name), []).append(p)
         return out
     return _PRONTOS.pegar(calcular)
 
@@ -295,8 +326,7 @@ def midias(cid: str, pasta: pathlib.Path | None, completo: bool = True) -> dict:
                 out = None
             if out:
                 add(cfg.parent / out, cfg)
-    n = int(cid[1:])
-    for p in prontos_por_numero().get(n, []):
+    for p in prontos_por_codigo().get(cid, []):
             add(p, pasta / "montagem.json" if pasta and (pasta / "montagem.json").exists() else None)
     if pasta and not videos and (pasta / "montagem" / "final.mp4").exists():
         add(pasta / "montagem" / "final.mp4", pasta / "montagem.json")
@@ -414,23 +444,32 @@ def reler_pastas():
     _LISTA.limpar()
 
 
+def proximo_codigo(serie: str) -> str:
+    """Próximo código livre da série (para o Claude criar a pasta de um criativo novo)."""
+    usados = [serie_numero(c)[1] for c in {*pastas_locais(), *banco_lista()["banco"], *banco_lista()["est"]}
+              if serie_numero(c)[0] == serie]
+    pref = {"video": "C", "nativo": "CN", "imagem": "CI"}[serie]
+    return f"{pref}{max(usados, default=0) + 1:02d}"
+
+
 def _montar_lista() -> list[dict]:
     locais = pastas_locais()
     bl = banco_lista()
     banco, tot, notas, anot, vars_, est = bl["banco"], bl["tot"], bl["notas"], bl["anot"], bl["vars"], bl["est"]
-    ids = sorted(set(locais) | set(banco) | set(est), key=lambda x: int(x[1:]))
+    ids = sorted(set(locais) | set(banco) | set(est), key=ordem)
     out = []
     for cid in ids:
         b, pasta = banco.get(cid, {}), locais.get(cid)
         m = midias(cid, pasta, completo=False)
-        tipo = b.get("tipo") or ("video" if m["videos"] or (pasta and (pasta / "montagem.json").exists())
-                                 else "nativo" if m["copy"] else "video")
         formato = b.get("formato") or (pasta.parent.name if pasta and pasta.parent != ROOT else None)
+        serie, numero = serie_numero(cid)
+        tipo = b.get("tipo") or serie                # o código já diz o tipo
         capa = (m["videos"][0]["url"] if m["videos"] else None)
         capa_img = m["imagens"][-1]["url"] if (not capa and m["imagens"]) else None
         capa_arq = m["videos"][0]["arquivo"] if capa else (m["imagens"][-1]["arquivo"] if capa_img else None)
         out.append({
-            "id": cid, "tipo": tipo, "formato": formato,
+            "id": cid, "tipo": tipo, "formato": formato, "titulo": titulo_de(cid),
+            "serie": serie, "numero": numero,
             "status": b.get("status") or ("em_producao" if pasta and pasta.parent == ROOT else "entregue"),
             "no_banco": bool(b), "processo": b.get("processo"), "descricao": b.get("descricao"),
             "idioma": b.get("idioma"),
@@ -513,7 +552,7 @@ def esteira_acao(b: dict, autor: str) -> dict:
     """Ações do painel: aprovar a etapa, pedir ajuste, mover de etapa ou descartar."""
     cid, acao = b.get("criativo_id", ""), b.get("acao")
     comentario = (b.get("comentario") or "").strip() or None
-    if not re.fullmatch(r"C\d{2,3}", cid):
+    if not re.fullmatch(COD, cid):
         raise ValueError("Criativo inválido.")
     e = esteira_estado(cid)
     if not e:
@@ -749,7 +788,7 @@ def salvar_catalogo(tipo: str, b: dict) -> dict:
 def registrar_criativo(b: dict) -> dict:
     """Põe um criativo local na tabela criativos (ou troca a oferta de um que já está lá)."""
     cid = b.get("id", "")
-    if not re.fullmatch(r"C\d{2,3}", cid) or not b.get("oferta_id"):
+    if not re.fullmatch(COD, cid) or not b.get("oferta_id"):
         raise ValueError("Criativo e oferta são obrigatórios.")
     if DB.q("select 1 from criativos where id = %s", (cid,)):
         DB.q("update criativos set oferta_id = %s where id = %s", (b["oferta_id"], cid))
@@ -990,7 +1029,7 @@ class Handler(BaseHTTPRequestHandler):
                 reler_pastas()                    # arquivos novos aparecem; o banco vem do cache até o próximo POST
                 tot = totais()
                 return self._json({"criativos": lista_criativos(), "media": media_geral(tot)})
-            if m := re.fullmatch(r"/api/criativos/(C\d{2,3})", u.path):
+            if m := re.fullmatch(rf"/api/criativos/({COD})", u.path):
                 d = detalhe(m.group(1))
                 return self._json(d) if d else self._json({"erro": "não encontrado"}, 404)
             if u.path == "/api/fila":
@@ -1073,7 +1112,7 @@ class Handler(BaseHTTPRequestHandler):
             if u.path == "/api/anotacoes":
                 cid = b["criativo_id"]
                 texto = (b.get("texto") or "").strip()
-                if not re.fullmatch(r"C\d{2,3}", cid) or not texto:
+                if not re.fullmatch(COD, cid) or not texto:
                     return self._json({"erro": "criativo e texto são obrigatórios"}, 400)
                 tempo = b.get("tempo_s")
                 tempo = round(float(tempo), 2) if tempo is not None else None
@@ -1193,7 +1232,7 @@ def cmd_esteira(a):
         print(f"\n== {titulo}: {len(cs)}")
         for c in cs:
             e, p = c["esteira"], pastas.get(c["id"])
-            print(f"  {c['id']}  {ROTULO.get(e['etapa'], e['etapa']):<9} {c.get('formato') or '-':<12} "
+            print(f"  {c['id']}  {c.get('titulo') or '':<24} {ROTULO.get(e['etapa'], e['etapa']):<9} {c.get('formato') or '-':<12} "
                   f"{c.get('oferta_id') or 'sem oferta':<10} {rel(p) if p else '(sem pasta)'}"
                   + ("  [etapa deduzida dos arquivos]" if e["inferida"] else ""))
             if vez == "claude":
@@ -1228,6 +1267,13 @@ def cmd_entrar(a):
     print(f"{cid} na esteira, etapa {ROTULO[a.etapa]}.")
 
 
+def cmd_proximo(a):
+    """Próximo código livre do tipo, com o nome da pasta: a numeração é por tipo e sem buracos."""
+    cod = proximo_codigo(a.tipo)
+    serie, n = serie_numero(cod)
+    print(f"{cod}  pasta: {SERIES[re.match(r'C[NI]?', cod).group(0)][1]} {n:02d}  título: {titulo_de(cod)}")
+
+
 def cmd_usuario(a):
     import getpass
     senha = getpass.getpass("Senha (mín. 10 caracteres, não aparece na tela): ")
@@ -1259,6 +1305,8 @@ def main():
     p = sub.add_parser("entrar", help="põe um criativo novo na esteira")
     p.add_argument("criativo"); p.add_argument("--etapa", default="fila", choices=ETAPAS); p.add_argument("--nota", default=None)
     p.set_defaults(f=cmd_entrar)
+    p = sub.add_parser("proximo", help="próximo código livre de um tipo (vídeo, nativo, imagem)")
+    p.add_argument("--tipo", required=True, choices=["video", "nativo", "imagem"]); p.set_defaults(f=cmd_proximo)
     p = sub.add_parser("usuario", help="cria um usuário do painel (pede a senha no terminal)")
     p.add_argument("--email", required=True); p.add_argument("--nome", required=True); p.set_defaults(f=cmd_usuario)
     a = ap.parse_args()

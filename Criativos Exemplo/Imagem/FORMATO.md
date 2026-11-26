@@ -8,9 +8,9 @@ As primeiras referências vieram da Vitalia (mesmo produto da Cinnarae Cayenne),
 
 | Criativo | Tipo de imagem | Aspecto | Custo | Ver primeiro |
 |----------|----------------|---------|-------|--------------|
-| [32](Criativo%2032/) | oferta pura: "2 achetés. 1 offert." em serifa sobre três sachês numa prateleira, visual de catálogo creme e dourado | 1:1 | US$ 0,11 (sachê aprovado + 2 fotos) | `imagem.json`, rótulo nítido colado só na grade de ingredientes |
-| [33](Criativo%2033/) | foto POV do travesseiro (pés de meia de lã, sachê no criado-mudo) entre faixa de título vermelha e faixa de oferta | 4:5 | US$ 0,29 (com a refação passo a passo) | notas de produção: refação "uma coisa por vez" |
-| [34](Criativo%2034/) | carta tipográfica em fundo preto ("DERNIÈRE SÉRIE."), assinatura manuscrita | 4:5 | US$ 0,036 (só a assinatura) | aviso de escassez real (Code de la consommation L121-4) |
+| [CI01](Criativo%20de%20Imagem%2001/) | oferta pura: "2 achetés. 1 offert." em serifa sobre três sachês numa prateleira, visual de catálogo creme e dourado | 1:1 | US$ 0,11 (sachê aprovado + 2 fotos) | `imagem.json`, rótulo nítido colado só na grade de ingredientes |
+| [CI02](Criativo%20de%20Imagem%2002/) | foto POV do travesseiro (pés de meia de lã, sachê no criado-mudo) entre faixa de título vermelha e faixa de oferta | 4:5 | US$ 0,29 (com a refação passo a passo) | notas de produção: refação "uma coisa por vez" |
+| [CI03](Criativo%20de%20Imagem%2003/) | carta tipográfica em fundo preto ("DERNIÈRE SÉRIE."), assinatura manuscrita | 4:5 | US$ 0,036 (só a assinatura) | aviso de escassez real (Code de la consommation L121-4) |
 
 ## Por que prende
 

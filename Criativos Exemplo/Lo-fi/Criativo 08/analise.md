@@ -1,55 +1,59 @@
 # Análise — Criativo 08
 
-Fonte: `Vídeo Bruto/46a88423eae642f38dde02135256b9c9.mp4`
-Formato: 9:16, 720x1280, 24 fps, 13,1 s. Idioma: inglês.
+Fonte: `Vídeo Bruto/16a0e2791c4a476781ab3cb6c2429893.mp4`
+Formato: 9:16, 360x640, 30 fps, 43,2 s. Idioma: inglês.
 Transcrição completa com timestamps: `referencia/transcript.txt`.
-Produto do novo criativo: **Cinnarae** (gommes de bisglycinate de magnésium). País: França. Idioma: francês.
+Produto do novo criativo: **Cinnarae** (gommes de bisglycinate de magnésium, arôme framboise). Embalagem: `Referências/Sachê de Gomas de Magnésio Premium.png`. País: França. Idioma: francês.
 
 ## Formato geral
 
-Vídeo caseiro (UGC), câmera na mão de outra pessoa. Uma senhora de 72 anos mostra agilidade (está de quatro no chão e se levanta sozinha, descalça, num salto) e depois fala para a câmera, sorrindo. Um homem de ~50 anos (filho?) aparece rindo na borda esquerda do quadro. Um único cenário: quarto com cama, parquet, parede branca, porta de madeira.
+Depoimento UGC: mulher ~40 anos, cabelo castanho com fios grisalhos preso para trás, blusão de fleece colorido (azul-petróleo, rosa, roxo), sentada no balcão de mármore de uma cozinha clara (luminárias pendentes douradas, azulejo bege). Braços cruzados sobre o balcão, tom calmo e sério. **O pacote do produto fica em pé no balcão, à direita, o vídeo inteiro.** Câmera fixa (tripé ou celular apoiado), um único plano.
 
 ## Estrutura
 
 | # | Tempo | Bloco | Cenário / enquadramento | Fala |
 |---|-------|-------|-------------------------|------|
-| 1 | 0,0–1,8 | HOOK — demonstração | Plano aberto de cima, câmera na mão. Senhora de quatro no parquet, levanta-se de um impulso, fica em pé de frente para a câmera. Homem rindo à esquerda. | (sem fala) |
-| 2 | 1,8–5,7 | HOOK — prova | Plano médio (joelhos para cima), ela em pé, sorrindo, braços soltos. | "Essa sou eu aos 72 e me sinto 10 anos mais jovem." |
-| 3 | 6,5–12,9 | BODY + CTA | Mesmo plano; gesto de polegar/mão na frente do peito. | "Grande parte disso foi tomar SP Nutrition, que me dá energia, então sugiro que você experimente." |
+| 1 | 0,0–6,0 | HOOK — problema | Plano médio, braços cruzados no balcão, pacote à direita. | "Eu acordava toda noite por volta das 3h. Coração acelerado, cabeça a mil, não conseguia voltar a dormir, não importava o que eu tentasse." |
+| 2 | 6,0–14,0 | BODY — autoridade/mecanismo | Mesmo plano. | "Minha irmã é neurologista. Ela me disse que meu cortisol estava disparando no meio da noite. Minha resposta ao estresse estava basicamente quebrada." |
+| 3 | 14,0–20,0 | BODY — solução | Mesmo plano; toca o braço (gesto). | "Ela recomendou que eu experimentasse as gomas de bisglicinato de magnésio da SP Nutrition, duas antes de dormir, toda noite." |
+| 4 | 20,0–30,0 | BODY — resultados | Mesmo plano. | "Na primeira semana, minha mente ficou mais quieta. Na segunda semana, eu estava dormindo a noite toda. Nada mais de acordar às 3h. Já faz dois meses." |
+| 5 | 30,2–40,0 | BODY — transformação | Mesmo plano. | "Minha ansiedade sumiu. Minha energia dura o dia todo. Não grito mais com meus filhos. Acordo e me sinto uma pessoa de novo." |
+| 6 | 40,0–43,0 | CTA | Mesmo plano. | "Se uma neurologista me mandou tomar, eu não vou parar. O link está abaixo se você quiser experimentar." |
 
-Cortes detectados: nenhum (plano-sequência). A câmera só se aproxima um pouco depois que ela se levanta.
+Cortes detectados: nenhum (há micro jump cuts invisíveis; o enquadramento não muda).
 
 ## Estilo de edição
 
-- Legenda: nenhuma na referência. Usaremos o padrão do `montar.py` (1–3 palavras, amarelo/branco).
+- Legenda: frase curta (1 linha e meia), branca bold com sombra, centralizada na altura do peito. Usaremos o padrão do `montar.py` (1–3 palavras), já validado nos outros criativos.
 - B-roll / overlays: nenhum.
-- Produto aparece? Não. Só é citado na fala.
-- Áudio: só voz, ambiente de casa (risos do homem ao fundo).
+- Produto aparece? **Sim, o tempo todo**, em pé no balcão. Será trocado pelo pacote Cinnarae.
+- Áudio: só voz.
 
 ## Imagens necessárias
 
 Personagens:
-1. **P1 — Senhora**: francesa ~72 anos, magra, cabelo grisalho preso, sorriso largo, camiseta cinza-mescla manga 3/4 e saia de moletom cinza com cordão, descalça. Folha de referência.
+1. **P1 — Mulher**: francesa ~40–45 anos, cabelo castanho com fios grisalhos, rabo de cavalo baixo, sem maquiagem, blusão de fleece colorido. Folha de referência.
 
 Cenas:
-2. **H1 — No chão**: P1 de quatro no parquet ao lado da cama, quarto francês (parquet à bâtons rompus, parede branca, porta de madeira), homem rindo na borda esquerda. Plano de cima, câmera na mão.
-3. **B1 — Em pé falando**: P1 em pé, plano médio, mesmo quarto, homem parcialmente na borda esquerda. Base das falas.
+2. **B1 — Balcão com o pacote**: P1 sentada no balcão de mármore, braços cruzados, cozinha clara com luminárias douradas, **pacote Cinnarae em pé à direita** (foto da embalagem como `--ref`). Base de todas as falas.
 
-Total: 3 imagens × US$ 0,04 ≈ **US$ 0,12** (com 1 refação cada, ~US$ 0,24).
+Total: 2 imagens × US$ 0,04 ≈ **US$ 0,08** (com refações para acertar a embalagem, ~US$ 0,20).
 
 ## Takes estimados
 
-- T01 (H1): ela se levanta do chão, sem fala, ~3 s. Movimento grande: maior chance de deformação; se falhar, plano B é começar já com ela em pé (corte seco).
-- T02–T03 (B1): ~12 s de fala em francês, 2 takes.
-- Custo estimado (360p, ~US$ 0,023/s): ~15 s ≈ **US$ 0,35**; com 1 correção, **~US$ 0,50**.
+- ~46 s de fala em francês (o francês é ~8% mais longo), 5 takes de 8–11 s, todos de B1.
+- Custo estimado (360p, ~US$ 0,023/s): ~46 s ≈ **US$ 1,06**; com correções, **~US$ 1,40**.
+- **Risco do pacote**: em 360p o modelo de vídeo redesenha o texto da embalagem (aconteceu com as pranchetas do Criativo 03). Como o pacote fica parado, a solução sem custo é colar o pacote nítido da imagem B1 por cima, na montagem (recorte fixo). Testo isso no primeiro take.
 
 ## Adaptações culturais para a França
 
-- "SP Nutrition" → "Cinnarae".
-- Quarto já tem cara europeia (parquet em espinha); manter, sem nenhum elemento americano.
-- "Give it a go" (tom informal, de vó) → "je vous conseille d'essayer" (registro "vous", como nos outros criativos).
+- "SP Nutrition" → "Cinnarae"; "gummies" → "gommes" (igual à embalagem).
+- "3 a.m." → "3 h du matin".
+- "Two before bed" bate com a embalagem Cinnarae (60 gommes = 30 portions, 2 por porção).
+- "Link is below" → "le lien est juste en dessous".
+- Cozinha já é neutra/europeia; manter.
 
 ## Alertas de política (decisão sua)
 
-- **Depoimento fabricado**: pessoa gerada por IA dizendo "eu tomo e me sinto 10 anos mais jovem". Na França, a Loi n° 2023-451 exige a menção "Image virtuelle" em conteúdo comercial com pessoa gerada por IA; Meta pode reprovar.
-- **Alegações**: "10 anos mais jovem" sugere efeito anti-idade (não autorizado). "Me dá energia" fica próximo da alegação autorizada do magnésio na UE ("contribui para reduzir o cansaço e a fadiga"); risco baixo.
+- **Depoimento fabricado + autoridade inventada** ("minha irmã é neurologista"): pessoa gerada por IA; exige "Image virtuelle" na França (Loi n° 2023-451); DGCCRF trata depoimento inventado como prática enganosa.
+- **Alegações de saúde fortes**: "cortisol disparando", "ansiedade sumiu" (alegação de tratar doença, proibida para suplemento na UE), sono, coração acelerado. Autorizadas para magnésio só: sistema nervoso, funções psicológicas normais, redução do cansaço.

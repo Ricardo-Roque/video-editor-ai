@@ -1,9 +1,9 @@
 """Render a take as a sequence of illustrations with camera moves (zoom + pan), punch shakes and pop-in
-labels, keeping the take's own audio. Made for the illustrated narrated format (Criativo 39): the voice comes
+labels, keeping the take's own audio. Made for the illustrated narrated format (Criativo 20): the voice comes
 from a generated take, the picture is built locally. The result goes into montar.py like any take.
 
 Usage:
-  python -I -X utf8 tools/ilustrar_take.py "Criativo 39/ilustracao/T01.json"
+  python -I -X utf8 tools/ilustrar_take.py "Criativo 20/ilustracao/T01.json"
 
 Spec (paths relative to the creative folder, i.e. the parent of the spec's folder; times in seconds of the
 untrimmed take, so they match <take>.words.json):

@@ -1,87 +1,48 @@
 # Prompts de imagem — Criativo 04 (versão França)
 
-Adaptações para a França: interior amplo e claro de casa europeia (piso de madeira clara, paredes brancas, janelas grandes ao fundo, luminária quadrada de madeira no teto) no lugar da casa americana de pé-direito enorme. Sem produto em cena (como na referência).
+Adaptações para a França: quarto de hospital francês (leito com grade, suporte de soro, monitor de sinais vitais, quadro branco sem texto legível, paredes claras, luz fria de teto). Sem texto em inglês, sem marca legível.
+Personagem: mesmo visual da referência (mulher de ~50 anos, cabelo castanho na altura do ombro com mechas e franja lateral, scrub azul royal), com rosto novo, sem copiar a pessoa da referência.
 
-Estilo geral: celular no tripé à altura do rosto (UGC), luz natural de dia, sem texto na imagem, 9:16.
-
----
-
-## P1 — Mulher (referência de personagem)
-
-```
-Photorealistic smartphone photo, 9:16. Portrait of a French woman around forty, slim, attractive, light natural makeup, brown eyes, slightly worried serious expression. Long straight medium-brown hair worn loose, falling past her shoulders, parted slightly off-centre. She wears a sleeveless chocolate-brown suede button-front top with a round collarless neckline and blue jeans. Plain light-grey neutral background, soft natural daylight, head to waist, looking at the camera. Realistic skin texture, no jewellery, no text.
-```
-
-## B1 — Sentada, braços cruzados nos joelhos (T03–T06)
-
-Referências: P1. Salvar como `imagens/cenas/B1_v1.png`.
-
-```
-Use the attached image for the woman's identity, hair and clothing. Photorealistic vertical smartphone video frame, 9:16, phone on a tripod at face height, static camera. The woman sits on the edge of a seat facing the camera, leaning forward, her forearms crossed and resting on her knees in the lower part of the frame, framed from the knees up to just above her head, serious concerned expression, mouth slightly open as if speaking, looking straight into the lens. Background, softly out of focus: a spacious bright French living room with high white walls, a square light-wood ceiling light fixture, large windows with daylight, light oak floor. Soft natural daylight. No text.
-```
-
-## H1 — Mão no pescoço (T01–T02)
-
-Referências: B1 aprovado. Editar B1. Salvar como `imagens/cenas/H1_v1.png`.
-
-```
-Edit the attached image. Keep the same woman, face, hair, sleeveless brown suede top, room, framing, camera position and light exactly. Change only her pose: she sits more upright, her right hand raised and resting on the side of her neck under her hair, elbow out to the side, her left forearm still resting on her knee, worried pained expression with eyebrows slightly raised, mouth open as if speaking. No text.
-```
+Estilo geral: foto de celular (UGC) no tripé, câmera na altura do peito, luz de hospital, sem aspecto de estúdio, sem texto na imagem, 9:16.
+Ordem: P1 primeiro; depois B1 com P1 como ref; H1, B1b e B1c são edições de B1 (`--ref B1`).
 
 ---
 
-## B2 — Sofá branco com manta verde (estilo pedido pelo usuário, sem P1)
-
-Referência visual enviada pelo usuário (mulher no sofá branco com manta verde). Pessoa nova, sem copiar o rosto da foto. Gera personagem e cena juntos; se aprovada, vira a base no lugar de B1. Salvar como `imagens/cenas/B2_v1.png`.
+## P1 — Profissional de saúde (referência de personagem)
 
 ```
-Photorealistic vertical smartphone video frame, 9:16, phone on a tripod at chest height, static camera, casual UGC look. A French woman around thirty, slim, light olive skin, light freckles, green-brown eyes, natural minimal makeup, calm friendly but serious expression, mouth slightly open as if speaking, looking straight into the lens. Dark brown hair pulled back in a sleek low ponytail draped over her left shoulder. She wears a fitted olive-green ribbed tank top and a thin delicate gold chain necklace with a tiny round pendant. She sits on a white bouclé sofa, a dark forest-green fluffy faux-fur blanket over her lap, her hands raised in front of her chest mid-gesture, fingertips lightly touching as she explains something. Framed from the lap up, with her head in the upper-middle of the frame and plenty of space above. Background: a plain warm-beige wall with white crown moulding at the ceiling, a small white light switch on the wall to the left, soft natural window daylight from the right, slightly muted colours. Realistic skin texture, no text.
+Photorealistic smartphone photo, 9:16. Portrait of a French woman around fifty, oval face with soft cheekbones, light olive skin with natural fine lines around the eyes, hazel-green eyes, warm friendly smile. Shoulder-length layered chestnut-brown hair with subtle caramel highlights, a long side-swept fringe, slightly tousled. Small gold hoop earrings, natural light makeup. She wears royal blue medical scrubs: a short-sleeved V-neck scrub top with a small chest pocket. A white silicone wristband on her left wrist. Plain light-grey neutral background, soft natural light, framed from the waist up, looking at the camera. Realistic skin texture, no text, no logos.
 ```
 
-## B2v2 — Mesma cena, mulher mais velha (pedido do usuário)
+## B1 — Base no quarto de hospital (T03, T04, T11, T12, T14, T16)
 
-Referência: `imagens/cenas/B2_v1.png`. Salvar como `imagens/cenas/B2_v2.png`.
-
-```
-Edit the attached image. Keep the same room, white bouclé sofa, dark-green fluffy blanket, olive-green ribbed tank top, thin gold necklace, sleek low ponytail over her left shoulder, hand gesture, framing, camera position and light exactly. Change only the woman's age: make her a French woman around fifty, natural and attractive for her age, visible fine lines around the eyes and mouth, slightly softer jawline, a few subtle grey strands in her dark brown hair, natural minimal makeup, calm serious expression, mouth slightly open as if speaking, looking straight into the lens. Realistic skin texture, no text.
-```
-
-## B2v3 — Mulher claramente mais velha (v2 envelheceu pouco)
-
-Referência: `imagens/cenas/B2_v1.png`. Salvar como `imagens/cenas/B2_v3.png`.
+Referências: P1 (identidade) + `referencia/sala/sala_mascarada.png` (frame da referência com a mulher coberta, só para o cenário). Salvar como `imagens/cenas/B1_v1.png`.
+Pedido do usuário: mesmo cenário da referência e personagem mais longe da câmera (a P1 de perto ficou com cara de falsa).
 
 ```
-Edit the attached image. Keep the room, white bouclé sofa, dark-green fluffy blanket, olive-green ribbed tank top, thin gold necklace, low ponytail over her left shoulder, hand gesture, framing, camera position and light exactly. Replace the woman with a clearly older French woman aged about 55: noticeable crow's feet and forehead lines, deeper nasolabial folds, slightly looser skin on the neck and upper arms, a few age spots, dark brown hair with visible grey streaks at the temples and hairline, natural minimal makeup, still elegant and slim, calm serious expression, mouth slightly open as if speaking, looking straight into the lens. Realistic skin texture, no text.
+Image 1 is the woman: use it only for her identity, face and hair. Image 2 is the room: a hospital room seen from the same camera position; the grey rectangle is just a mask, ignore it and fill that area with the room. Do not copy any person from image 2. Create a photorealistic vertical smartphone video still, 9:16, recorded on a phone propped on a tripod about two metres away at chest height, slight wide-angle phone lens. The woman from image 1 stands in the centre of this same hospital room, full figure from the top of her head down to just above her knees, her head near the top of the frame with little headroom, her body filling about three quarters of the frame height. She wears royal blue short-sleeved V-neck scrubs with a tiny white square logo patch on the chest, matching royal blue scrub trousers with a grey drawstring tied at the waist, a white hospital-style wristband and a couple of thin bracelets on her left wrist, small gold hoop earrings. Room exactly as in image 2: cream-beige walls, a wall-mounted whiteboard on the left with a dark frame and nothing written on it, a grey metal door handle below it, a metal IV pole with infusion pumps and a vital-signs monitor on a wall arm on the right, the edge of a hospital bed with white sheets and metal side rails at the right edge, beige linoleum floor, flat cool fluorescent ceiling light. Hands relaxed and loosely clasped in front of her waist, friendly confident expression, mouth slightly open as if starting to speak. Real amateur phone footage look: slightly flat exposure, mild noise, soft focus on the background, no studio lighting, realistic skin texture. No readable text anywhere.
 ```
 
-## B3 — Senhora na mesa da cozinha com o pacote Cinnarae (estilo pedido pelo usuário)
+## H1 — Hook: mão mostrando 5 (T01)
 
-Referência visual enviada pelo usuário: senhora de cabelo branco na mesa de madeira da cozinha segurando o pacote do concorrente, com porta-comprimidos e óculos na mesa. Pessoa nova, sem copiar o rosto; pacote trocado pelo Cinnarae. Ref: `Referências/Sachê de Gomas de Magnésio Premium.png`. Salvar como `imagens/cenas/B3_v1.png`.
-
-```
-Use the attached image for the product pouch. Photorealistic vertical smartphone video frame, 9:16, phone propped on the table at chest height, static camera, casual UGC look, warm indoor light. A French grandmother around seventy, slim, kind face with natural wrinkles, light blue-grey eyes, no makeup, soft gentle smile, mouth slightly open as if speaking, looking straight into the lens. Straight white-silver hair in a chin-length bob with a full fringe. She wears a soft oatmeal-beige crew-neck knit sweater. She sits at a worn rustic wooden kitchen table, framed from the table up, holding the Cinnarae magnesium gummies pouch from the attached image up in her right hand beside her face at shoulder height, front label facing the camera: reproduce it exactly, same shape, light-turquoise and white colours, Cinnarae logo, text and gold badge, not distorted. Her left hand rests on the table next to a colourful seven-day pill organiser and a pair of folded reading glasses. Background, slightly out of focus: a cosy French country kitchen with honey-coloured wooden cabinets, warm yellow walls and a small brass chandelier with white glass shades switched on. No other text added.
-```
-
-## B3b — Braços cruzados na mesa, pacote em pé (body: sintomas)
-
-Referências: B3 aprovada + pacote. Editar B3. Salvar como `imagens/cenas/B3b_v1.png`.
+Referências: B1_v2. Salvar como `imagens/cenas/H1_v1.png`.
 
 ```
-Edit the first attached image. Keep the same elderly woman, face, white bob with fringe, beige knit sweater, wooden table, kitchen, chandelier, framing, camera position and warm light exactly. Change only: she has put the Cinnarae pouch down; it now stands upright on the table to the right of her, front label facing the camera, reproduced exactly like the second attached image (same shape, light-turquoise and white, Cinnarae logo, text and gold badge, not distorted). Both her forearms are crossed and resting on the table in front of her, she leans slightly forward, serious concerned expression, no smile, mouth slightly open as if speaking, looking straight into the lens. The pill organiser lids are plain pastel colours with no letters. Keep the reading glasses. No other text added.
+Edit the attached image. Keep the same woman, face, hair, scrubs, wristband, hospital room, framing and lighting exactly the same. Change only her pose: her right hand is raised beside her shoulder, open palm facing the camera showing five spread fingers, and her left hand rests on her hip. Bright engaged expression, mouth open mid-word. No text.
 ```
 
-## H3 — Mão no pescoço, preocupada (hook)
+## B1b — Dedo indicador levantado (T05, T06, T08, T09, T13)
 
-Referências: B3 aprovada + pacote. Editar B3. Salvar como `imagens/cenas/H3_v1.png`.
-
-```
-Edit the first attached image. Keep the same elderly woman, face, white bob with fringe, beige knit sweater, wooden table, kitchen, chandelier, framing, camera position and warm light exactly. Change only: she has put the Cinnarae pouch down; it now stands upright on the table to the right of her, front label facing the camera, reproduced exactly like the second attached image (same shape, light-turquoise and white, Cinnarae logo, text and gold badge, not distorted). Her right hand is raised and resting on the side of her neck under her hair, elbow out, her left forearm resting on the table, worried slightly pained expression with eyebrows raised, no smile, mouth open as if speaking, looking straight into the lens. The pill organiser lids are plain pastel colours with no letters. Keep the reading glasses. No other text added.
-```
-
-## SEMPACOTE — Remover o pacote (pedido do usuário: só ela na imagem)
-
-Aplicado em B3b e H3 (`--ref` da v1). Salvar como `B3b_v2.png` e `H3_v2.png`.
+Referências: B1_v2. Salvar como `imagens/cenas/B1b_v1.png`.
 
 ```
-Edit the attached image. Remove the Cinnarae pouch completely from the table; fill that area naturally with the same wooden table and the kitchen background behind it. Keep everything else exactly the same: the elderly woman, her face, expression, pose and hands, white bob with fringe, beige knit sweater, wooden table, reading glasses, kitchen, chandelier, framing, camera position and warm light. The pill organiser lids are plain pastel colours with no letters or numbers. No text anywhere in the image.
+Edit the attached image. Keep the same woman, face, hair, scrubs, wristband, hospital room, framing and lighting exactly the same. Change only her pose: her right hand is raised in front of her chest with the index finger pointing up, as if making a point, left arm relaxed at her side. Confident, explaining expression, mouth slightly open. No text.
+```
+
+## B1c — Mão no peito (T02, T07, T10, T15)
+
+Referências: B1_v2. Salvar como `imagens/cenas/B1c_v1.png`.
+
+```
+Edit the attached image. Keep the same woman, face, hair, scrubs, wristband, hospital room, framing and lighting exactly the same. Change only her pose: her right hand rests flat on her upper chest, below the collarbone, left arm relaxed at her side. Sincere, warm expression, slight smile, mouth slightly open as if speaking. No text.
 ```

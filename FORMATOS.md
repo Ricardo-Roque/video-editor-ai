@@ -2,7 +2,7 @@
 
 Os formatos que o time usa vêm do quadro do Trello **"Formatos Criativos de Conteúdo"** (área de trabalho Grupo RME), que tem vídeos de referência e roteiros virais analisados de cada formato. Este arquivo transforma esse material em método para o nosso processo com IA: como reconhecer o formato, como analisar e escrever o roteiro e como produzir cada formato aqui.
 
-A ideia do quadro: o algoritmo favorece **formatos**, não perfis. Quem acha um formato que funciona e o repete viraliza a maioria dos vídeos. Para anúncios vale o mesmo: quando um criativo vende, repetimos o formato e a copy (ex.: copy do 05, que vendeu, virando Palestrinha no 13).
+A ideia do quadro: o algoritmo favorece **formatos**, não perfis. Quem acha um formato que funciona e o repete viraliza a maioria dos vídeos. Para anúncios vale o mesmo: quando um criativo vende, repetimos o formato e a copy (ex.: copy do 03, que vendeu, virando Palestrinha no 11).
 
 ## Os 16 formatos
 
@@ -17,12 +17,12 @@ Cada formato tem um guia em `Criativos Exemplo/<formato>/FORMATO.md`: o que é, 
 | 05 | [Cine](Criativos%20Exemplo/Cine/FORMATO.md) | faixas pretas de cinema, tom de conversa íntima, música | — | já possível (PNG de faixas); falta música |
 | 06 | [Storytelling visual](Criativos%20Exemplo/Storytelling%20visual/FORMATO.md) | cada frase vira uma ação ou objeto em cena | — | possível; caro se cada ação for take |
 | 07 | [Experimento social](Criativos%20Exemplo/Experimento%20social/FORMATO.md) | entrevista de rua com respostas espontâneas | — | possível (Veo); risco de política alto |
-| 08 | [Conflito situacional](Criativos%20Exemplo/Conflito%20situacional/FORMATO.md) | abre com uma cena forte que parece real e vira outro conteúdo | (hook do 08) | pronto (take sem fala) |
+| 08 | [Conflito situacional](Criativos%20Exemplo/Conflito%20situacional/FORMATO.md) | abre com uma cena forte que parece real e vira outro conteúdo | (hook do 06) | pronto (take sem fala) |
 | 09 | [Dinamismo](Criativos%20Exemplo/Dinamismo/FORMATO.md) | câmera parada, a pessoa muda de posição a cada frase | — | possível (uma imagem por posição) |
 | 10 | [Trivial](Criativos%20Exemplo/Trivial/FORMATO.md) | fala enquanto faz uma tarefa do dia a dia | — | pronto (como Lo-fi) |
 | 11 | [Diálogo](Criativos%20Exemplo/Diálogo/FORMATO.md) | dois personagens, o "errado" e o "certo" | — | possível (duas personas) |
 | 12 | [Caixinha de perguntas](Criativos%20Exemplo/Caixinha%20de%20perguntas/FORMATO.md) | pergunta de seguidor na tela e a resposta | — | possível (caixinha em PNG); ótimo para a Cinnarae |
-| 13 | [Comparação](Criativos%20Exemplo/Comparação/FORMATO.md) | errado × certo ou antes × depois lado a lado | (hook do 01, cards do 07) | imagens já; vídeos lado a lado precisam de ferramenta |
+| 13 | [Comparação](Criativos%20Exemplo/Comparação/FORMATO.md) | errado × certo ou antes × depois lado a lado | (hook do 01, cards do 05) | imagens já; vídeos lado a lado precisam de ferramenta |
 | 14 | [The Office](Criativos%20Exemplo/The%20Office/FORMATO.md) | cenas alternadas com confessionário para a câmera | — | possível (dois enquadramentos) |
 | 15 | [Lo-fi](Criativos%20Exemplo/Lo-fi/FORMATO.md) | simples e "imperfeito", fala como com uma amiga | 01, 04, 06, 07, 08, 09, 10 | pronto |
 | 16 | [Bastidores](Criativos%20Exemplo/Bastidores/FORMATO.md) | mostra o processo antes do resultado | — | só com material real do produto |

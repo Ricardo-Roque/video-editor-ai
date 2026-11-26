@@ -1,0 +1,153 @@
+{
+  "versao": 1,
+  "criativo": "C13",
+  "titulo": "Modelagem do 03: trio de sintomas de sono",
+  "resumo": "Mesmo esqueleto do Criativo 03 (prancheta narrada com \"Si...\" e callback), trocando a dor de entrada: sai a glicemia, entram cãibras e pernas agitadas, despertar às 3 h e acordar exausta.",
+  "processo": "modelagem",
+  "formato": "Narrado",
+  "idioma": "fr",
+  "duracao_s": 63,
+  "referencia": {
+    "rotulo": "Criativo 03 (2 vendas em 2026-11-24)",
+    "link": null,
+    "o_que_vem_dela": "Prancheta vista de cima com varinha, narradora em off (seed 505), anáfora \"Si [sintoma], prenez...\", callback dos sintomas, marca aos 48%, prova social, garantia e oferta. T04, T06, T07 e T08 com o mesmo áudio do 03."
+  },
+  "teste": {
+    "id": "CIN-T002",
+    "variavel": "Dor de entrada do hook: xixi 3x + boca seca + não dormir (glicemia) → cãibras e pernas agitadas + despertar às 3 h + acordar exausta",
+    "hipotese": "O que vende no 03 é a forma (sintoma noturno concreto em \"Si...\" com callback), não a glicemia. Com sintomas de sono e mecanismos autorizados, o CPA fica igual ou melhor e o risco de reprovação cai.",
+    "vitoria": "CPA igual ou menor que o do 03 no mesmo período, com gasto de pelo menos 2x o CPA do 03",
+    "corte": "CPA 30% acima do 03 com o mesmo gasto, ou hook rate 5 pontos abaixo"
+  },
+  "estrategia": {
+    "consciencia": "Consciente do problema, indo para a solução: o hook nomeia o sintoma e entrega a categoria na mesma frase",
+    "sofisticacao": "3: o mecanismo de forma (bisglicinato, não \"magnésio\") faz a diferença",
+    "lead": "Problema-solução, direto",
+    "crenca": "O bisglicinato de magnésio é a chave para dormir a noite inteira, porque age nos músculos, no sistema nervoso e no cansaço",
+    "promessa": "Dormir d'une traite (sem acordar) e acordar descansada",
+    "avatar": "Mulheres 50-65 que acordam à noite com cãibras, às 3 h ou já cansadas"
+  },
+  "anuncio": {
+    "pendente": "Texto do anúncio (texto principal, título, descrição e botão) ainda não escrito para este vídeo. Ele entra na próxima rodada de ajuste, com a tradução para o português."
+  },
+  "roteiro": [
+    {
+      "bloco": "hook", "take": "T01a", "duracao_s": 6,
+      "fala": "Si des crampes ou des jambes qui bougent toutes seules vous réveillent la nuit,",
+      "pt": "Se cãibras ou pernas que se mexem sozinhas te acordam à noite,",
+      "funcao": "Hook 1: sintoma noturno concreto que seleciona o público",
+      "elementos": ["Identificação", "Conflito", "Imagem mental", "Prancheta legível no 1º quadro"],
+      "visual": "Prancheta Q1a, zoom lento até o painel lilás",
+      "texto_tela": "Crampes ou jambes agitées la nuit ?"
+    },
+    {
+      "bloco": "hook", "take": "T01b", "duracao_s": 8,
+      "fala": "prenez du bisglycinate de magnésium pour soutenir le fonctionnement normal de vos muscles, et vous dormirez enfin d'une traite.",
+      "pt": "tome bisglicinato de magnésio para apoiar o funcionamento normal dos seus músculos, e você vai finalmente dormir a noite inteira.",
+      "funcao": "UMP + categoria da solução + promessa",
+      "elementos": ["Mecanismo autorizado (UE 432/2012)", "Promessa"],
+      "visual": "Prancheta Q1a, varinha no painel lilás",
+      "alerta": "\"dormirez enfin d'une traite\" promete sono: não é alegação autorizada (mesmo nível do 03)"
+    },
+    {
+      "bloco": "hook", "take": "T02a", "duracao_s": 6,
+      "fala": "Si vous vous réveillez à trois heures du matin, la tête qui tourne à cent à l'heure,",
+      "pt": "Se você acorda às três da manhã, com a cabeça a mil,",
+      "funcao": "Hook 2: repete a forma com o segundo sintoma",
+      "elementos": ["Imagem mental", "Ritmo (anáfora)", "Identificação"],
+      "visual": "Prancheta Q1b, zoom no painel azul",
+      "texto_tela": "Réveillée à 3 h du matin ?"
+    },
+    {
+      "bloco": "hook", "take": "T02b", "duracao_s": 6,
+      "fala": "prenez du bisglycinate de magnésium pour soutenir votre système nerveux, et vous pourrez enfin vous rendormir.",
+      "pt": "tome bisglicinato de magnésio para apoiar o seu sistema nervoso, e você vai finalmente conseguir voltar a dormir.",
+      "funcao": "UMS: o que o produto faz no segundo sintoma",
+      "elementos": ["Mecanismo autorizado", "Promessa"],
+      "visual": "Prancheta Q1b",
+      "alerta": "\"pourrez enfin vous rendormir\" promete sono"
+    },
+    {
+      "bloco": "hook", "take": "T03", "duracao_s": 8,
+      "fala": "Si vous vous réveillez épuisée, quoi que vous essayiez, prenez du bisglycinate de magnésium pour réduire la fatigue, et votre corps pourra enfin se reposer.",
+      "pt": "Se você acorda exausta, não importa o que tente, tome bisglicinato de magnésio para reduzir o cansaço, e o seu corpo vai finalmente poder descansar.",
+      "funcao": "Hook 3: fecha o trio e desqualifica o que ela já tentou",
+      "elementos": ["Conflito universal", "Ritmo (fecha o trio)", "\"quoi que vous essayiez\""],
+      "visual": "Prancheta Q1c, zoom no painel verde",
+      "texto_tela": "Épuisée au réveil ?"
+    },
+    {
+      "bloco": "body", "take": "T04", "duracao_s": 8,
+      "fala": "Et moi, j'utilise les gommes au bisglycinate de magnésium de Cinnarae. Elles sont sans sucre et douces pour l'estomac.",
+      "pt": "E eu uso as gomas de bisglicinato de magnésio da Cinnarae. Elas não têm açúcar e são suaves para o estômago.",
+      "funcao": "Entrada da marca (48%) + quebra de objeção",
+      "elementos": ["Mudança", "Familiaridade", "Objeção: goma = açúcar"],
+      "visual": "Vídeo da R1 do 03 até \"Elles\", depois Q2a com zoom; voz do 03"
+    },
+    {
+      "bloco": "body", "take": "T05a", "duracao_s": 6,
+      "fala": "Prenez-en deux avant de vous coucher pour une bonne nuit de sommeil. Maintenant, je dors d'une traite.",
+      "pt": "Tome duas antes de deitar para uma boa noite de sono. Agora eu durmo a noite inteira.",
+      "funcao": "Modo de uso + resultado",
+      "elementos": ["Imagem mental", "Mudança"],
+      "visual": "Q2b com zoom; voz do 03",
+      "alerta": "Promessa de sono"
+    },
+    {
+      "bloco": "body", "take": "T05b", "duracao_s": 4,
+      "fala": "Fini les crampes. Fini les réveils à trois heures du matin.",
+      "pt": "Chega de cãibras. Chega de acordar às três da manhã.",
+      "funcao": "Callback dos sintomas 1 e 2",
+      "elementos": ["Ritmo staccato", "Contraste antes/depois"],
+      "visual": "Q2c com zoom; voz do take novo",
+      "texto_tela": "Fini les crampes. / Fini les réveils à 3 h.",
+      "alerta": "Promessa de resultado"
+    },
+    {
+      "bloco": "body", "take": "T06", "duracao_s": 6,
+      "fala": "Je me réveille vraiment reposée, avec de l'énergie pour toute ma journée.",
+      "pt": "Eu acordo descansada de verdade, com energia para o dia todo.",
+      "funcao": "Callback do sintoma 3 + benefício positivo",
+      "elementos": ["Relevância emocional: alívio"],
+      "visual": "Q2c, zoom no fim do painel; voz do 03",
+      "alerta": "Promessa de resultado"
+    },
+    {
+      "bloco": "body", "take": "T07", "duracao_s": 6,
+      "fala": "Plus de 120 000 femmes en prennent déjà tous les soirs dans leur routine du coucher, et elles partent toujours très vite.",
+      "pt": "Mais de 120 mil mulheres já tomam todas as noites na rotina antes de dormir, e elas sempre esgotam muito rápido.",
+      "funcao": "Prova social + escassez",
+      "elementos": ["Familiaridade", "Urgência"],
+      "visual": "Segmento do 03",
+      "alerta": "\"120 000 femmes\" sem fonte confirmada (constante do 03)"
+    },
+    {
+      "bloco": "cta", "take": "T08", "duracao_s": 6,
+      "fala": "Si vous ne sentez pas la différence en 30 jours, on vous rembourse. Cliquez sur le lien en dessous pour avoir 20 % de réduction sur votre première commande.",
+      "pt": "Se você não sentir a diferença em 30 dias, a gente devolve o seu dinheiro. Clique no link abaixo para ter 20% de desconto no seu primeiro pedido.",
+      "funcao": "Garantia + CTA + oferta",
+      "elementos": ["Reversão de risco", "CTA direto", "Oferta"],
+      "visual": "Segmento do 03 com as imagens R4 e R5",
+      "alerta": "Confirmar se a oferta de -20% ainda vale"
+    }
+  ],
+  "adaptacoes": [
+    "T01 a T03: mesma forma de frase do 03 com os sintomas novos; glicemia e insulina saem, entram mecanismos autorizados na UE (músculos, sistema nervoso, cansaço).",
+    "T05b: o callback paga os sintomas novos (\"Fini les crampes. Fini les réveils à 3 h\").",
+    "Pranchetas Q1 com texto novo nos três painéis; Q2 refeitas só no painel de baixo.",
+    "T01 a T06 narrados no Veo 3.1 Lite 720p (Omni fora do ar em 2026-11-24, Veo liberado pelo dono em 2026-11-25), para a voz não mudar no meio; T07 e T08 com a voz do 03."
+  ],
+  "riscos": [
+    "Promessas de sono (\"dormirez enfin d'une traite\", \"pourrez enfin vous rendormir\") não são alegações autorizadas: mesmo nível do 03, mantido por escolha do dono.",
+    "\"120 000 femmes\" sem fonte em PRODUTOS.md.",
+    "Oferta de -20% na 1ª compra: confirmar que ainda vale antes de subir."
+  ],
+  "checklist": [
+    { "item": "Hook seleciona o público e promete recompensa", "ok": true, "nota": "quem acorda à noite com cãibra; dormir d'une traite" },
+    { "item": "Primeiro quadro legível sem som", "ok": true, "nota": "prancheta com a pergunta" },
+    { "item": "Uma ideia só", "ok": true, "nota": "os despertares noturnos têm causa" },
+    { "item": "Todo sintoma aberto é pago no callback", "ok": true },
+    { "item": "Prova forte", "ok": false, "nota": "só \"120 000 femmes\", sem fonte (constante do teste)" },
+    { "item": "Lido em voz alta soa natural", "ok": true, "nota": "\"la tête qui tourne à cent à l'heure\" é expressão comum" }
+  ]
+}

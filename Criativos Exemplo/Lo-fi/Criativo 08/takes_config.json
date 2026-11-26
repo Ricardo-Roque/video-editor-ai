@@ -9,23 +9,16 @@
   "pad": 0.3,
   "suffix": "Only spoken voice, natural room tone, no music, no subtitles, no text on screen. Realistic lip sync.",
   "images": {
-    "H1": "imagens/cenas/H1_v1.png",
-    "B1": "imagens/cenas/B1_v2.png"
+    "B1": "imagens/cenas/B1_v1.png"
   },
   "image_persona": {
-    "H1": "grandma_floor",
-    "B1": "grandma"
+    "B1": "woman"
   },
   "personas": {
-    "grandma_floor": {
-      "seed": 808,
-      "scene": "Handheld smartphone home video filmed by a family member at night in the bedroom. The 72-year-old woman on all fours on the parquet floor pushes herself up in one quick agile movement and stands upright facing the camera, grinning proudly, barefoot. The grey-haired man at the left edge laughs warmly. Natural body proportions, no distortion.",
-      "voice": "No speech. Only soft warm laughter from the man and natural room tone."
-    },
-    "grandma": {
-      "seed": 808,
-      "scene": "Handheld smartphone home video filmed by a family member at night in the bedroom, slight natural shake. The 72-year-old woman stands facing the camera and talks directly to it, beaming with pride and joy, lively expressive face, small hand gestures at chest height, a thumbs-up near the end. The grey-haired man at the left edge smiles and stays in the background, silent.",
-      "voice": "Her voice: elderly French woman aged 72, native French, warm, cheerful, slightly frail but energetic, amused and proud, natural pace."
+    "woman": {
+      "seed": 1010,
+      "scene": "Static smartphone video, the phone propped on the marble kitchen counter, the camera does not move. The woman sits behind the counter with her forearms crossed on the marble and talks directly to camera in a calm, sincere, serious confiding tone, small natural head movements, occasional blink, one hand briefly touching her other arm. The product pouch standing on the counter stays perfectly still, sharp and unchanged, label facing the camera.",
+      "voice": "Her voice: French woman in her early forties, native French, calm, low, sincere and slightly tired, honest testimonial tone, natural conversational pace."
     }
   }
 }

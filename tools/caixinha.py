@@ -1,12 +1,12 @@
 """Draw an Instagram-style question box ("caixinha de perguntas") as a full-frame transparent PNG (1080x1920).
 
-Used by the Caixinha de perguntas format (Criativo 30). It is pasted over the video with a montagem.json
+Used by the Caixinha de perguntas format (Criativo 14). It is pasted over the video with a montagem.json
 overlay {"mode": "patch", "x": 0, "y": 0}, limited to the hook with clip_index / from_word / to_word.
 
 Usage:
   python -I -X utf8 tools/caixinha.py --header "Posez-moi vos questions" \
       --question "Je me lève 3 fois par nuit pour aller aux toilettes… c'est normal ? 😩" \
-      --top 170 --out "Criativo 30/imagens/cenas/K1_caixinha_v1.png"
+      --top 170 --out "Criativo 14/imagens/cenas/K1_caixinha_v1.png"
 
 An emoji at the very end of the question is drawn in colour (Segoe UI Emoji); the rest of the text in Arial.
 """
