@@ -277,6 +277,12 @@ async function atualizarEstado() {
     $("#txt-meta").textContent = !e.meta ? "sem token" : e.sync_rodando ? "sincronizando…" : e.ultima_sync ? "às " + e.ultima_sync.slice(11, 16) : "pronto";
     $("#txt-meta").title = e.sync_erro ? "Último erro: " + e.sync_erro : "";
     $("#btn-sync").disabled = !e.meta || e.sync_rodando;
+    const a = e.auto || {}, antes = AUTO && AUTO.rodando && AUTO.rodando.alvo;
+    AUTO = a;
+    $("#dot-auto").className = "dot" + (a.ligado ? " ok" : "") + (a.rodando ? " pulsa" : "");
+    $("#txt-auto").textContent = !a.ligado ? "manual" : a.rodando ? "trabalhando em " + a.rodando.alvo : "automático";
+    $("#txt-auto").title = a.ligado ? `Começa sozinho quando um card fica com o Claude. Limite por etapa: US$ ${nf(2).format(a.limite)}.` + (a.erro ? " Último erro: " + a.erro : "") : "Modo automático desligado (CLAUDE_AUTO=1 no .env liga).";
+    if (antes !== (a.rodando && a.rodando.alvo)) { sujarTudo(); if (!ocupado()) rota(); }   // trabalho começou ou terminou
   } catch { /* servidor fora */ }
 }
 // Contador no menu: cards da Produção aguardando aprovação de alguém do time.
@@ -291,7 +297,26 @@ $("#btn-sync").addEventListener("click", async () => {
   catch (e) { toast("Falhou: " + e.message, 8000); }
   atualizarEstado();
 });
-setInterval(atualizarEstado, 60000);
+setInterval(atualizarEstado, 15000);
+let AUTO = null;                     // modo automático (/api/estado): ligado, limite, rodando
+// Selo de vez de um card (criativo ou prova), já considerando o modo automático.
+function seloVez(e) {
+  const t = e.trabalho || {}, p = e.pendencia;
+  if (p && p.tipo === "gasto") return `<span class="selo dono" title="${esc(p.plano || "")}">liberar US$ ${nf(2).format(p.custo || 0)}</span>`;
+  if (p && p.tipo === "pergunta") return `<span class="selo dono" title="${esc(p.texto || "")}">pergunta do Claude</span>`;
+  if (e.aguardando === "dono") return `<span class="selo dono">aguardando você</span>`;
+  if (t.status === "rodando") return `<span class="selo claude pulsa">Claude trabalhando</span>`;
+  if (t.status === "parado" || t.status === "erro") return `<span class="selo refacao" title="${esc(t.motivo || "")}">Claude parou</span>`;
+  return `<span class="selo claude">com o Claude</span>`;
+}
+// Pendência do modo automático: o que o Claude pediu (gasto ou pergunta) ou por que parou.
+function caixaPendencia(e) {
+  const t = e.trabalho || {}, p = e.pendencia;
+  if (p && p.tipo === "gasto") return `<div class="pendencia"><b>O Claude precisa de US$ ${nf(2).format(p.custo || 0)} para seguir</b> (acima do limite automático)<p>${esc(p.plano || "")}</p></div>`;
+  if (p && p.tipo === "pergunta") return `<div class="pendencia"><b>Pergunta do Claude</b><p>${esc(p.texto || "")}</p></div>`;
+  if (e.aguardando === "claude" && (t.status === "parado" || t.status === "erro")) return `<div class="pendencia parou"><b>O Claude parou sem entregar</b><p>${esc((t.motivo || "").slice(-600))}</p></div>`;
+  return "";
+}
 
 // ------------------------------------------------------------ gráfico de retenção (SVG, mira + snap)
 function pontosCurva(m, dur) {
@@ -571,17 +596,21 @@ function barraEsteira(d) {
   const e = d.esteira, et = d.etapas, i = et.indexOf(e.etapa), dono = e.aguardando === "dono";
   const pedidas = (d.anotacoes_lista || []).filter((a) => a.status === "pedida").length;
   const info = [ha(e.desde) && "nesta etapa " + ha(e.desde), e.custo_usd ? "gasto " + usd(e.custo_usd) : "", e.inferida ? "etapa deduzida dos arquivos (corrija em Mover)" : ""].filter(Boolean).join(" · ");
-  return `<div class="esteira-barra ${dono ? "vez-dono" : ""}">
+  const p = e.pendencia, t = e.trabalho || {}, parou = !dono && (t.status === "parado" || t.status === "erro");
+  return `${caixaPendencia(e)}<div class="esteira-barra ${dono ? "vez-dono" : ""}">
     <ol class="passos">${et.map((k, j) => `<li class="${j < i ? "feito" : j === i ? "atual" : ""}"><span class="bol">${j < i ? "✓" : j + 1}</span>${rotEtapa(k, d.tipo)}</li>`).join("")}<li><span class="bol">★</span>Entregue</li></ol>
     <div class="esteira-acoes">
       <div class="esteira-info">
-        ${dono ? `<span class="selo dono">aguardando você</span><b>${esc(rotEtapa(e.etapa, d.tipo))} pronto para aprovar</b>`
-               : `<span class="selo claude">com o Claude</span><span>${pedidas ? `<b>${pedidas} ajuste(s) pedido(s).</b> ` : ""}No Claude Code, diga "continue a esteira".</span>`}
+        ${p ? `${seloVez(e)}<b>O Claude está esperando você</b>` : dono ? `<span class="selo dono">aguardando você</span><b>${esc(rotEtapa(e.etapa, d.tipo))} pronto para aprovar</b>`
+               : `${seloVez(e)}<span>${pedidas ? `<b>${pedidas} ajuste(s) pedido(s).</b> ` : ""}${AUTO && AUTO.ligado ? (t.status === "rodando" ? "Trabalhando agora." : parou ? "Veja o motivo acima." : "O Claude começa sozinho em instantes.") : 'No Claude Code, diga "continue a esteira".'}</span>`}
         ${info ? `<span class="muted small">${info}</span>` : ""}
         ${e.pedido || e.prioridade ? `<span class="small">${e.prioridade ? selPrio(e.prioridade) + " " : ""}${e.pedido ? "Pedido: " + esc(e.pedido) : ""}</span>` : ""}
       </div>
       <div class="btns">
-        ${dono ? `<button class="btn" id="es-ajuste">${ICONE.lapis}Pedir ajuste</button><button class="btn primario" id="es-aprovar">✓ ${e.etapa === "revisao" ? "Aprovar e entregar" : "Aprovar " + rotEtapa(e.etapa, d.tipo).toLowerCase()}</button>` : ""}
+        ${p && p.tipo === "gasto" ? `<button class="btn" id="es-ajuste">${ICONE.lapis}Responder / mudar o plano</button><button class="btn primario" id="es-liberar">Liberar US$ ${nf(2).format(p.custo || 0)}</button>`
+          : p ? `<button class="btn primario" id="es-ajuste">${ICONE.lapis}Responder</button>`
+          : parou ? `<button class="btn" id="es-ajuste">${ICONE.lapis}Orientar</button><button class="btn primario" id="es-repetir">${ICONE.refazer}Tentar de novo</button>`
+          : dono ? `<button class="btn" id="es-ajuste">${ICONE.lapis}Pedir ajuste</button><button class="btn primario" id="es-aprovar">✓ ${e.etapa === "revisao" ? "Aprovar e entregar" : "Aprovar " + rotEtapa(e.etapa, d.tipo).toLowerCase()}</button>` : ""}
         <button class="btn fantasma" id="es-mover">Mover</button><button class="btn fantasma" id="es-descartar">Descartar</button>
       </div>
     </div></div>`;
@@ -702,7 +731,7 @@ function ligarAbaDocs(d) {
   mostrar(ini);
 }
 
-const ROT_ACAO = { criou: "entrou na esteira", entregou: "entregou para aprovação", aprovou: "aprovou", pediu_ajuste: "pediu ajuste", moveu: "moveu", descartou: "descartou", concluiu: "aprovou a entrega" };
+const ROT_ACAO = { criou: "entrou na esteira", entregou: "entregou para aprovação", aprovou: "aprovou", pediu_ajuste: "pediu ajuste", moveu: "moveu", descartou: "descartou", concluiu: "aprovou a entrega", pediu_gasto: "pediu liberação de gasto", liberou_gasto: "liberou o gasto", perguntou: "perguntou", trabalhou: "trabalhou (modo automático)" };
 function abaHistorico(d) {
   if (!d.eventos.length) return vazio("Sem histórico ainda. Cada entrega, aprovação e ajuste aparece aqui.");
   return `<div class="caixa"><ol class="linha-hist">${d.eventos.map((e) => `<li class="h-${e.acao}">
@@ -957,18 +986,20 @@ async function telaCriativo(cid, vivo) {
       botao: ultima ? "Aprovar e entregar" : "Aprovar",
       corpo: `<div class="modal-campos">${campo("Comentário (opcional)", `<textarea name="comentario" rows="3" placeholder="Ex.: pode seguir, mas use a imagem B2 no lugar da B1"></textarea>`, "inteiro")}</div>`
         + ((d.anotacoes_lista || []).some((a) => a.status === "aberta") ? `<p class="small" style="margin:10px 0 0;color:var(--warn)">Há anotações abertas neste criativo. Se elas são ajustes, use "Pedir ajuste".</p>` : ""),
-      aoSalvar: (b) => acaoEsteira({ acao: "aprovar", comentario: b.comentario }, `${rotEtapa(e.etapa, d.tipo)} aprovado. No Claude Code: "continue a esteira".`),
+      aoSalvar: (b) => acaoEsteira({ acao: "aprovar", comentario: b.comentario }, `${rotEtapa(e.etapa, d.tipo)} aprovado. ${AUTO && AUTO.ligado ? "O Claude começa a próxima etapa sozinho." : 'No Claude Code: "continue a esteira".'}`),
     });
   });
   $("#es-ajuste")?.addEventListener("click", () => {
     const abertas = (d.anotacoes_lista || []).filter((a) => a.status === "aberta").length;
     modal({
-      titulo: `Pedir ajuste: ${rotEtapa(d.esteira.etapa, d.tipo).toLowerCase()}`, sub: `${nomeC(d.id)} volta para o Claude refazer esta etapa.`, botao: "Pedir ajuste",
+      titulo: d.esteira.pendencia ? "Responder ao Claude" : `Pedir ajuste: ${rotEtapa(d.esteira.etapa, d.tipo).toLowerCase()}`, sub: `${nomeC(d.id)} volta para o Claude com o seu texto.`, botao: d.esteira.pendencia ? "Responder" : "Pedir ajuste",
       corpo: `<div class="modal-campos">${campo("O que ajustar", `<textarea name="comentario" rows="5" placeholder="Ex.: o hook está longo, corte para uma frase; a CTA precisa citar os 30 dias"></textarea>`, "inteiro")}</div>`
         + (abertas ? `<p class="small muted" style="margin:10px 0 0">As ${abertas} anotação(ões) aberta(s) no vídeo ou nas imagens vão junto.</p>` : ""),
       aoSalvar: (b) => { if (!b.comentario) throw new Error("Escreva o que ajustar."); return acaoEsteira({ acao: "ajuste", comentario: b.comentario }, "Ajuste pedido. O card voltou para o Claude."); },
     });
   });
+  $("#es-liberar")?.addEventListener("click", () => acaoEsteira({ acao: "liberar" }, "Gasto liberado. O Claude segue sozinho.").catch((er) => toast(er.message, 6000)));
+  $("#es-repetir")?.addEventListener("click", () => acaoEsteira({ acao: "repetir" }, "O Claude vai tentar de novo.").catch((er) => toast(er.message, 6000)));
   $("#es-mover")?.addEventListener("click", () => modal({
     titulo: "Mover de etapa", sub: "Para corrigir a etapa do card (ex.: deduzida errado pelos arquivos).", botao: "Mover",
     corpo: `<div class="modal-campos">
@@ -1273,7 +1304,7 @@ async function telaProducao(vivo) {
       <div class="quadro-esteira" id="quadro"></div>`;
   const cartao = (c) => {
     const e = c.esteira || {}, aj = c.anotacoes.pedida || 0, capa = capaDe(c, 120);
-    const selo = !c.esteira ? `<span class="selo refacao">refação</span>` : e.aguardando === "dono" ? `<span class="selo dono">aguardando você</span>` : `<span class="selo claude">com o Claude</span>`;
+    const selo = !c.esteira ? `<span class="selo refacao">refação</span>` : seloVez(e);
     // Cinco linhas fixas: nome, vez, formato, tags, rodapé. O CSS corta o excesso: todo card tem o mesmo tamanho.
     return `<a class="kcard ${e.aguardando === "dono" ? "vez-dono" : ""}" href="#/c/${c.id}" draggable="${c.esteira ? "true" : "false"}" data-id="${c.id}" title="${esc(nomeC(c.id) + (c.formato ? " · " + c.formato : "") + (e.pedido ? " · Pedido: " + e.pedido : ""))}">
       <div class="kthumb">${capa ? `<img src="${capa}" loading="lazy" alt="" draggable="false">` : ""}</div>
@@ -1468,7 +1499,7 @@ async function telaProvas(vivo) {
       <div class="kthumb">${capa ? `<img src="${capa}" loading="lazy" alt="" draggable="false">` : `<span class="kthumb-icone">${r.tipo === "video" ? ICONE.filme : ICONE.play}</span>`}</div>
       <div class="kcorpo">
         <div class="klinha"><b>${esc(r.id)}</b><span class="badge sem-ponto">${r.tipo === "video" ? "vídeo" : "foto"}</span>${r.ajuste && !dono ? `<span class="aj">ajuste</span>` : ""}</div>
-        <div>${dono ? `<span class="selo dono">aguardando você</span>` : `<span class="selo claude">com o Claude</span>`}</div>
+        <div>${seloVez(r)}</div>
         <div class="small sec">${esc(r.persona || r.pedido || "sem persona definida")}</div>
         ${tagsDe({ marca_nome: r.marca_nome, produto_nome: r.produto_nome, oferta_id: r.oferta_id || "todas", oferta_nome: r.oferta_nome || "todas as ofertas do produto" }, { curto: true, max: 26 })}
         <div class="kpe">${[r.idioma, ha(r.atualizado_em), usd(r.custo_usd)].filter(Boolean).join(" · ")}</div>
@@ -1505,7 +1536,11 @@ async function telaProvas(vivo) {
 
   const ver = (r) => {
     const dono = r.aguardando === "dono" && r.etapa !== "aprovada" && r.etapa !== "descartada";
-    const acoes = dono ? [["aprovar", `Aprovar ${ROT_ETAPA_PROVA[r.etapa].toLowerCase()}`], ["ajuste", "Pedir ajuste"], ["descartar", "Descartar"]]
+    const pend = r.pendencia, parou = !dono && r.trabalho && ["parado", "erro"].includes(r.trabalho.status);
+    const acoes = pend && pend.tipo === "gasto" ? [["liberar", `Liberar US$ ${nf(2).format(pend.custo || 0)}`], ["ajuste", "Responder / mudar o plano"], ["descartar", "Descartar"]]
+      : pend ? [["ajuste", "Responder"], ["descartar", "Descartar"]]
+      : dono ? [["aprovar", `Aprovar ${ROT_ETAPA_PROVA[r.etapa].toLowerCase()}`], ["ajuste", "Pedir ajuste"], ["descartar", "Descartar"]]
+      : parou ? [["repetir", "Tentar de novo"], ["ajuste", "Orientar (com comentário)"], ["descartar", "Descartar"]]
       : r.etapa === "aprovada" ? [["descartar", "Tirar da biblioteca (descartar)"]] : [["descartar", "Descartar"]];
     const midiaHtml = (m) => `<figure class="${m.final ? "final" : ""}">${m.video ? `<video src="${m.url}" controls preload="metadata" playsinline></video>` : `<img src="${m.url}" alt="" loading="lazy">`}
         <figcaption>${m.final ? "<b>final</b> · " : ""}${esc(m.nome)} <a href="${m.url}" download="${esc(m.nome)}">baixar</a></figcaption></figure>`;
@@ -1514,7 +1549,7 @@ async function telaProvas(vivo) {
     modal({
       titulo: `${esc(r.id)} · ${ROT_ETAPA_PROVA[r.etapa]}`, largo: true, botao: "Confirmar", cancelar: "Fechar",
       sub: dono ? "Aguardando você" : r.etapa === "aprovada" ? "Na biblioteca" : "Com o Claude" + (r.ajuste ? ` · ajuste pedido: ${esc(r.ajuste)}` : ""),
-      corpo: `<div class="prova-ver"><div class="prova-midias">${(r.midias || []).map(midiaHtml).join("") || `<p class="muted small">Ainda sem arquivo.</p>`}</div>
+      corpo: `${caixaPendencia(r)}<div class="prova-ver"><div class="prova-midias">${(r.midias || []).map(midiaHtml).join("") || `<p class="muted small">Ainda sem arquivo.</p>`}</div>
           <div><dl class="prova-dados">${linhas.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
             ${r.texto ? `<div class="prova-texto"><b>Texto (${esc(r.idioma)})</b>${btnCopiar(r.texto)}<p>${esc(r.texto)}</p>${r.texto_pt ? `<b>Tradução</b><p class="sec">${esc(r.texto_pt)}</p>` : ""}</div>` : ""}
             ${(r.eventos || []).length ? `<div class="prova-hist"><b>Histórico</b>${r.eventos.map((e) => `<div class="small"><span class="muted">${new Date(e.em).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}</span> ${esc(e.autor || "")} ${esc(ROT_ACAO[e.acao] || e.acao)}${e.comentario ? ": " + esc(e.comentario) : ""}</div>`).join("")}</div>` : ""}</div></div>
@@ -1523,7 +1558,7 @@ async function telaProvas(vivo) {
           ${campo("Comentário", `<textarea name="comentario" rows="2" placeholder="O que ajustar (obrigatório para pedir ajuste)"></textarea>`, "inteiro")}
         </div>`,
       aoAbrir: (f) => { $$("[data-copiar]", f).forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); navigator.clipboard.writeText(b.dataset.copiar); toast("Copiado."); })); },
-      aoSalvar: async (b) => { await api("/api/provas/acao", { id: r.id, ...b }); toast(b.acao === "aprovar" ? `${r.id} aprovado.` : b.acao === "ajuste" ? `Ajuste pedido em ${r.id}.` : `${r.id} descartado.`); re(); },
+      aoSalvar: async (b) => { await api("/api/provas/acao", { id: r.id, ...b }); toast({ aprovar: `${r.id} aprovado.`, ajuste: `${r.id} voltou para o Claude.`, liberar: "Gasto liberado.", repetir: "O Claude vai tentar de novo." }[b.acao] || `${r.id} descartado.`); re(); },
     });
   };
   const novaProva = () => {

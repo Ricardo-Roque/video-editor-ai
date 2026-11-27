@@ -694,3 +694,10 @@ dialog.modal.largo .modal-caixa { width: 760px; }
 .prova-texto .copiar { position: absolute; top: 8px; right: 8px; }
 .prova-hist { display: flex; flex-direction: column; gap: 4px; max-height: 160px; overflow-y: auto; }
 @media (max-width: 760px) { .prova-ver { grid-template-columns: 1fr; } .prova-midias figure { width: 100%; } }
+
+/* ------------------------------------------------ Claude automático */
+.pendencia { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--r-lg); padding: 12px 16px; margin-bottom: 12px; font-size: 13.5px; }
+.pendencia p { margin: 6px 0 0; white-space: pre-wrap; color: var(--text-secondary); }
+.pendencia.parou { background: var(--warn-soft); border-color: var(--warn); }
+.selo.pulsa::before, .dot.pulsa { animation: pulsa 1.2s ease-in-out infinite; }
+@keyframes pulsa { 50% { opacity: .25; } }

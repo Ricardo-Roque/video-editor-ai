@@ -354,6 +354,15 @@ O `anuncio` (texto principal, título, descrição e botão) é obrigatório tam
 
 **Provas sociais (uso interno).** Tela "Provas sociais": foto de pessoa com o produto ou vídeo de depoimento, feitos por IA, ligados ao produto (oferta opcional, quando a peça cita kit ou preço), em qualquer marca. São para uso interno: não vão para página de venda nem para anúncio. Todo arquivo final leva o selo "ilustrativo · IA" (`tools/selo_ia.py`), que não sai. Processo completo em [PROVAS.md](PROVAS.md); "faça as provas sociais" = `painel.py provas` e trabalhar o que está com o Claude, com custo antes.
 
+**Claude automático.** Com `CLAUDE_AUTO=1` no `.env`, o painel chama o Claude Code sem chat (`claude -p`) sempre que um card fica "com o Claude" (pedido aprovado no Garimpo, etapa aprovada, ajuste, resposta, gasto liberado): ninguém precisa dizer "continue a esteira". Um trabalho por vez; o card mostra "Claude trabalhando" e o menu lateral, "Claude: trabalhando em C23". Cada rodada faz uma etapa só e entrega para aprovação. Regras da rodada:
+
+- **Gasto**: segue sozinho até `LIMITE_AUTO_USD` por etapa (padrão US$ 1,00, decidido pelo dono em 2026-11-26). Acima disso, não gera: roda `painel.py pedir-gasto C<NN> --custo <estimativa> --plano "..."` e o card volta ao dono com o botão **Liberar US$ X** (liberar dispara a rodada de novo, com esse limite).
+- **Dúvida**: o que só o dono sabe (oferta, fato do produto, foto do produto, decisão de política) vira `painel.py perguntar C<NN> "..."`; o dono responde no card (botão Responder, que funciona como ajuste).
+- **Parou sem entregar**: o card mostra "Claude parou" com o motivo e os botões Orientar e Tentar de novo.
+- Nunca publica na Meta, nunca faz commit ou push, nunca mexe em outro card. Ferramentas liberadas: leitura e edição de arquivos e Bash para `python`, `ffmpeg`, `ffprobe` e arquivos (`painel.py`, `FERRAMENTAS_AUTO`).
+- Só roda com o computador ligado e o painel aberto. Cada estado do card roda uma vez só (tabela `trabalhos`, chave card|etapa|hora), então dois computadores com o painel aberto não duplicam o trabalho; a saída de cada rodada fica em `painel/.trabalhos/`.
+- `CLAUDE_AUTO=0` (ou sem a linha) volta ao modo manual ("continue a esteira" no chat).
+
 **Refação pedida no painel.** "Pedir ajuste" (card em produção) e "Refazer com anotações" (Visão geral) põem o pedido na fila; nada é gerado sozinho. Criativo já pronto com refação pedida continua na Biblioteca e aparece na coluna "Refação" da Produção até ser feito. Quando o dono disser "refaça os pedidos do painel" (ou "continue a esteira"):
 
 1. `python -I -X utf8 tools/painel.py fila`: lista criativo, arquivo, tempo, take e o pedido.
