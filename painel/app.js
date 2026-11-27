@@ -1438,7 +1438,7 @@ async function telaGarimpo(vivo) {
 }
 
 // ------------------------------------------------------------ provas sociais
-// Foto de pessoa com o produto ou vídeo de depoimento, feitos por IA, só em marca de demonstração (loja de exemplo).
+// Foto de pessoa com o produto ou vídeo de depoimento, feitos por IA, para uso interno.
 // Ficam no produto (oferta opcional) e o arquivo final leva o selo "ilustrativo · IA".
 const ROT_ETAPA_PROVA = { fila: "Fila", texto: "Texto", imagem: "Imagem", video: "Vídeo", aprovada: "Aprovada", descartada: "Descartada" };
 const capaProva = (r, w = 240) => { const m = (r.midias || []).find((x) => x.final) || (r.midias || []).slice(-1)[0]; return m ? thumb(m.arquivo, m.video ? 1 : 0, w) : null; };
@@ -1454,10 +1454,9 @@ async function telaProvas(vivo) {
   const rs = p.provas.filter(noEsc);
   const emProd = rs.filter((r) => r.etapa !== "aprovada" && r.etapa !== "descartada"), aprov = rs.filter((r) => r.etapa === "aprovada");
   const nDono = emProd.filter((r) => r.aguardando === "dono").length;
-  const demo = CATALOGO.marcas.filter((m) => m.demonstracao);
+  const marcasProva = CATALOGO.marcas;
   app.innerHTML = cabeca("Provas sociais", `${escopoAtivo() ? `<b>${esc(rotuloEscopo())}</b> · ` : ""}${emProd.length} em produção · ${aprov.length} aprovada(s) · <b>${nDono} aguardando você</b>`,
       filtroEscopo() + `<button class="btn primario" data-nova-prova>${ICONE.mais}Nova prova social</button>`)
-    + (demo.length ? "" : `<div class="aviso">Prova social feita por IA só existe em marca de demonstração (loja de exemplo, sem venda real). Em Marcas e ofertas, edite a marca e marque "Loja de demonstração". Em loja real, a prova social vem de clientes reais.</div>`)
     + `<div class="barra-ferramentas">
         <div class="segmentado" id="pv-modo"><button data-v="producao">Em produção</button><button data-v="biblioteca">Biblioteca</button></div>
         <span class="small muted direita">Clique para ver, aprovar ou pedir ajuste. No Claude Code: <b>"faça as provas sociais"</b>.</span>
@@ -1528,14 +1527,14 @@ async function telaProvas(vivo) {
     });
   };
   const novaProva = () => {
-    if (!demo.length) return toast("Nenhuma marca de demonstração. Marque uma em Marcas e ofertas › Editar.", 7000);
-    const mk0 = (demo.find((m) => m.id === ESCOPO.marca) || demo[0]).id;
+    if (!marcasProva.length) return toast("Crie uma marca em Marcas e ofertas antes.", 7000);
+    const mk0 = (marcasProva.find((m) => m.id === ESCOPO.marca) || marcasProva[0]).id;
     const prods = (mk) => CATALOGO.produtos.filter((x) => x.marca_id === mk), ofs = (pr) => CATALOGO.ofertas.filter((o) => o.produto_id === pr);
     modal({
       titulo: "Nova prova social", largo: true, botao: "Pedir",
-      sub: "Peça feita por IA para loja de demonstração. O arquivo final sai com o selo \"ilustrativo · IA\".",
+      sub: "Uso interno. O arquivo final sai com o selo \"ilustrativo · IA\".",
       corpo: `<div class="modal-campos">
-        ${campo("Marca (demonstração)", `<select name="marca_id">${demo.map((m) => `<option value="${esc(m.id)}" ${m.id === mk0 ? "selected" : ""}>${esc(m.nome)}</option>`).join("")}</select>`)}
+        ${campo("Marca", `<select name="marca_id">${marcasProva.map((m) => `<option value="${esc(m.id)}" ${m.id === mk0 ? "selected" : ""}>${esc(m.nome)}</option>`).join("")}</select>`)}
         ${campo("Produto", `<select name="produto_id"></select>`)}
         ${campo("Oferta (opcional)", `<select name="oferta_id"></select>`)}
         ${campo("Idioma da peça", `<input name="idioma" maxlength="5" placeholder="fr">`)}
@@ -1593,7 +1592,7 @@ async function telaOfertas(vivo) {
        <button class="btn primario" data-nova="oferta" ${semProduto ? "disabled title='Crie um produto antes'" : ""}>${ICONE.mais}Nova oferta</button>`)
     + (semOferta.length ? `<div class="aviso">${semOferta.length} criativo(s) sem oferta: ${semOferta.slice(0, 12).map((c) => `<a href="#/c/${c.id}"><b>${esc(curtoC(c.id))}</b></a>`).join(", ")}${semOferta.length > 12 ? "…" : ""}. Abra cada um e clique em "Definir oferta".</div>` : "")
     + `<div class="arvore">${marcas.map((mc) => `
-      <div class="caixa"><h2><span class="tag marca"><i></i>${esc(mc.nome)}</span><span class="muted small">prefixo ${esc(mc.prefixo)}</span>${mc.demonstracao ? `<span class="badge acento sem-ponto" title="Libera provas sociais feitas por IA">loja de demonstração</span>` : ""}
+      <div class="caixa"><h2><span class="tag marca"><i></i>${esc(mc.nome)}</span><span class="muted small">prefixo ${esc(mc.prefixo)}</span>
         <span class="acoes-linha direita"><button class="btn mini fantasma" data-editar-marca="${esc(mc.id)}">${ICONE.lapis}Editar</button><button class="btn mini fantasma" data-nova="produto" data-marca="${esc(mc.id)}">${ICONE.mais}Produto</button><button class="btn mini" data-escopo-marca="${esc(mc.id)}">${ICONE.filtro}Ver criativos</button></span></h2>
         ${produtos.filter((p) => p.marca_id === mc.id).map((p) => `
           <div class="produto"><div class="produto-cabeca"><span class="tag produto"><i></i>${esc(p.nome)}</span><span class="muted small">${esc(p.id)}</span>
@@ -1615,7 +1614,6 @@ async function telaOfertas(vivo) {
       ${campo("ID (minúsculas)", `<input name="id" placeholder="cinnarae" value="${esc(m?.id || "")}" ${m ? travado : ""}>`)}
       ${campo("Prefixo dos IDs", `<input name="prefixo" placeholder="CIN" maxlength="5" value="${esc(m?.prefixo || "")}" ${m ? travado : ""} style="text-transform:uppercase">`)}
       ${campo("Nome", `<input name="nome" placeholder="Cinnarae" value="${esc(m?.nome || "")}">`, "inteiro")}
-      <label class="inteiro linha-check"><input type="checkbox" name="demonstracao" ${m?.demonstracao ? "checked" : ""}><span><b>Loja de demonstração</b> (exemplo, sem venda real): libera provas sociais feitas por IA. Não marque em marca que vende de verdade.</span></label>
     </div><p class="small muted" style="margin:10px 0 0">O prefixo abre o ID das ofertas (CIN-FR-01).</p>`,
     aoSalvar: (b) => salvar("marca")({ ...b, prefixo: b.prefixo.toUpperCase() }),
   });

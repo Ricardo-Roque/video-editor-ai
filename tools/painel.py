@@ -865,9 +865,8 @@ def salvar_catalogo(tipo: str, b: dict) -> dict:
     if tipo == "marca":
         if not SLUG.match(b.get("id", "")) or not b.get("nome") or not re.fullmatch(r"[A-Z]{2,5}", b.get("prefixo", "")):
             raise ValueError("Marca: id em minúsculas (ex.: cinnarae), nome e prefixo de 2 a 5 letras maiúsculas (ex.: CIN).")
-        DB.q("""insert into marcas (id, nome, prefixo, demonstracao) values (%s,%s,%s,%s)
-                on conflict (id) do update set nome = excluded.nome, demonstracao = excluded.demonstracao""",
-             (b["id"], b["nome"].strip(), b["prefixo"], bool(b.get("demonstracao"))))
+        DB.q("""insert into marcas (id, nome, prefixo) values (%s,%s,%s)
+                on conflict (id) do update set nome = excluded.nome""", (b["id"], b["nome"].strip(), b["prefixo"]))
     elif tipo == "produto":
         if not SLUG.match(b.get("id", "")) or not b.get("nome") or not b.get("marca_id"):
             raise ValueError("Produto: id em minúsculas (ex.: cayenne-softgels), marca e nome.")
@@ -1088,8 +1087,8 @@ def receber_arquivo(handler, nome: str) -> dict:
 
 
 # ---------------------------------------------------------------- provas sociais
-# Foto de pessoa com o produto ou vídeo de depoimento, feitos por IA, só para marca de demonstração (loja de
-# exemplo). Pasta: "Provas Sociais/PS01/" (imagens/, video/, final/). O arquivo final leva o selo "ilustrativo · IA"
+# Foto de pessoa com o produto ou vídeo de depoimento, feitos por IA, para uso interno, em qualquer marca.
+# Pasta: "Provas Sociais/PS01/" (imagens/, video/, final/). O arquivo final leva o selo "ilustrativo · IA"
 # (tools/selo_ia.py). Processo em PROVAS.md.
 
 PROVAS = ROOT / "Provas Sociais"
@@ -1150,12 +1149,8 @@ def provas_lista() -> dict:
 
 
 def provas_nova(b: dict, autor: str) -> dict:
-    marca = DB.q("select id, demonstracao from marcas where id = %s", (b.get("marca_id"),))
-    if not marca:
+    if not DB.q("select 1 from marcas where id = %s", (b.get("marca_id"),)):
         raise ValueError("Escolha a marca.")
-    if not marca[0]["demonstracao"]:
-        raise ValueError("Prova social feita por IA só em marca de demonstração (loja de exemplo, sem venda real). "
-                         "Marque a marca como demonstração em Marcas e ofertas. Em loja real, use avaliações de clientes reais.")
     prod = DB.q("select id from produtos where id = %s and marca_id = %s", (b.get("produto_id"), b["marca_id"]))
     if not prod:
         raise ValueError("Escolha um produto da marca.")

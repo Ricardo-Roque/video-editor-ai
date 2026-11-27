@@ -231,7 +231,7 @@ GARIMPO ──aprovar──▶ PRODUÇÃO ──entregar──▶ BIBLIOTECA ─
 | Tela | O que faz | Estado |
 |---|---|---|
 | **Garimpo** | quadro de referências por fonte (Novas · Em quebra · Aprovadas · Reprovadas). **Aprovar** abre pop-up com oferta, Réplica ou Modelagem e prioridade, e cria o `C##` na Fila da Produção. **Reprovar** pede o motivo (fora do nicho, política, já temos, fraco); a chave estável impede que a referência volte. Entrada manual primeiro (link da Biblioteca de Anúncios ou vídeo), depois o bot. | feito em 2026-11-26 (entrada manual, colunas Novas · Aprovadas · Reprovadas; tela de Fontes e coluna "Em quebra" ficam para o bot) |
-| **Provas sociais** | foto com o produto e vídeo de depoimento feitos por IA, só para marca de demonstração, com selo "ilustrativo · IA"; esteira própria (Fila → Texto → Imagem → Vídeo) e biblioteca por produto. [PROVAS.md](PROVAS.md) | feito em 2026-11-26 |
+| **Provas sociais** | foto com o produto e vídeo de depoimento feitos por IA, para uso interno em qualquer marca, com selo "ilustrativo · IA"; esteira própria (Fila → Texto → Imagem → Vídeo) e biblioteca por produto. [PROVAS.md](PROVAS.md) | feito em 2026-11-26 |
 | **Produção** | quadro por etapa. O card abre o criativo com a barra da esteira (Aprovar, Pedir ajuste, Mover, Descartar) e as abas Copy e roteiro (`ficha.json`), Takes e imagens, Documentos e Histórico. A fila de refação virou parte do quadro. | feito |
 | **Biblioteca** | só entregue, no ar, pausado e descartado. A mesma página do criativo, com tudo que foi produzido. | feito |
 | **Campanhas** | escolher criativos da Biblioteca + modelo de campanha → cria tudo **pausado** pela API; ativar (gastar) sempre com confirmação explícita no painel. A aba Anúncios entra aqui. | a fazer (fase 4) |
