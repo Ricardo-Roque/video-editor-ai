@@ -665,3 +665,32 @@ dialog.modal.largo .modal-caixa { width: 760px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ------------------------------------------------ garimpo e provas sociais */
+.quadro-fixo { cursor: default; user-select: auto; height: calc(100vh - 236px); }
+.prio { flex: none; font-size: 10.5px; font-weight: 700; padding: 0 6px; border-radius: 99px; line-height: 18px; background: var(--surface-3); color: var(--text-secondary); }
+.prio.p1 { background: var(--warn-soft); color: var(--warn); }
+.prio.p3 { color: var(--text-muted); }
+.kthumb-icone { width: 100%; height: 100%; display: grid; place-items: center; color: var(--text-muted); }
+.kthumb-icone svg { width: 22px; height: 22px; }
+.klinha .badge { height: 18px; font-size: 10.5px; padding: 0 6px; }
+.garimpo-ver { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+.garimpo-ver video, .garimpo-ver img { max-height: 46vh; max-width: 100%; border-radius: 10px; background: #000; }
+.linha-check { flex-direction: row !important; align-items: flex-start; gap: 10px !important; font-size: 13px !important; }
+.linha-check input { width: 16px !important; margin-top: 2px; flex: none; }
+.sub-grupo { font-size: 15px; margin: 22px 0 10px; }
+.sub-grupo:first-child { margin-top: 4px; }
+.prova-ver { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 18px; }
+.prova-midias { display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; }
+.prova-midias figure { margin: 0; width: calc(50% - 5px); }
+.prova-midias figure.final { width: 100%; }
+.prova-midias img, .prova-midias video { width: 100%; max-height: 52vh; object-fit: contain; border-radius: 10px; background: #000; display: block; }
+.prova-midias figcaption { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.prova-dados { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 0 0 12px; font-size: 13px; }
+.prova-dados dt { color: var(--text-muted); }
+.prova-dados dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.prova-texto { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; font-size: 13px; position: relative; margin-bottom: 12px; }
+.prova-texto p { margin: 4px 0 8px; white-space: pre-wrap; }
+.prova-texto .copiar { position: absolute; top: 8px; right: 8px; }
+.prova-hist { display: flex; flex-direction: column; gap: 4px; max-height: 160px; overflow-y: auto; }
+@media (max-width: 760px) { .prova-ver { grid-template-columns: 1fr; } .prova-midias figure { width: 100%; } }

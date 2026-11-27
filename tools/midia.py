@@ -114,8 +114,10 @@ def papel_de(caminho: str) -> str:
     topo = caminho.split("/", 1)[0] if "/" in caminho else ""
     if caminho.startswith("prontos/"):
         return "final"
-    if topo == "takes":
+    if topo in ("takes", "video"):          # video/: take da prova social
         return "take"
+    if topo == "final":                     # final/: prova social com o selo
+        return "final"
     if topo in ("imagens", "ilustracao"):
         return "imagem"
     if topo == "referencia":
@@ -234,7 +236,7 @@ def subir(cids: list[str], ensaio: bool = False, log=print) -> dict:
         cache = json.loads(SHA_CACHE.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         cache = {}
-    locais = painel.pastas_locais()
+    locais = painel.pastas_todas()
     autor = getpass.getuser()
     tot = {"enviados": 0, "bytes": 0, "pulados": 0, "erros": 0}
     with dados.conectar() as conn:
@@ -326,7 +328,7 @@ def subir(cids: list[str], ensaio: bool = False, log=print) -> dict:
 def baixar(cid: str, papel: str | None = None, log=print) -> int:
     """Traz para o computador o que está no R2 e falta aqui (nunca sobrescreve arquivo local)."""
     import painel
-    pasta = painel.pastas_locais().get(cid)
+    pasta = painel.pastas_todas().get(cid)
     with dados.conectar() as conn:
         rs = dados.linhas(conn, "select * from arquivos where criativo_id = %s" + (" and papel = %s" if papel else "")
                           + " order by caminho", (cid, papel) if papel else (cid,))
@@ -373,7 +375,8 @@ def cmd_verificar(a):
 
 def cmd_subir(a):
     import painel
-    cids = sorted(painel.pastas_locais(), key=painel.ordem) if a.todos else [c.upper() for c in a.criativos]
+    cids = (sorted(painel.pastas_locais(), key=painel.ordem) + sorted(painel.pastas_provas())) if a.todos \
+        else [c.upper() for c in a.criativos]
     if not cids:
         sys.exit("Diga quais criativos (ex.: subir C13) ou use --todos.")
     if not a.ensaio and not configurado():

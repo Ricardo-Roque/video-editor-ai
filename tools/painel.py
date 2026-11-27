@@ -9,6 +9,8 @@ Uso (a partir da raiz do projeto):
   python -I -X utf8 tools/painel.py entregar C13 --etapa roteiro --custo 0.42 --nota "..."   etapa pronta para aprovar
   python -I -X utf8 tools/painel.py entrar C23 [--etapa fila]   põe um criativo novo na esteira
   python -I -X utf8 tools/painel.py proximo --tipo nativo  próximo código livre (C23 / CN15 / CI04) e nome da pasta
+  python -I -X utf8 tools/painel.py provas               provas sociais com o Claude e com o dono
+  python -I -X utf8 tools/painel.py prova-entregar PS01 --etapa imagem --custo 0.04   etapa da prova pronta para aprovar
   python -I -X utf8 tools/painel.py usuario --email a@b.com --nome "Nome"   cria login (pede a senha)
 
 Login: usuários e sessões no Supabase (senha em scrypt, cookie HttpOnly de 30 dias). No primeiro
@@ -576,7 +578,15 @@ def _montar_lista() -> list[dict]:
             e = est[cid]
             c["status"] = "em_producao"
             c["esteira"] = {"etapa": e["etapa"], "aguardando": e["aguardando"], "desde": e["desde"],
-                            "custo_usd": num(e["custo_usd"]), "inferida": False}
+                            "custo_usd": num(e["custo_usd"]), "inferida": False,
+                            "prioridade": e.get("prioridade"), "pedido": e.get("pedido"),
+                            "referencia_chave": e.get("referencia_chave")}
+            if not b:                        # pedido do Garimpo, ainda sem linha em criativos: oferta e processo do card
+                c["processo"] = e.get("processo")
+                o = ofertas_por_id().get(e.get("oferta_id"))
+                if o:
+                    c |= {"oferta_id": o["id"], "oferta_nome": o["nome"], "pais": o["pais"], "marca_id": o["marca_id"],
+                          "marca_nome": o["marca_nome"], "produto_id": o["produto_id"], "produto_nome": o["produto_nome"]}
         elif c["status"] == "em_producao":   # ainda sem linha: etapa deduzida dos arquivos da pasta
             etapa = etapa_pelos_arquivos(pasta, tipo, bool(m["videos"]))
             c["esteira"] = {"etapa": etapa, "aguardando": "claude" if etapa == "fila" else "dono",
@@ -840,7 +850,7 @@ _CATALOGO = memo(300)
 
 def catalogo() -> dict:
     return _CATALOGO.pegar(lambda: DB.lote({
-        "marcas": ("select id, nome, prefixo from marcas order by nome", None),
+        "marcas": ("select id, nome, prefixo, demonstracao from marcas order by nome", None),
         "produtos": ("select id, marca_id, nome, descricao from produtos order by nome", None),
         "ofertas": ("""select o.id, o.marca_id, o.produto_id, o.nome, o.status, o.pais, o.idioma, o.moeda,
                               o.oferta_atual, count(c.id) criativos
@@ -855,8 +865,9 @@ def salvar_catalogo(tipo: str, b: dict) -> dict:
     if tipo == "marca":
         if not SLUG.match(b.get("id", "")) or not b.get("nome") or not re.fullmatch(r"[A-Z]{2,5}", b.get("prefixo", "")):
             raise ValueError("Marca: id em minúsculas (ex.: cinnarae), nome e prefixo de 2 a 5 letras maiúsculas (ex.: CIN).")
-        DB.q("""insert into marcas (id, nome, prefixo) values (%s,%s,%s)
-                on conflict (id) do update set nome = excluded.nome""", (b["id"], b["nome"].strip(), b["prefixo"]))
+        DB.q("""insert into marcas (id, nome, prefixo, demonstracao) values (%s,%s,%s,%s)
+                on conflict (id) do update set nome = excluded.nome, demonstracao = excluded.demonstracao""",
+             (b["id"], b["nome"].strip(), b["prefixo"], bool(b.get("demonstracao"))))
     elif tipo == "produto":
         if not SLUG.match(b.get("id", "")) or not b.get("nome") or not b.get("marca_id"):
             raise ValueError("Produto: id em minúsculas (ex.: cayenne-softgels), marca e nome.")
@@ -900,6 +911,304 @@ def registrar_criativo(b: dict) -> dict:
          (cid, b["oferta_id"], b["processo"], b["tipo"], b["formato"].strip(), b["idioma"].lower(), status,
           b.get("descricao") or None))
     return {"ok": True, "acao": "registrado"}
+
+
+def ofertas_por_id() -> dict:
+    cat = catalogo()
+    marcas = {m["id"]: m for m in cat["marcas"]}
+    produtos = {p["id"]: p for p in cat["produtos"]}
+    return {o["id"]: o | {"marca_nome": (marcas.get(o["marca_id"]) or {}).get("nome"),
+                          "produto_nome": (produtos.get(o["produto_id"]) or {}).get("nome")} for o in cat["ofertas"]}
+
+
+# ---------------------------------------------------------------- garimpo: pedidos de criativo
+# O dono cola o link (ou sobe o vídeo) e diz o que quer; aprovar cria o código na Fila da Produção.
+
+BRUTO = ROOT / "Vídeo Bruto"
+UPLOAD_MAX = 400 * 1024 * 1024
+TIPOS_REF = ("video", "nativo", "imagem")
+
+
+def _chave(alvo: str) -> str:
+    try:
+        return dados.chave_de(alvo)
+    except SystemExit as e:                  # chave_de encerra com mensagem; aqui vira erro de validação
+        raise ValueError(str(e)) from None
+
+
+def _validar_pedido(b: dict) -> tuple:
+    oferta = b.get("oferta_alvo") or None
+    processo = b.get("processo_alvo") or "modelagem"
+    prioridade = int(b.get("prioridade") or 2)
+    if processo not in ("replica", "modelagem") or prioridade not in (1, 2, 3):
+        raise ValueError("Processo (Réplica ou Modelagem) e prioridade (1 a 3) inválidos.")
+    if oferta and oferta not in ofertas_por_id():
+        raise ValueError("Oferta inexistente.")
+    return oferta, processo, prioridade, (b.get("pedido") or "").strip() or None
+
+
+def garimpo_lista() -> dict:
+    rs = DB.q("""select r.chave, r.tipo, r.url, r.arquivo, r.midia_url, r.anunciante, r.triagem, r.motivo,
+                        r.oferta_alvo, r.processo_alvo, r.prioridade, r.pedido, r.criativo_id, r.enviado_por,
+                        r.decidido_por, r.decidido_em, r.criado_em
+                 from referencias r where r.triagem is not null order by r.prioridade nulls last, r.criado_em desc""")
+    ofs = ofertas_por_id()
+    for r in rs:
+        o = ofs.get(r["oferta_alvo"]) or {}
+        r |= {"marca_id": o.get("marca_id"), "produto_id": o.get("produto_id"), "marca_nome": o.get("marca_nome"),
+              "produto_nome": o.get("produto_nome"), "oferta_nome": o.get("nome")}
+        r["midia"] = None
+        if r["arquivo"] and (ROOT / r["arquivo"]).is_file():
+            r["midia"] = {"url": url_rel(r["arquivo"]), "arquivo": r["arquivo"], "local": True}
+        elif (r["midia_url"] or "").startswith("r2:") and midia.configurado():
+            r["midia"] = {"url": midia.assinar(r["midia_url"][3:]), "arquivo": None, "local": False}
+        if r["midia"]:
+            r["midia"]["video"] = pathlib.Path(r["arquivo"] or r["midia_url"]).suffix.lower() in VIDEO_EXT
+    return {"referencias": rs}
+
+
+def garimpo_novo(b: dict, autor: str) -> dict:
+    """Pedido novo: link da Biblioteca de Anúncios (ou outro link) ou arquivo já enviado para o Vídeo Bruto/."""
+    link, arquivo, tipo = (b.get("url") or "").strip(), (b.get("arquivo") or "").strip(), b.get("tipo")
+    if tipo not in TIPOS_REF:
+        raise ValueError("Tipo: vídeo, nativo ou imagem.")
+    if not link and not arquivo:
+        raise ValueError("Cole o link do anúncio ou envie o arquivo.")
+    if arquivo:
+        p = (ROOT / arquivo).resolve()
+        if not p.is_relative_to(BRUTO.resolve()) or not p.is_file():
+            raise ValueError("Arquivo não encontrado no Vídeo Bruto/.")
+    chave = _chave(link or str(ROOT / arquivo))
+    oferta, processo, prioridade, pedido = _validar_pedido(b)
+    ja = DB.q("select triagem, status, criativo_id from referencias where chave = %s", (chave,))
+    if ja:
+        j = ja[0]
+        if j["triagem"]:
+            raise ValueError(f"Essa referência já está no Garimpo ({j['triagem']}"
+                             + (f", virou {j['criativo_id']}" if j["criativo_id"] else "") + ").")
+        DB.q("""update referencias set triagem = 'nova', oferta_alvo = %s, processo_alvo = %s, prioridade = %s,
+                pedido = %s, enviado_por = %s, url = coalesce(url, %s), arquivo = coalesce(arquivo, %s),
+                atualizado_em = now() where chave = %s""",
+             (oferta, processo, prioridade, pedido, autor, link or None, arquivo or None, chave))
+        aviso = f"Já estava no registro (status {j['status']}): o Claude vai ver o que já foi feito com ela."
+    else:
+        DB.q("""insert into referencias (chave, tipo, url, arquivo, midia_url, anunciante, triagem, oferta_alvo,
+                                         processo_alvo, prioridade, pedido, enviado_por, visto_em)
+                values (%s,%s,%s,%s,%s,%s,'nova',%s,%s,%s,%s,%s,current_date)""",
+             (chave, tipo, link or None, arquivo or None, b.get("midia_url") or None,
+              (b.get("anunciante") or "").strip() or None, oferta, processo, prioridade, pedido, autor))
+        aviso = None
+    out = {"ok": True, "chave": chave, "aviso": aviso}
+    if b.get("destino", "producao") == "producao":
+        out |= garimpo_decidir({"chave": chave, "decisao": "aprovar", "oferta_alvo": oferta, "processo_alvo": processo,
+                                "prioridade": prioridade, "pedido": pedido}, autor)
+    return out
+
+
+def garimpo_decidir(b: dict, autor: str) -> dict:
+    chave = b.get("chave", "")
+    r = DB.q("select * from referencias where chave = %s and triagem is not null", (chave,))
+    if not r:
+        raise ValueError("Referência não está no Garimpo.")
+    r = r[0]
+    if b.get("decisao") == "reprovar":
+        motivo = (b.get("motivo") or "").strip()
+        if not motivo:
+            raise ValueError("Diga o motivo (fora do nicho, política, já temos, fraco...).")
+        DB.q("""update referencias set triagem = 'reprovada', motivo = %s, decidido_por = %s, decidido_em = now(),
+                status = 'descartada', atualizado_em = now() where chave = %s""", (motivo, autor, chave))
+        return {"ok": True}
+    if b.get("decisao") != "aprovar":
+        raise ValueError("Decisão: aprovar ou reprovar.")
+    if r["triagem"] == "aprovada" and r["criativo_id"]:
+        raise ValueError(f"Já aprovada: virou {r['criativo_id']}.")
+    if r["tipo"] not in TIPOS_REF:
+        raise ValueError("Carrossel ainda não tem processo de produção.")
+    oferta, processo, prioridade, pedido = _validar_pedido(b)
+    invalidar_lista()
+    cid = proximo_codigo(r["tipo"])
+    DB.q("""insert into esteira (criativo_id, etapa, aguardando, atualizado_por, referencia_chave, oferta_id, processo,
+                                 prioridade, pedido)
+            values (%s,'fila','claude',%s,%s,%s,%s,%s,%s)""", (cid, autor, chave, oferta, processo, prioridade, pedido))
+    DB.q("""update referencias set triagem = 'aprovada', criativo_id = %s, oferta_alvo = %s, processo_alvo = %s,
+            prioridade = %s, pedido = %s, decidido_por = %s, decidido_em = now(), atualizado_em = now()
+            where chave = %s""", (cid, oferta, processo, prioridade, pedido, autor, chave))
+    esteira_evento(cid, "fila", "criou", autor, f"pedido do Garimpo ({'Modelagem' if processo == 'modelagem' else 'Réplica'}, "
+                   f"prioridade {prioridade})" + (f": {pedido}" if pedido else ""))
+    invalidar_lista()
+    return {"ok": True, "criativo_id": cid}
+
+
+def nome_livre(pasta: pathlib.Path, nome: str) -> pathlib.Path:
+    nome = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "_", pathlib.Path(nome).name).strip(" .") or "referencia.mp4"
+    p = pasta / nome
+    i = 2
+    while p.exists():
+        p = pasta / f"{pathlib.Path(nome).stem} ({i}){pathlib.Path(nome).suffix}"
+        i += 1
+    return p
+
+
+def receber_arquivo(handler, nome: str) -> dict:
+    """Vídeo ou imagem de referência enviado pelo painel: vai para o Vídeo Bruto/ e, com R2, para o bucket
+    (assim o sócio vê a referência no computador dele)."""
+    n = int(handler.headers.get("Content-Length") or 0)
+    ext = pathlib.Path(nome).suffix.lower()
+    if ext not in VIDEO_EXT | IMG_EXT:
+        raise ValueError("Envie vídeo (.mp4, .mov, .webm) ou imagem (.png, .jpg, .webp).")
+    if not 0 < n <= UPLOAD_MAX:
+        raise ValueError("Arquivo vazio ou maior que 400 MB.")
+    BRUTO.mkdir(exist_ok=True)
+    destino = nome_livre(BRUTO, nome)
+    tmp = destino.with_name(destino.name + ".enviando")
+    falta = n
+    with tmp.open("wb") as f:
+        while falta > 0:
+            bloco = handler.rfile.read(min(1 << 20, falta))
+            if not bloco:
+                break
+            f.write(bloco)
+            falta -= len(bloco)
+    if falta:
+        tmp.unlink(missing_ok=True)
+        raise ValueError("Envio interrompido.")
+    tmp.replace(destino)
+    chave = _chave(str(destino))
+    midia_url = None
+    if midia.configurado():
+        objeto = f"referencias/{chave[4:]}{ext}"
+        try:
+            midia.cliente().upload_file(str(destino), midia.bucket(), objeto,
+                                        ExtraArgs={"ContentType": mimetypes.guess_type(destino.name)[0] or "application/octet-stream"})
+            midia_url = "r2:" + objeto
+        except Exception as e:  # noqa: BLE001 - fica só local; o pedido segue
+            print("[garimpo] envio ao R2 falhou:", str(e)[:200])
+    return {"ok": True, "arquivo": rel(destino), "chave": chave, "midia_url": midia_url,
+            "tipo": "video" if ext in VIDEO_EXT else "nativo"}
+
+
+# ---------------------------------------------------------------- provas sociais
+# Foto de pessoa com o produto ou vídeo de depoimento, feitos por IA, só para marca de demonstração (loja de
+# exemplo). Pasta: "Provas Sociais/PS01/" (imagens/, video/, final/). O arquivo final leva o selo "ilustrativo · IA"
+# (tools/selo_ia.py). Processo em PROVAS.md.
+
+PROVAS = ROOT / "Provas Sociais"
+ETAPAS_PROVA = {"foto": ["fila", "imagem", "aprovada"], "video": ["fila", "texto", "imagem", "video", "aprovada"]}
+
+
+def pastas_provas() -> dict:
+    if not PROVAS.exists():
+        return {}
+    return {d.name: d for d in PROVAS.iterdir() if d.is_dir() and re.fullmatch(r"PS\d{2,3}", d.name)}
+
+
+def pastas_todas() -> dict:
+    """Criativos e provas sociais (o midia.py sobe e baixa os dois)."""
+    return pastas_locais() | pastas_provas()
+
+
+def proximo_ps(usados: set | None = None) -> str:
+    ids = {r["id"] for r in DB.q("select id from provas_sociais")} | set(pastas_provas()) | (usados or set())
+    return f"PS{max((int(i[2:]) for i in ids), default=0) + 1:02d}"
+
+
+def midia_prova(pid: str, pasta: pathlib.Path | None) -> list[dict]:
+    """Arquivos da prova: os locais e, se faltarem aqui, os do R2. Os finais (com selo) vêm primeiro."""
+    out, vistos = [], set()
+
+    def add(caminho: str, url: str, arquivo: str, remoto_=False):
+        ext = pathlib.Path(caminho).suffix.lower()
+        if caminho in vistos or ext not in VIDEO_EXT | IMG_EXT:
+            return
+        vistos.add(caminho)
+        out.append({"caminho": caminho, "nome": pathlib.Path(caminho).name, "url": url, "arquivo": arquivo,
+                    "video": ext in VIDEO_EXT, "final": caminho.startswith("final/"), "remoto": remoto_})
+
+    if pasta:
+        for p in sorted(pasta.rglob("*")):
+            if p.is_file():
+                add(p.relative_to(pasta).as_posix(), url_midia(p), rel(p))
+    for r in remotos_de(pid):
+        add(r["caminho"], url_rel(r["rel"]), r["rel"], True)
+    out.sort(key=lambda m: (not m["final"], m["caminho"]))
+    return out
+
+
+def provas_lista() -> dict:
+    rs = DB.q("""select p.*, m.nome marca_nome, pr.nome produto_nome, o.nome oferta_nome
+                 from provas_sociais p join marcas m on m.id = p.marca_id join produtos pr on pr.id = p.produto_id
+                 left join ofertas o on o.id = p.oferta_id order by p.id""")
+    ev = DB.q("""select * from esteira_eventos where criativo_id like 'PS%%' order by em desc limit 400""")
+    locais = pastas_provas()
+    for r in rs:
+        r["custo_usd"] = num(r["custo_usd"])
+        r["etapas"] = ETAPAS_PROVA[r["tipo"]]
+        r["midias"] = midia_prova(r["id"], locais.get(r["id"]))
+        r["pasta"] = rel(locais[r["id"]]) if r["id"] in locais else f"Provas Sociais/{r['id']}"
+        r["eventos"] = [e for e in ev if e["criativo_id"] == r["id"]][:20]
+    return {"provas": rs}
+
+
+def provas_nova(b: dict, autor: str) -> dict:
+    marca = DB.q("select id, demonstracao from marcas where id = %s", (b.get("marca_id"),))
+    if not marca:
+        raise ValueError("Escolha a marca.")
+    if not marca[0]["demonstracao"]:
+        raise ValueError("Prova social feita por IA só em marca de demonstração (loja de exemplo, sem venda real). "
+                         "Marque a marca como demonstração em Marcas e ofertas. Em loja real, use avaliações de clientes reais.")
+    prod = DB.q("select id from produtos where id = %s and marca_id = %s", (b.get("produto_id"), b["marca_id"]))
+    if not prod:
+        raise ValueError("Escolha um produto da marca.")
+    oferta = b.get("oferta_id") or None
+    if oferta and not DB.q("select 1 from ofertas where id = %s and produto_id = %s", (oferta, b["produto_id"])):
+        raise ValueError("A oferta precisa ser desse produto.")
+    if b.get("tipo") not in ETAPAS_PROVA:
+        raise ValueError("Tipo: foto com o produto ou vídeo de depoimento.")
+    idioma = (b.get("idioma") or "").strip().lower()
+    if not re.fullmatch(r"[a-z]{2}(-[a-z]{2})?", idioma):
+        raise ValueError("Idioma da peça (ex.: fr, en, pt).")
+    qtd = int(b.get("quantidade") or 1)
+    if not 1 <= qtd <= 10:
+        raise ValueError("Quantidade de 1 a 10.")
+    ids = []
+    for _ in range(qtd):
+        pid = proximo_ps(set(ids))
+        DB.q("""insert into provas_sociais (id, marca_id, produto_id, oferta_id, tipo, idioma, persona, pedido, criado_por)
+                values (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+             (pid, b["marca_id"], b["produto_id"], oferta, b["tipo"], idioma, (b.get("persona") or "").strip() or None,
+              (b.get("pedido") or "").strip() or None, autor))
+        esteira_evento(pid, "fila", "criou", autor, b.get("pedido") or None)
+        ids.append(pid)
+    return {"ok": True, "ids": ids}
+
+
+def provas_acao(b: dict, autor: str) -> dict:
+    pid, acao = b.get("id", ""), b.get("acao")
+    r = DB.q("select * from provas_sociais where id = %s", (pid,))
+    if not r:
+        raise ValueError("Prova social não encontrada.")
+    r = r[0]
+    etapas, comentario = ETAPAS_PROVA[r["tipo"]], (b.get("comentario") or "").strip() or None
+    if acao == "aprovar":
+        if r["aguardando"] != "dono" or r["etapa"] in ("fila", "aprovada", "descartada"):
+            raise ValueError("Nada para aprovar agora: a vez é do Claude.")
+        prox = etapas[etapas.index(r["etapa"]) + 1]
+        DB.q("""update provas_sociais set etapa = %s, aguardando = %s, ajuste = null, atualizado_em = now()
+                where id = %s""", (prox, "dono" if prox == "aprovada" else "claude", pid))
+        esteira_evento(pid, r["etapa"], "concluiu" if prox == "aprovada" else "aprovou", autor, comentario)
+        return {"ok": True, "etapa": prox}
+    if acao == "ajuste":
+        if not comentario:
+            raise ValueError("Escreva o que ajustar.")
+        DB.q("update provas_sociais set ajuste = %s, aguardando = 'claude', atualizado_em = now() where id = %s",
+             (comentario, pid))
+        esteira_evento(pid, r["etapa"], "pediu_ajuste", autor, comentario)
+        return {"ok": True}
+    if acao == "descartar":
+        DB.q("update provas_sociais set etapa = 'descartada', atualizado_em = now() where id = %s", (pid,))
+        esteira_evento(pid, r["etapa"], "descartou", autor, comentario)
+        return {"ok": True}
+    raise ValueError("Ação desconhecida.")
 
 
 # ---------------------------------------------------------------- login
@@ -1139,6 +1448,10 @@ class Handler(BaseHTTPRequestHandler):
                     order by criativo_id, tempo_s nulls first""")})
             if u.path == "/api/variaveis":
                 return self._json({"variaveis": variaveis_ranking()})
+            if u.path == "/api/garimpo":
+                return self._json(garimpo_lista())
+            if u.path == "/api/provas":
+                return self._json(provas_lista())
             if u.path == "/api/anuncios":
                 filtro = "where a.criativo_id is null" if qs.get("sem_criativo") else ""
                 return self._json({"anuncios": DB.q(f"""
@@ -1154,6 +1467,13 @@ class Handler(BaseHTTPRequestHandler):
         u = urlsplit(self.path)
         invalidar_lista()
         try:
+            if u.path == "/api/garimpo/arquivo":   # corpo é o arquivo (não JSON): confere a sessão antes de ler
+                self.usuario = usuario_da_sessao(self._token())
+                origem = self.headers.get("Origin")
+                if not self.usuario or (origem and urlsplit(origem).netloc != self.headers.get("Host")):
+                    return self._json({"erro": "sessão expirada", "login": True}, 401)
+                nome = unquote(parse_qs(u.query).get("nome", ["referencia.mp4"])[0])
+                return self._json(receber_arquivo(self, nome))
             b = self._corpo()
             # --- rotas abertas: entrar e criar o primeiro usuário
             if u.path == "/api/login":
@@ -1208,6 +1528,14 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(registrar_criativo(b))
             if u.path == "/api/esteira":
                 return self._json(esteira_acao(b, autor))
+            if u.path == "/api/garimpo":
+                return self._json(garimpo_novo(b, autor))
+            if u.path == "/api/garimpo/decidir":
+                return self._json(garimpo_decidir(b, autor))
+            if u.path == "/api/provas":
+                return self._json(provas_nova(b, autor))
+            if u.path == "/api/provas/acao":
+                return self._json(provas_acao(b, autor))
             if u.path == "/api/anotacoes":
                 cid = b["criativo_id"]
                 texto = (b.get("texto") or "").strip()
@@ -1326,14 +1654,22 @@ def cmd_esteira(a):
     pedidas = {}
     for r in DB.q("select * from anotacoes where status = 'pedida' order by criativo_id, tempo_s nulls first, id"):
         pedidas.setdefault(r["criativo_id"], []).append(r)
+    refs = {r["chave"]: r for r in DB.q("select chave, url, arquivo, anunciante from referencias where triagem is not null")}
     for vez, titulo in (("claude", "COM O CLAUDE (fazer agora, com custo antes)"), ("dono", "AGUARDANDO O DONO")):
         cs = [c for c in lista if c["esteira"]["aguardando"] == vez]
+        cs.sort(key=lambda c: (c["esteira"].get("prioridade") or 2, ordem(c["id"])))
         print(f"\n== {titulo}: {len(cs)}")
         for c in cs:
             e, p = c["esteira"], pastas.get(c["id"])
             print(f"  {c['id']}  {c.get('titulo') or '':<24} {ROTULO.get(e['etapa'], e['etapa']):<9} {c.get('formato') or '-':<12} "
                   f"{c.get('oferta_id') or 'sem oferta':<10} {rel(p) if p else '(sem pasta)'}"
                   + ("  [etapa deduzida dos arquivos]" if e["inferida"] else ""))
+            if e.get("referencia_chave"):        # pedido do Garimpo: o que o dono quer e onde está a referência
+                r = refs.get(e["referencia_chave"]) or {}
+                print(f"      pedido: {'Modelagem' if c.get('processo') == 'modelagem' else 'Réplica'}, prioridade "
+                      f"{e.get('prioridade') or 2}{' · ' + e['pedido'] if e.get('pedido') else ''}")
+                print(f"      referência: {r.get('url') or r.get('arquivo') or e['referencia_chave']}"
+                      + (f" ({r['anunciante']})" if r.get("anunciante") else ""))
             if vez == "claude":
                 for r in pedidas.get(c["id"], []):
                     t = f"{float(r['tempo_s']):.1f}s" if r["tempo_s"] is not None else "peça"
@@ -1376,6 +1712,54 @@ def cmd_entrar(a):
     print(f"{cid} na esteira, etapa {ROTULO[a.etapa]}.")
 
 
+ROT_PROVA = {"fila": "Fila", "texto": "Texto", "imagem": "Imagem", "video": "Vídeo", "aprovada": "Aprovada"}
+
+
+def cmd_provas(a):
+    """Provas sociais em produção: o que fazer (com o Claude) e o que espera o dono."""
+    rs = [r for r in provas_lista()["provas"] if r["etapa"] not in ("aprovada", "descartada")]
+    if not rs:
+        print("Nenhuma prova social em produção.")
+        return
+    for vez, titulo in (("claude", "COM O CLAUDE (fazer agora, com custo antes)"), ("dono", "AGUARDANDO O DONO")):
+        cs = [r for r in rs if r["aguardando"] == vez]
+        print(f"\n== {titulo}: {len(cs)}")
+        for r in cs:
+            et = r["etapas"]
+            fazer = et[et.index(r["etapa"]) + 1] if vez == "claude" and r["etapa"] == "fila" else r["etapa"]
+            print(f"  {r['id']}  {'foto' if r['tipo'] == 'foto' else 'vídeo':<6} {ROT_PROVA[fazer if vez == 'claude' else r['etapa']]:<7} "
+                  f"{r['marca_nome']} › {r['produto_nome']}{' › ' + r['oferta_id'] if r['oferta_id'] else ''}  "
+                  f"idioma {r['idioma']}  pasta {r['pasta']}")
+            if r["persona"]:
+                print(f"      persona: {r['persona']}")
+            if r["pedido"]:
+                print(f"      pedido: {r['pedido']}")
+            if vez == "claude" and r["ajuste"]:
+                print(f"      AJUSTE PEDIDO: {r['ajuste']}")
+    print("\nAo terminar uma etapa: painel.py prova-entregar <PS##> --etapa <texto|imagem|video> --custo <US$> "
+          "[--texto \"...\" --texto-pt \"...\"]")
+
+
+def cmd_prova_entregar(a):
+    pid = a.prova.upper()
+    r = DB.q("select tipo from provas_sociais where id = %s", (pid,))
+    if not r:
+        sys.exit(f"{pid} não existe.")
+    if a.etapa not in ETAPAS_PROVA[r[0]["tipo"]][1:-1]:
+        sys.exit(f"Etapa inválida para {r[0]['tipo']}: {', '.join(ETAPAS_PROVA[r[0]['tipo']][1:-1])}")
+    DB.q("""update provas_sociais set etapa = %s, aguardando = 'dono', ajuste = null, custo_usd = custo_usd + %s,
+            texto = coalesce(%s, texto), texto_pt = coalesce(%s, texto_pt), atualizado_em = now() where id = %s""",
+         (a.etapa, a.custo or 0, a.texto, a.texto_pt, pid))
+    esteira_evento(pid, a.etapa, "entregou", "Claude", a.nota, a.custo)
+    print(f"{pid}: {ROT_PROVA[a.etapa]} entregue para aprovação no painel (Provas sociais).")
+    if midia.configurado() and pid in pastas_provas():
+        try:
+            t = midia.subir([pid], log=lambda s: print("  " + s))
+            print(f"  R2: {t['enviados']} arquivo(s) enviados ({t['bytes'] / 1048576:,.1f} MB).")
+        except Exception as e:  # noqa: BLE001
+            print(f"Aviso: entregue, mas o envio ao R2 falhou ({str(e)[:200]}). Rode: midia.py subir {pid}")
+
+
 def cmd_proximo(a):
     """Próximo código livre do tipo, com o nome da pasta: a numeração é por tipo e sem buracos."""
     cod = proximo_codigo(a.tipo)
@@ -1416,6 +1800,13 @@ def main():
     p.set_defaults(f=cmd_entrar)
     p = sub.add_parser("proximo", help="próximo código livre de um tipo (vídeo, nativo, imagem)")
     p.add_argument("--tipo", required=True, choices=["video", "nativo", "imagem"]); p.set_defaults(f=cmd_proximo)
+    sub.add_parser("provas", help="provas sociais: o que está com o Claude e o que espera o dono").set_defaults(f=cmd_provas)
+    p = sub.add_parser("prova-entregar", help="terminei a etapa de uma prova social: vai para aprovação")
+    p.add_argument("prova"); p.add_argument("--etapa", required=True, choices=["texto", "imagem", "video"])
+    p.add_argument("--custo", type=float, default=0.0); p.add_argument("--nota", default=None)
+    p.add_argument("--texto", default=None, help="fala ou legenda no idioma da peça")
+    p.add_argument("--texto-pt", dest="texto_pt", default=None, help="tradução para o português")
+    p.set_defaults(f=cmd_prova_entregar)
     p = sub.add_parser("usuario", help="cria um usuário do painel (pede a senha no terminal)")
     p.add_argument("--email", required=True); p.add_argument("--nome", required=True); p.set_defaults(f=cmd_usuario)
     a = ap.parse_args()

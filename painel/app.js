@@ -578,6 +578,7 @@ function barraEsteira(d) {
         ${dono ? `<span class="selo dono">aguardando você</span><b>${esc(rotEtapa(e.etapa, d.tipo))} pronto para aprovar</b>`
                : `<span class="selo claude">com o Claude</span><span>${pedidas ? `<b>${pedidas} ajuste(s) pedido(s).</b> ` : ""}No Claude Code, diga "continue a esteira".</span>`}
         ${info ? `<span class="muted small">${info}</span>` : ""}
+        ${e.pedido || e.prioridade ? `<span class="small">${e.prioridade ? selPrio(e.prioridade) + " " : ""}${e.pedido ? "Pedido: " + esc(e.pedido) : ""}</span>` : ""}
       </div>
       <div class="btns">
         ${dono ? `<button class="btn" id="es-ajuste">${ICONE.lapis}Pedir ajuste</button><button class="btn primario" id="es-aprovar">✓ ${e.etapa === "revisao" ? "Aprovar e entregar" : "Aprovar " + rotEtapa(e.etapa, d.tipo).toLowerCase()}</button>` : ""}
@@ -1264,7 +1265,7 @@ async function telaProducao(vivo) {
   // Refação de criativo já pronto (ex.: no ar): continua na Biblioteca, mas aparece aqui até o Claude refazer.
   const refacao = d.criativos.filter((c) => !c.esteira && (c.anotacoes.pedida || 0) > 0 && noEscopo(c));
   const comVoce = naEsteira.filter((c) => c.esteira.aguardando === "dono").length;
-  app.innerHTML = cabeca("Produção", `${escopoAtivo() ? `<b>${esc(rotuloEscopo())}</b> · ` : ""}${naEsteira.length} criativo(s) em produção · <b>${comVoce} aguardando você</b>`, filtroEscopo())
+  app.innerHTML = cabeca("Produção", `${escopoAtivo() ? `<b>${esc(rotuloEscopo())}</b> · ` : ""}${naEsteira.length} criativo(s) em produção · <b>${comVoce} aguardando você</b>`, filtroEscopo() + `<button class="btn primario" data-novo-pedido>${ICONE.mais}Novo pedido</button>`)
     + `<div class="barra-ferramentas">
         <div class="segmentado" id="p-vez"><button data-v="">Todos</button><button data-v="dono">Aguardando você</button><button data-v="claude">Com o Claude</button></div>
         <span class="small muted direita">Clique no card para revisar e aprovar. Arraste para mudar de etapa. No Claude Code: <b>"continue a esteira"</b>.</span>
@@ -1274,10 +1275,10 @@ async function telaProducao(vivo) {
     const e = c.esteira || {}, aj = c.anotacoes.pedida || 0, capa = capaDe(c, 120);
     const selo = !c.esteira ? `<span class="selo refacao">refação</span>` : e.aguardando === "dono" ? `<span class="selo dono">aguardando você</span>` : `<span class="selo claude">com o Claude</span>`;
     // Cinco linhas fixas: nome, vez, formato, tags, rodapé. O CSS corta o excesso: todo card tem o mesmo tamanho.
-    return `<a class="kcard ${e.aguardando === "dono" ? "vez-dono" : ""}" href="#/c/${c.id}" draggable="${c.esteira ? "true" : "false"}" data-id="${c.id}" title="${esc(nomeC(c.id) + (c.formato ? " · " + c.formato : ""))}">
+    return `<a class="kcard ${e.aguardando === "dono" ? "vez-dono" : ""}" href="#/c/${c.id}" draggable="${c.esteira ? "true" : "false"}" data-id="${c.id}" title="${esc(nomeC(c.id) + (c.formato ? " · " + c.formato : "") + (e.pedido ? " · Pedido: " + e.pedido : ""))}">
       <div class="kthumb">${capa ? `<img src="${capa}" loading="lazy" alt="" draggable="false">` : ""}</div>
       <div class="kcorpo">
-        <div class="klinha"><b>${nomeC(c.id)}</b>${aj ? `<span class="aj" title="Ajustes pedidos">${aj} ajuste${aj > 1 ? "s" : ""}</span>` : ""}</div>
+        <div class="klinha"><b>${nomeC(c.id)}</b>${e.prioridade && e.prioridade !== 2 ? selPrio(e.prioridade) : ""}${aj ? `<span class="aj" title="Ajustes pedidos">${aj} ajuste${aj > 1 ? "s" : ""}</span>` : ""}</div>
         <div>${selo}</div>
         <div class="small sec">${esc(c.formato || (c.tipo === "video" ? "vídeo" : "nativo"))}${c.processo ? " · " + (c.processo === "modelagem" ? "Modelagem" : "Réplica") : ""}</div>
         ${tagsDe(c, { curto: true, max: 26 })}
@@ -1298,6 +1299,7 @@ async function telaProducao(vivo) {
   };
   segmentado($("#p-vez"), vez, (v) => { vez = v; prefs.set("vezProducao", v); desenhar(); });
   desenhar();
+  app.onclick = (e) => { if (e.target.closest("[data-novo-pedido]")) modalPedido(() => telaProducao(vivo)); };
   const q = $("#quadro");
   // Arrastar o fundo do quadro (fora dos cards) rola para o lado, como no Trello.
   q.addEventListener("pointerdown", (e) => {
@@ -1321,6 +1323,248 @@ async function telaProducao(vivo) {
       toast(`${nomeC(c.id)} movido para ${rotEtapa(col.dataset.etapa, c.tipo)}.`); telaProducao(vivo);
     } catch (er) { toast(er.message, 6000); desenhar(); }
   });
+}
+
+// ------------------------------------------------------------ garimpo: pedidos de criativo
+// O dono cola o link (ou sobe o vídeo) e diz o que quer. Aprovar cria o C## / CN## / CI## na Fila da Produção.
+const ROT_TIPO = { video: "vídeo", nativo: "nativo", imagem: "imagem", carrossel: "carrossel" };
+const ROT_PRIO = { 1: "alta", 2: "normal", 3: "baixa" };
+const selPrio = (p) => `<span class="prio p${p || 2}" title="Prioridade ${ROT_PRIO[p || 2]}">P${p || 2}</span>`;
+const opcOfertas = (sel, vazioTxt = "Decidir depois") => `<option value="">${vazioTxt}</option>` + CATALOGO.ofertas.filter((o) => o.status !== "encerrada")
+  .map((o) => `<option value="${esc(o.id)}" ${o.id === sel ? "selected" : ""}>${esc(o.id)} · ${esc(o.nome)}</option>`).join("");
+function contExtra(sel, n) { const el = $(sel); if (el) { el.hidden = !n; el.textContent = n; } }
+const contarGarimpo = (g) => contExtra("#cont-garimpo", g.referencias.filter((r) => r.triagem === "nova").length);
+const contarProvas = (p) => contExtra("#cont-provas", p.provas.filter((r) => r.aguardando === "dono" && r.etapa !== "aprovada" && r.etapa !== "descartada").length);
+const mostrarSe = (el, sim) => (el.style.display = sim ? "" : "none");
+
+function camposPedido(r = {}) {
+  const ofEscopo = ESCOPO.oferta && ESCOPO.oferta !== SEM ? ESCOPO.oferta : "";
+  return `${campo("Oferta", `<select name="oferta_alvo">${opcOfertas(r.oferta_alvo || ofEscopo)}</select>`)}
+    ${campo("Processo", `<select name="processo_alvo"><option value="modelagem" ${r.processo_alvo !== "replica" ? "selected" : ""}>Modelagem (conceito novo, testa uma variável)</option><option value="replica" ${r.processo_alvo === "replica" ? "selected" : ""}>Réplica (refazer fiel)</option></select>`)}
+    ${campo("Prioridade", `<select name="prioridade">${[1, 2, 3].map((p) => `<option value="${p}" ${(r.prioridade || 2) === p ? "selected" : ""}>${p} · ${ROT_PRIO[p]}</option>`).join("")}</select>`)}
+    ${campo("O que você quer (opcional)", `<textarea name="pedido" rows="3" placeholder="Ex.: modelar com a nossa persona 55+, testar um hook novo, manter a oferta">${esc(r.pedido || "")}</textarea>`, "inteiro")}`;
+}
+
+function modalPedido(aoCriar) {
+  modal({
+    titulo: "Novo pedido de criativo", largo: true, botao: "Enviar pedido",
+    sub: "Cole o link da Biblioteca de Anúncios (ou de onde for) ou envie o vídeo. O Claude pega o pedido quando você disser \"continue a esteira\".",
+    corpo: `<div class="modal-campos">
+      ${campo("Link do anúncio", `<input name="url" placeholder="https://www.facebook.com/ads/library/?id=...">`, "inteiro")}
+      ${campo("ou arquivo (vídeo ou imagem, até 400 MB)", `<input name="arquivo_f" type="file" accept="video/*,image/*">`, "inteiro")}
+      ${campo("Tipo", `<select name="tipo"><option value="video">Vídeo</option><option value="nativo">Nativo (foto + texto longo)</option><option value="imagem">Imagem</option></select>`)}
+      ${campo("Anunciante (opcional)", `<input name="anunciante" placeholder="Elmora">`)}
+      ${camposPedido()}
+      ${campo("Destino", `<select name="destino"><option value="producao">Direto para a Fila da Produção</option><option value="garimpo">Deixar no Garimpo para decidir depois</option></select>`, "inteiro")}
+    </div>`,
+    aoAbrir: (f) => {
+      const arq = $('[name="arquivo_f"]', f), tipo = $('[name="tipo"]', f);
+      arq.addEventListener("change", () => { const x = arq.files[0]; if (x && x.type.startsWith("image/") && tipo.value === "video") tipo.value = "nativo"; });
+    },
+    aoSalvar: async (b, form) => {
+      const arq = $('[name="arquivo_f"]', form).files[0];
+      delete b.arquivo_f;
+      if (!b.url && !arq) throw new Error("Cole o link ou escolha o arquivo.");
+      let enviado = {};
+      if (arq) {
+        toast(`Enviando ${arq.name}…`, 300000);
+        const r = await fetch("/api/garimpo/arquivo?nome=" + encodeURIComponent(arq.name), { method: "POST", body: arq });
+        const j = await r.json().catch(() => ({}));
+        if (r.status === 401) { location.href = "/login"; return; }
+        if (!r.ok || j.erro) throw new Error(j.erro || `Erro ${r.status} no envio`);
+        enviado = j;
+      }
+      const j = await api("/api/garimpo", { ...b, arquivo: enviado.arquivo || "", midia_url: enviado.midia_url || "", prioridade: +b.prioridade });
+      toast((j.criativo_id ? `Pedido na Fila da Produção como ${nomeC(j.criativo_id)}.` : "Pedido no Garimpo.") + (j.aviso ? " " + j.aviso : ""), 7000);
+      aoCriar && aoCriar(j);
+    },
+  });
+}
+
+async function telaGarimpo(vivo) {
+  if (!temDados("/api/garimpo")) app.innerHTML = cabeca("Garimpo", "Carregando…");
+  const re = () => vivo() && telaGarimpo(vivo);
+  const g = await swr("/api/garimpo", vivo, re);
+  if (!vivo()) return;
+  contarGarimpo(g);
+  const noEsc = (r) => (ESCOPO.marca === SEM ? !r.oferta_alvo : (!ESCOPO.marca || r.marca_id === ESCOPO.marca) && (!ESCOPO.produto || r.produto_id === ESCOPO.produto) && (!ESCOPO.oferta || r.oferta_alvo === ESCOPO.oferta));
+  const rs = g.referencias.filter(noEsc), col = { nova: [], aprovada: [], reprovada: [] };
+  rs.forEach((r) => col[r.triagem] && col[r.triagem].push(r));
+  const capa = (r) => (r.midia && r.midia.arquivo ? `<img src="${thumb(r.midia.arquivo, r.midia.video ? 1.5 : 0, 120)}" loading="lazy" alt="" draggable="false">` : `<span class="kthumb-icone">${r.url ? ICONE.link : ICONE.filme}</span>`);
+  const selo = (r) => (r.triagem === "nova" ? `<span class="selo dono">decidir</span>` : r.triagem === "aprovada" ? `<span class="selo claude">${r.criativo_id ? esc(nomeC(r.criativo_id)) : "aprovada"}</span>` : `<span class="selo refacao">reprovada</span>`);
+  const cartao = (r) => `<a class="kcard ${r.triagem === "nova" ? "vez-dono" : ""}" href="${r.criativo_id ? "#/c/" + r.criativo_id : "#/garimpo"}" data-chave="${esc(r.chave)}" draggable="false" title="${esc(r.url || r.arquivo || r.chave)}">
+      <div class="kthumb">${capa(r)}</div>
+      <div class="kcorpo">
+        <div class="klinha"><b>${esc(r.anunciante || "Referência " + (ROT_TIPO[r.tipo] || r.tipo))}</b>${selPrio(r.prioridade)}</div>
+        <div>${selo(r)}</div>
+        <div class="small sec">${esc(ROT_TIPO[r.tipo] || r.tipo)}${r.processo_alvo ? " · " + (r.processo_alvo === "modelagem" ? "Modelagem" : "Réplica") : ""}${r.triagem === "reprovada" && r.motivo ? " · " + esc(r.motivo) : ""}</div>
+        ${r.oferta_alvo ? tagsDe({ ...r, oferta_id: r.oferta_alvo }, { curto: true, max: 26 }) : `<span class="small muted">oferta a definir</span>`}
+        <div class="kpe">${esc(r.pedido || [r.enviado_por, ha(r.criado_em)].filter(Boolean).join(" · ")) || "&nbsp;"}</div>
+      </div></a>`;
+  const colunas = [["nova", "Novas", "esperando sua decisão"], ["aprovada", "Aprovadas", "viraram criativo na Produção"], ["reprovada", "Reprovadas", "não voltam"]];
+  app.innerHTML = cabeca("Garimpo", `${escopoAtivo() ? `<b>${esc(rotuloEscopo())}</b> · ` : ""}Referências que você quer ver modeladas ou replicadas · <b>${col.nova.length} para decidir</b>`,
+      filtroEscopo() + `<button class="btn primario" data-novo-pedido>${ICONE.mais}Novo pedido</button>`)
+    + `<div class="barra-ferramentas"><span class="small muted">Pedido aprovado vai para a Fila da Produção com o código do criativo. No Claude Code: <b>"continue a esteira"</b>.</span></div>
+      <div class="quadro-esteira quadro-fixo">${colunas.map(([k, rot, sub]) => `<section class="kcoluna" data-etapa="${k}">
+        <header><b>${rot}</b><span class="n">${col[k].length}</span><small>${sub}</small></header>
+        <div class="kcards">${col[k].map(cartao).join("") || `<div class="kvazio">—</div>`}</div></section>`).join("")}</div>`;
+
+  const decidir = (r) => modal({
+    titulo: r.anunciante ? `Pedido · ${esc(r.anunciante)}` : "Pedido do Garimpo", largo: true, botao: "Confirmar",
+    sub: [ROT_TIPO[r.tipo], r.enviado_por && "enviado por " + esc(r.enviado_por), ha(r.criado_em)].filter(Boolean).join(" · "),
+    corpo: `<div class="garimpo-ver">${r.midia ? (r.midia.video ? `<video src="${r.midia.url}" controls preload="metadata" playsinline></video>` : `<img src="${r.midia.url}" alt="">`) : ""}
+        ${r.url ? `<a class="btn mini" href="${esc(r.url)}" target="_blank" rel="noopener">${ICONE.link}Abrir o anúncio</a>` : ""}</div>
+      <div class="modal-campos">
+        ${campo("Decisão", `<select name="decisao"><option value="aprovar">Aprovar: mandar para a Fila da Produção</option><option value="reprovar">Reprovar</option></select>`, "inteiro")}
+        ${camposPedido(r)}
+        ${campo("Motivo da reprovação", `<select name="motivo"><option value="">Escolha…</option>${["fora do nicho", "risco de política", "já temos parecido", "fraco", "outro"].map((m) => `<option ${m === r.motivo ? "selected" : ""}>${m}</option>`).join("")}</select>`, "inteiro motivo")}
+      </div>`,
+    aoAbrir: (f) => {
+      const d = $('[name="decisao"]', f), m = $(".motivo", f), campos = $$('[name="oferta_alvo"], [name="processo_alvo"], [name="prioridade"], [name="pedido"]', f).map((i) => i.closest("label"));
+      const t = () => { mostrarSe(m, d.value === "reprovar"); campos.forEach((c) => mostrarSe(c, d.value === "aprovar")); };
+      d.addEventListener("change", t); t();
+    },
+    aoSalvar: async (b) => {
+      const j = await api("/api/garimpo/decidir", { chave: r.chave, ...b, prioridade: +b.prioridade });
+      toast(j.criativo_id ? `Aprovado: ${nomeC(j.criativo_id)} na Fila da Produção.` : "Reprovado."); re();
+    },
+  });
+  app.onclick = (e) => {
+    if (e.target.closest("[data-novo-pedido]")) return modalPedido(re);
+    const k = e.target.closest(".kcard[data-chave]"); if (!k) return;
+    const r = g.referencias.find((x) => x.chave === k.dataset.chave);
+    if (r && !(r.triagem === "aprovada" && r.criativo_id)) { e.preventDefault(); decidir(r); }
+  };
+}
+
+// ------------------------------------------------------------ provas sociais
+// Foto de pessoa com o produto ou vídeo de depoimento, feitos por IA, só em marca de demonstração (loja de exemplo).
+// Ficam no produto (oferta opcional) e o arquivo final leva o selo "ilustrativo · IA".
+const ROT_ETAPA_PROVA = { fila: "Fila", texto: "Texto", imagem: "Imagem", video: "Vídeo", aprovada: "Aprovada", descartada: "Descartada" };
+const capaProva = (r, w = 240) => { const m = (r.midias || []).find((x) => x.final) || (r.midias || []).slice(-1)[0]; return m ? thumb(m.arquivo, m.video ? 1 : 0, w) : null; };
+
+async function telaProvas(vivo) {
+  if (!temDados("/api/provas")) app.innerHTML = cabeca("Provas sociais", "Carregando…");
+  const re = () => vivo() && telaProvas(vivo);
+  const [p] = await Promise.all([swr("/api/provas", vivo, re), carregarCatalogo(vivo, re)]);
+  if (!vivo()) return;
+  contarProvas(p);
+  let modo = prefs.get("modoProvas", "producao");
+  const noEsc = (r) => ESCOPO.marca !== SEM && (!ESCOPO.marca || r.marca_id === ESCOPO.marca) && (!ESCOPO.produto || r.produto_id === ESCOPO.produto) && (!ESCOPO.oferta || !r.oferta_id || r.oferta_id === ESCOPO.oferta);
+  const rs = p.provas.filter(noEsc);
+  const emProd = rs.filter((r) => r.etapa !== "aprovada" && r.etapa !== "descartada"), aprov = rs.filter((r) => r.etapa === "aprovada");
+  const nDono = emProd.filter((r) => r.aguardando === "dono").length;
+  const demo = CATALOGO.marcas.filter((m) => m.demonstracao);
+  app.innerHTML = cabeca("Provas sociais", `${escopoAtivo() ? `<b>${esc(rotuloEscopo())}</b> · ` : ""}${emProd.length} em produção · ${aprov.length} aprovada(s) · <b>${nDono} aguardando você</b>`,
+      filtroEscopo() + `<button class="btn primario" data-nova-prova>${ICONE.mais}Nova prova social</button>`)
+    + (demo.length ? "" : `<div class="aviso">Prova social feita por IA só existe em marca de demonstração (loja de exemplo, sem venda real). Em Marcas e ofertas, edite a marca e marque "Loja de demonstração". Em loja real, a prova social vem de clientes reais.</div>`)
+    + `<div class="barra-ferramentas">
+        <div class="segmentado" id="pv-modo"><button data-v="producao">Em produção</button><button data-v="biblioteca">Biblioteca</button></div>
+        <span class="small muted direita">Clique para ver, aprovar ou pedir ajuste. No Claude Code: <b>"faça as provas sociais"</b>.</span>
+      </div><div id="pv"></div>`;
+
+  const cartao = (r) => {
+    const capa = capaProva(r, 120), dono = r.aguardando === "dono";
+    return `<a class="kcard ${dono ? "vez-dono" : ""}" href="#/provas" data-prova="${esc(r.id)}" draggable="false">
+      <div class="kthumb">${capa ? `<img src="${capa}" loading="lazy" alt="" draggable="false">` : `<span class="kthumb-icone">${r.tipo === "video" ? ICONE.filme : ICONE.play}</span>`}</div>
+      <div class="kcorpo">
+        <div class="klinha"><b>${esc(r.id)}</b><span class="badge sem-ponto">${r.tipo === "video" ? "vídeo" : "foto"}</span>${r.ajuste && !dono ? `<span class="aj">ajuste</span>` : ""}</div>
+        <div>${dono ? `<span class="selo dono">aguardando você</span>` : `<span class="selo claude">com o Claude</span>`}</div>
+        <div class="small sec">${esc(r.persona || r.pedido || "sem persona definida")}</div>
+        ${tagsDe({ marca_nome: r.marca_nome, produto_nome: r.produto_nome, oferta_id: r.oferta_id || "todas", oferta_nome: r.oferta_nome || "todas as ofertas do produto" }, { curto: true, max: 26 })}
+        <div class="kpe">${[r.idioma, ha(r.atualizado_em), usd(r.custo_usd)].filter(Boolean).join(" · ")}</div>
+      </div></a>`;
+  };
+  const cardBib = (r, i) => {
+    const capa = capaProva(r, 360), m = (r.midias || []).find((x) => x.final);
+    return `<a class="card spot entra" style="--i:${Math.min(i, 24)}" href="#/provas" data-prova="${esc(r.id)}" ${m && m.video ? `data-video="${m.url}"` : ""}>
+      <div class="thumb">${capa ? `<img src="${capa}" loading="lazy" alt="">` : `<div class="sem-midia">sem arquivo final</div>`}<div class="vinheta"></div>
+        <div class="base"><div class="id">${esc(r.id)}</div><div class="fmt">${r.tipo === "video" ? "vídeo de depoimento" : "foto com o produto"} · ${esc(r.idioma)}</div></div>
+        ${m && m.video ? `<span class="play">${ICONE.play}</span>` : ""}</div>
+      <div class="pe"><div class="small sec clamp">${esc(r.persona || r.pedido || "")}</div>
+        <div class="linha"><span class="tag oferta"><i></i>${esc(r.oferta_id || "todas as ofertas")}</span></div></div></a>`;
+  };
+  const desenhar = () => {
+    const alvo = $("#pv");
+    if (modo === "biblioteca") {
+      const porProduto = {};
+      aprov.forEach((r) => (porProduto[r.produto_id] = porProduto[r.produto_id] || { nome: `${r.marca_nome} › ${r.produto_nome}`, rs: [] }).rs.push(r));
+      alvo.innerHTML = Object.values(porProduto).map((g) => `<h2 class="sub-grupo">${esc(g.nome)} <span class="muted small">${g.rs.length}</span></h2><div class="grade">${g.rs.map(cardBib).join("")}</div>`).join("")
+        || vazio("Nenhuma prova social aprovada ainda.");
+      ligarPreviewHover(alvo);
+      return;
+    }
+    const colunas = [["fila", "Fila", "o Claude começa daqui"], ["texto", "Texto", "fala do depoimento"], ["imagem", "Imagem", "pessoa com o produto"], ["video", "Vídeo", "depoimento com o selo"]];
+    alvo.innerHTML = `<div class="quadro-esteira quadro-fixo">${colunas.map(([k, rot, sub]) => {
+      const cs = emProd.filter((r) => r.etapa === k), nd = cs.filter((r) => r.aguardando === "dono").length;
+      return `<section class="kcoluna" data-etapa="${k}"><header><b>${rot}</b><span class="n">${cs.length}</span>${nd ? `<span class="n dono">${nd}</span>` : ""}<small>${sub}</small></header>
+        <div class="kcards">${cs.map(cartao).join("") || `<div class="kvazio">—</div>`}</div></section>`;
+    }).join("")}</div>`;
+  };
+  segmentado($("#pv-modo"), modo, (v) => { modo = v; prefs.set("modoProvas", v); desenhar(); });
+  desenhar();
+
+  const ver = (r) => {
+    const dono = r.aguardando === "dono" && r.etapa !== "aprovada" && r.etapa !== "descartada";
+    const acoes = dono ? [["aprovar", `Aprovar ${ROT_ETAPA_PROVA[r.etapa].toLowerCase()}`], ["ajuste", "Pedir ajuste"], ["descartar", "Descartar"]]
+      : r.etapa === "aprovada" ? [["descartar", "Tirar da biblioteca (descartar)"]] : [["descartar", "Descartar"]];
+    const midiaHtml = (m) => `<figure class="${m.final ? "final" : ""}">${m.video ? `<video src="${m.url}" controls preload="metadata" playsinline></video>` : `<img src="${m.url}" alt="" loading="lazy">`}
+        <figcaption>${m.final ? "<b>final</b> · " : ""}${esc(m.nome)} <a href="${m.url}" download="${esc(m.nome)}">baixar</a></figcaption></figure>`;
+    const linhas = [["Produto", `${esc(r.marca_nome)} › ${esc(r.produto_nome)}`], ["Oferta", esc(r.oferta_id ? `${r.oferta_id} · ${r.oferta_nome}` : "todas as ofertas do produto")], ["Tipo", r.tipo === "video" ? "vídeo de depoimento" : "foto com o produto"],
+      ["Idioma", esc(r.idioma)], ["Quem aparece", esc(r.persona || "—")], ["Pedido", esc(r.pedido || "—")], ["Gasto", usd(r.custo_usd) || "US$ 0"], ["Pasta", `<code>${esc(r.pasta)}</code>`]];
+    modal({
+      titulo: `${esc(r.id)} · ${ROT_ETAPA_PROVA[r.etapa]}`, largo: true, botao: "Confirmar", cancelar: "Fechar",
+      sub: dono ? "Aguardando você" : r.etapa === "aprovada" ? "Na biblioteca" : "Com o Claude" + (r.ajuste ? ` · ajuste pedido: ${esc(r.ajuste)}` : ""),
+      corpo: `<div class="prova-ver"><div class="prova-midias">${(r.midias || []).map(midiaHtml).join("") || `<p class="muted small">Ainda sem arquivo.</p>`}</div>
+          <div><dl class="prova-dados">${linhas.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+            ${r.texto ? `<div class="prova-texto"><b>Texto (${esc(r.idioma)})</b>${btnCopiar(r.texto)}<p>${esc(r.texto)}</p>${r.texto_pt ? `<b>Tradução</b><p class="sec">${esc(r.texto_pt)}</p>` : ""}</div>` : ""}
+            ${(r.eventos || []).length ? `<div class="prova-hist"><b>Histórico</b>${r.eventos.map((e) => `<div class="small"><span class="muted">${new Date(e.em).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}</span> ${esc(e.autor || "")} ${esc(ROT_ACAO[e.acao] || e.acao)}${e.comentario ? ": " + esc(e.comentario) : ""}</div>`).join("")}</div>` : ""}</div></div>
+        <div class="modal-campos" style="margin-top:14px">
+          ${campo("Ação", `<select name="acao">${acoes.map(([v, t]) => `<option value="${v}">${t}</option>`).join("")}</select>`)}
+          ${campo("Comentário", `<textarea name="comentario" rows="2" placeholder="O que ajustar (obrigatório para pedir ajuste)"></textarea>`, "inteiro")}
+        </div>`,
+      aoAbrir: (f) => { $$("[data-copiar]", f).forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); navigator.clipboard.writeText(b.dataset.copiar); toast("Copiado."); })); },
+      aoSalvar: async (b) => { await api("/api/provas/acao", { id: r.id, ...b }); toast(b.acao === "aprovar" ? `${r.id} aprovado.` : b.acao === "ajuste" ? `Ajuste pedido em ${r.id}.` : `${r.id} descartado.`); re(); },
+    });
+  };
+  const novaProva = () => {
+    if (!demo.length) return toast("Nenhuma marca de demonstração. Marque uma em Marcas e ofertas › Editar.", 7000);
+    const mk0 = (demo.find((m) => m.id === ESCOPO.marca) || demo[0]).id;
+    const prods = (mk) => CATALOGO.produtos.filter((x) => x.marca_id === mk), ofs = (pr) => CATALOGO.ofertas.filter((o) => o.produto_id === pr);
+    modal({
+      titulo: "Nova prova social", largo: true, botao: "Pedir",
+      sub: "Peça feita por IA para loja de demonstração. O arquivo final sai com o selo \"ilustrativo · IA\".",
+      corpo: `<div class="modal-campos">
+        ${campo("Marca (demonstração)", `<select name="marca_id">${demo.map((m) => `<option value="${esc(m.id)}" ${m.id === mk0 ? "selected" : ""}>${esc(m.nome)}</option>`).join("")}</select>`)}
+        ${campo("Produto", `<select name="produto_id"></select>`)}
+        ${campo("Oferta (opcional)", `<select name="oferta_id"></select>`)}
+        ${campo("Idioma da peça", `<input name="idioma" maxlength="5" placeholder="fr">`)}
+        ${campo("Tipo", `<select name="tipo"><option value="foto">Foto de pessoa com o produto</option><option value="video">Vídeo de depoimento</option></select>`)}
+        ${campo("Quantidade", `<input name="quantidade" type="number" min="1" max="10" value="1">`)}
+        ${campo("Quem aparece", `<input name="persona" placeholder="mulher de 58 anos, cozinha clara, Lyon">`, "inteiro")}
+        ${campo("O que mostrar ou dizer", `<textarea name="pedido" rows="3" placeholder="Ex.: segurando o pote na mesa do café; no vídeo, conta que voltou a dormir a noite toda"></textarea>`, "inteiro")}
+      </div>`,
+      aoAbrir: (f) => {
+        const sm = $('[name="marca_id"]', f), sp = $('[name="produto_id"]', f), so = $('[name="oferta_id"]', f), id = $('[name="idioma"]', f);
+        const fillO = () => { so.innerHTML = `<option value="">Todas as ofertas do produto</option>` + ofs(sp.value).map((o) => `<option value="${esc(o.id)}">${esc(o.id)} · ${esc(o.nome)}</option>`).join(""); const o = ofs(sp.value)[0]; if (o && !id.value) id.value = o.idioma; };
+        const fillP = () => { sp.innerHTML = prods(sm.value).map((x) => `<option value="${esc(x.id)}" ${x.id === ESCOPO.produto ? "selected" : ""}>${esc(x.nome)}</option>`).join(""); fillO(); };
+        sm.addEventListener("change", fillP); sp.addEventListener("change", fillO);
+        so.addEventListener("change", () => { const o = CATALOGO.ofertas.find((x) => x.id === so.value); if (o) id.value = o.idioma; });
+        fillP();
+      },
+      aoSalvar: async (b) => {
+        if (!b.produto_id) throw new Error("Essa marca ainda não tem produto. Crie em Marcas e ofertas.");
+        const j = await api("/api/provas", { ...b, quantidade: +b.quantidade || 1 });
+        toast(`${j.ids.join(", ")} na fila. No Claude Code: "faça as provas sociais".`, 7000); re();
+      },
+    });
+  };
+  app.onclick = (e) => {
+    if (e.target.closest("[data-nova-prova]")) return novaProva();
+    const k = e.target.closest("[data-prova]"); if (!k) return;
+    e.preventDefault();
+    const r = p.provas.find((x) => x.id === k.dataset.prova); if (r) ver(r);
+  };
 }
 
 // ------------------------------------------------------------ marcas, produtos e ofertas
@@ -1349,7 +1593,7 @@ async function telaOfertas(vivo) {
        <button class="btn primario" data-nova="oferta" ${semProduto ? "disabled title='Crie um produto antes'" : ""}>${ICONE.mais}Nova oferta</button>`)
     + (semOferta.length ? `<div class="aviso">${semOferta.length} criativo(s) sem oferta: ${semOferta.slice(0, 12).map((c) => `<a href="#/c/${c.id}"><b>${esc(curtoC(c.id))}</b></a>`).join(", ")}${semOferta.length > 12 ? "…" : ""}. Abra cada um e clique em "Definir oferta".</div>` : "")
     + `<div class="arvore">${marcas.map((mc) => `
-      <div class="caixa"><h2><span class="tag marca"><i></i>${esc(mc.nome)}</span><span class="muted small">prefixo ${esc(mc.prefixo)}</span>
+      <div class="caixa"><h2><span class="tag marca"><i></i>${esc(mc.nome)}</span><span class="muted small">prefixo ${esc(mc.prefixo)}</span>${mc.demonstracao ? `<span class="badge acento sem-ponto" title="Libera provas sociais feitas por IA">loja de demonstração</span>` : ""}
         <span class="acoes-linha direita"><button class="btn mini fantasma" data-editar-marca="${esc(mc.id)}">${ICONE.lapis}Editar</button><button class="btn mini fantasma" data-nova="produto" data-marca="${esc(mc.id)}">${ICONE.mais}Produto</button><button class="btn mini" data-escopo-marca="${esc(mc.id)}">${ICONE.filtro}Ver criativos</button></span></h2>
         ${produtos.filter((p) => p.marca_id === mc.id).map((p) => `
           <div class="produto"><div class="produto-cabeca"><span class="tag produto"><i></i>${esc(p.nome)}</span><span class="muted small">${esc(p.id)}</span>
@@ -1371,6 +1615,7 @@ async function telaOfertas(vivo) {
       ${campo("ID (minúsculas)", `<input name="id" placeholder="cinnarae" value="${esc(m?.id || "")}" ${m ? travado : ""}>`)}
       ${campo("Prefixo dos IDs", `<input name="prefixo" placeholder="CIN" maxlength="5" value="${esc(m?.prefixo || "")}" ${m ? travado : ""} style="text-transform:uppercase">`)}
       ${campo("Nome", `<input name="nome" placeholder="Cinnarae" value="${esc(m?.nome || "")}">`, "inteiro")}
+      <label class="inteiro linha-check"><input type="checkbox" name="demonstracao" ${m?.demonstracao ? "checked" : ""}><span><b>Loja de demonstração</b> (exemplo, sem venda real): libera provas sociais feitas por IA. Não marque em marca que vende de verdade.</span></label>
     </div><p class="small muted" style="margin:10px 0 0">O prefixo abre o ID das ofertas (CIN-FR-01).</p>`,
     aoSalvar: (b) => salvar("marca")({ ...b, prefixo: b.prefixo.toUpperCase() }),
   });
@@ -1504,6 +1749,8 @@ async function rota() {
     else if (h === "#/variaveis") await telaVariaveis(vivo);
     else if (h === "#/anuncios") await telaAnuncios(vivo);
     else if (h === "#/producao") await telaProducao(vivo);
+    else if (h === "#/garimpo") await telaGarimpo(vivo);
+    else if (h === "#/provas") await telaProvas(vivo);
     else if (h === "#/fila") { location.replace("#/producao"); return; }
     else if (h === "#/ofertas") await telaOfertas(vivo);
     else if (h === "#/equipe") await telaEquipe(vivo);
@@ -1524,4 +1771,6 @@ $("#btn-sair").addEventListener("click", async () => { try { await api("/api/log
   } catch (e) { if (!/Sessão/.test(e.message)) toast(e.message); }
   atualizarEstado();
   rota();
+  swr("/api/garimpo").then(contarGarimpo).catch(() => {});
+  swr("/api/provas").then(contarProvas).catch(() => {});
 })();
