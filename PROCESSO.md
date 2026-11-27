@@ -359,6 +359,7 @@ O `anuncio` (texto principal, título, descrição e botão) é obrigatório tam
 - **Gasto**: segue sozinho até `LIMITE_AUTO_USD` por etapa (padrão US$ 1,00, decidido pelo dono em 2026-11-26). Acima disso, não gera: roda `painel.py pedir-gasto C<NN> --custo <estimativa> --plano "..."` e o card volta ao dono com o botão **Liberar US$ X** (liberar dispara a rodada de novo, com esse limite).
 - **Dúvida**: o que só o dono sabe (oferta, fato do produto, foto do produto, decisão de política) vira `painel.py perguntar C<NN> "..."`; o dono responde no card (botão Responder, que funciona como ajuste).
 - **Parou sem entregar**: o card mostra "Claude parou" com o motivo e os botões Orientar e Tentar de novo.
+- Toda rodada começa no **modo caveman full** (`CAVEMAN_AUTO` no `painel.py`, pedido do dono em 2026-11-26): a fala do Claude sai curta para gastar menos tokens. Arquivos, `ficha.json`, roteiro, copy, traduções e os textos de pedido de gasto e pergunta continuam em texto normal.
 - Nunca publica na Meta, nunca faz commit ou push, nunca mexe em outro card. Ferramentas liberadas: leitura e edição de arquivos e Bash para `python`, `ffmpeg`, `ffprobe` e arquivos (`painel.py`, `FERRAMENTAS_AUTO`).
 - Só roda com o computador ligado e o painel aberto. Cada estado do card roda uma vez só (tabela `trabalhos`, chave card|etapa|hora), então dois computadores com o painel aberto não duplicam o trabalho; a saída de cada rodada fica em `painel/.trabalhos/`.
 - `CLAUDE_AUTO=0` (ou sem a linha) volta ao modo manual ("continue a esteira" no chat).

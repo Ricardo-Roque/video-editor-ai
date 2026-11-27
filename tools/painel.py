@@ -1322,6 +1322,14 @@ Regras do modo automático:
 6. Responda no fim, em uma ou duas frases em português, o que fez e quanto gastou."""
 
 
+# Toda rodada automática começa no modo caveman full (pedido do dono em 2026-11-26): resposta curta economiza tokens.
+# Vale só para a fala do Claude; arquivos, ficha.json, roteiro, copy e o texto que vai para o painel seguem normais.
+CAVEMAN_AUTO = """MODO CAVEMAN FULL, obrigatório do início ao fim desta rodada, em toda fala sua (respostas, resumo final, texto entre ferramentas). Fale como homem das cavernas esperto: corte artigos (o, a, os, as, um, uma), conectivos dispensáveis, cortesia, hesitação e explicação do óbvio. Fragmentos. Uma ideia por frase. Sinônimo curto. Padrão: "[coisa] [ação] [motivo]. [próximo passo]."
+Errado: "Eu analisei a referência e o roteiro ficou pronto; agora vou gerar as imagens, que custam cerca de US$ 0,12."
+Certo: "Análise pronta. Roteiro pronto. Próximo: 3 imagens, US$ 0,12."
+Nunca anuncie o modo. Não narre chamada de ferramenta: chame direto. Termos técnicos, comandos, código, números, unidades e erros: exatos. Nunca corte "não/nunca/só/exceto". Idioma: português.
+Fora do caveman (texto normal e completo): tudo que fica gravado ou que outra pessoa lê, ou seja, arquivos, ficha.json, análises, roteiros, copy dos anúncios, traduções, prompts de imagem, notas do `entregar`, e os textos de `pedir-gasto` e `perguntar`."""
+
 FERRAMENTAS_AUTO = ["Read", "Write", "Edit", "Glob", "Grep", "Bash(python:*)", "Bash(ffmpeg:*)", "Bash(ffprobe:*)",
                     "Bash(mkdir:*)", "Bash(cp:*)", "Bash(mv:*)", "Bash(ls:*)", "Bash(cat:*)", "Bash(head:*)"]
 TRAB_DIR = WEB / ".trabalhos"                  # saída de cada trabalho (fora do Git)
@@ -1345,6 +1353,7 @@ def rodar_trabalho(c: dict, cfg: dict):
     status, motivo, custo, sessao = "erro", None, None, None
     try:
         p = subprocess.run([exe, "-p", _prompt_trabalho(c, cfg["limite"]), "--output-format", "json",
+                            "--append-system-prompt", CAVEMAN_AUTO,
                             "--permission-mode", "acceptEdits", "--allowedTools", *FERRAMENTAS_AUTO],
                            cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=3 * 3600)
         log.write_text(p.stdout + ("\n--- stderr ---\n" + p.stderr if p.stderr else ""), encoding="utf-8")
