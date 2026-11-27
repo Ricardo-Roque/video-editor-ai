@@ -230,14 +230,15 @@ GARIMPO ──aprovar──▶ PRODUÇÃO ──entregar──▶ BIBLIOTECA ─
 
 | Tela | O que faz | Estado |
 |---|---|---|
-| **Garimpo** | quadro de referências por fonte (Novas · Em quebra · Aprovadas · Reprovadas). **Aprovar** abre pop-up com oferta, Réplica ou Modelagem e prioridade, e cria o `C##` na Fila da Produção. **Reprovar** pede o motivo (fora do nicho, política, já temos, fraco); a chave estável impede que a referência volte. Entrada manual primeiro (link da Biblioteca de Anúncios ou vídeo), depois o bot. | a fazer (fase 2) |
+| **Garimpo** | quadro de referências por fonte (Novas · Em quebra · Aprovadas · Reprovadas). **Aprovar** abre pop-up com oferta, Réplica ou Modelagem e prioridade, e cria o `C##` na Fila da Produção. **Reprovar** pede o motivo (fora do nicho, política, já temos, fraco); a chave estável impede que a referência volte. Entrada manual primeiro (link da Biblioteca de Anúncios ou vídeo), depois o bot. | feito em 2026-11-26 (entrada manual, colunas Novas · Aprovadas · Reprovadas; tela de Fontes e coluna "Em quebra" ficam para o bot) |
+| **Provas sociais** | foto com o produto e vídeo de depoimento feitos por IA, para uso interno em qualquer marca, com selo "ilustrativo · IA"; esteira própria (Fila → Texto → Imagem → Vídeo) e biblioteca por produto. [PROVAS.md](PROVAS.md) | feito em 2026-11-26 |
 | **Produção** | quadro por etapa. O card abre o criativo com a barra da esteira (Aprovar, Pedir ajuste, Mover, Descartar) e as abas Copy e roteiro (`ficha.json`), Takes e imagens, Documentos e Histórico. A fila de refação virou parte do quadro. | feito |
 | **Biblioteca** | só entregue, no ar, pausado e descartado. A mesma página do criativo, com tudo que foi produzido. | feito |
 | **Campanhas** | escolher criativos da Biblioteca + modelo de campanha → cria tudo **pausado** pela API; ativar (gastar) sempre com confirmação explícita no painel. A aba Anúncios entra aqui. | a fazer (fase 4) |
 
-Menu: Esteira (Produção, Biblioteca), Análise (Métricas, Variáveis), Meta (Anúncios), Configuração (Marcas e ofertas, Equipe; Fontes entra com o Garimpo).
+Menu: Esteira (Garimpo, Produção, Biblioteca, Provas sociais), Análise (Métricas, Variáveis), Meta (Anúncios), Configuração (Marcas e ofertas, Equipe; Fontes entra com o Garimpo).
 
-Banco: `esteira` (etapa e vez de cada criativo em produção, sem chave estrangeira para aceitar criativo ainda sem oferta) e `esteira_eventos` (histórico com autor e custo), migração `0005_esteira.sql`. O Garimpo vai acrescentar a decisão da triagem em `referencias` (decisão, motivo, quem, quando, oferta alvo, prioridade, nota do bot); Campanhas, as tabelas `campanhas` e `conjuntos` ligadas a `anuncios_meta`.
+Banco: `esteira` (etapa e vez de cada criativo em produção, sem chave estrangeira para aceitar criativo ainda sem oferta) e `esteira_eventos` (histórico com autor e custo), migração `0005_esteira.sql`. O Garimpo acrescentou a triagem em `referencias` (triagem, motivo, oferta alvo, processo, prioridade, pedido, criativo criado, quem e quando) e o pedido no card da `esteira` (migração `0010_garimpo_provas.sql`, que também cria `provas_sociais` e `marcas.demonstracao`); Campanhas, as tabelas `campanhas` e `conjuntos` ligadas a `anuncios_meta`.
 
 Ordem: (1) Produção + Biblioteca só com acervo + menu novo, feito em 2026-11-26; (2) Garimpo com entrada manual + tela de Fontes; (3) bot de garimpo (minera as fontes, ordena por dias no ar e número de variações); (4) Campanhas na Meta.
 

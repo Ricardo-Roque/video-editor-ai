@@ -9,6 +9,10 @@ Uso (a partir da raiz do projeto):
   python -I -X utf8 tools/painel.py entregar C13 --etapa roteiro --custo 0.42 --nota "..."   etapa pronta para aprovar
   python -I -X utf8 tools/painel.py entrar C23 [--etapa fila]   põe um criativo novo na esteira
   python -I -X utf8 tools/painel.py proximo --tipo nativo  próximo código livre (C23 / CN15 / CI04) e nome da pasta
+  python -I -X utf8 tools/painel.py provas               provas sociais com o Claude e com o dono
+  python -I -X utf8 tools/painel.py prova-entregar PS01 --etapa imagem --custo 0.04   etapa da prova pronta para aprovar
+  python -I -X utf8 tools/painel.py pedir-gasto C23 --custo 2.40 --plano "..."   (modo automático) etapa passa do limite
+  python -I -X utf8 tools/painel.py perguntar C23 "pergunta"   (modo automático) falta informação do dono
   python -I -X utf8 tools/painel.py usuario --email a@b.com --nome "Nome"   cria login (pede a senha)
 
 Login: usuários e sessões no Supabase (senha em scrypt, cookie HttpOnly de 30 dias). No primeiro
@@ -481,6 +485,8 @@ def banco_lista() -> dict:
             "vars": ("""select cv.criativo_id, cv.papel, v.id, v.categoria, v.variavel, v.valor, v.status
                         from criativo_variaveis cv join variaveis v on v.id = cv.variavel_id order by v.id""", None),
             "esteira": ("select * from esteira", None),
+            "trab": ("""select distinct on (alvo) alvo, status, motivo, inicio, fim from trabalhos
+                        order by alvo, inicio desc""", None),
             "arq": ("""select criativo_id, caminho, papel, chave, pasta, bytes, sha256, duracao_s, linha_do_tempo
                        from arquivos""", None),
         })
@@ -491,7 +497,8 @@ def banco_lista() -> dict:
             vars_.setdefault(x["criativo_id"], []).append(x)
         return {"banco": {x["id"]: x for x in r["criativos"]}, "tot": {x["criativo_id"]: x for x in r["totais"]},
                 "notas": {x["criativo_id"]: x for x in r["notas"]}, "anot": anot, "vars": vars_,
-                "est": {x["criativo_id"]: x for x in r["esteira"]}, "arq": r.get("arq", [])}
+                "est": {x["criativo_id"]: x for x in r["esteira"]}, "arq": r.get("arq", []),
+                "trab": {x["alvo"]: x for x in r.get("trab", [])}}
     return _BANCO_LISTA.pegar(calcular)
 
 
@@ -576,7 +583,16 @@ def _montar_lista() -> list[dict]:
             e = est[cid]
             c["status"] = "em_producao"
             c["esteira"] = {"etapa": e["etapa"], "aguardando": e["aguardando"], "desde": e["desde"],
-                            "custo_usd": num(e["custo_usd"]), "inferida": False}
+                            "custo_usd": num(e["custo_usd"]), "inferida": False,
+                            "prioridade": e.get("prioridade"), "pedido": e.get("pedido"),
+                            "referencia_chave": e.get("referencia_chave"), "pendencia": e.get("pendencia"),
+                            "gasto_liberado": num(e.get("gasto_liberado")), "trabalho": bl["trab"].get(cid)}
+            if not b:                        # pedido do Garimpo, ainda sem linha em criativos: oferta e processo do card
+                c["processo"] = e.get("processo")
+                o = ofertas_por_id().get(e.get("oferta_id"))
+                if o:
+                    c |= {"oferta_id": o["id"], "oferta_nome": o["nome"], "pais": o["pais"], "marca_id": o["marca_id"],
+                          "marca_nome": o["marca_nome"], "produto_id": o["produto_id"], "produto_nome": o["produto_nome"]}
         elif c["status"] == "em_producao":   # ainda sem linha: etapa deduzida dos arquivos da pasta
             etapa = etapa_pelos_arquivos(pasta, tipo, bool(m["videos"]))
             c["esteira"] = {"etapa": etapa, "aguardando": "claude" if etapa == "fila" else "dono",
@@ -649,7 +665,11 @@ def esteira_acao(b: dict, autor: str) -> dict:
         raise ValueError("Este criativo não está na esteira de produção.")
     etapas = etapas_de(tipo_de(cid))
     etapa = e["etapa"]
+    if acao in ("liberar", "repetir"):
+        return acao_automatico("esteira", "criativo_id", cid, etapa, e.get("pendencia"), acao, autor, comentario)
     if acao == "aprovar":
+        if e.get("pendencia"):
+            raise ValueError("O Claude está esperando você (gasto ou pergunta): responda a pendência antes de aprovar.")
         if etapa == "revisao":                    # última porta: sai da esteira e vai para a biblioteca
             if not DB.q("select 1 from criativos where id = %s", (cid,)):
                 raise ValueError("Defina a oferta do criativo (botão no card Oferta) antes de aprovar a entrega.")
@@ -669,7 +689,7 @@ def esteira_acao(b: dict, autor: str) -> dict:
         DB.q("""insert into anotacoes (criativo_id, arquivo, tempo_s, take, texto, autor, status, pedida_em)
                 values (%s, null, null, null, %s, %s, 'pedida', now())""", (cid, f"[{etapa}] {comentario}", autor))
         DB.q("update anotacoes set status = 'pedida', pedida_em = now() where criativo_id = %s and status = 'aberta'", (cid,))
-        DB.q("""update esteira set aguardando = 'claude', atualizado_por = %s, atualizado_em = now()
+        DB.q("""update esteira set aguardando = 'claude', pendencia = null, atualizado_por = %s, atualizado_em = now()
                 where criativo_id = %s""", (autor, cid))
         esteira_evento(cid, etapa, "pediu_ajuste", autor, comentario)
         return {"ok": True}
@@ -678,7 +698,7 @@ def esteira_acao(b: dict, autor: str) -> dict:
         if nova not in etapas or ag not in ("claude", "dono"):
             raise ValueError("Etapa inválida para este tipo de criativo.")
         DB.q("""update esteira set etapa = %s, aguardando = %s, desde = case when etapa = %s then desde else now() end,
-                atualizado_por = %s, atualizado_em = now() where criativo_id = %s""", (nova, ag, nova, autor, cid))
+                pendencia = null, atualizado_por = %s, atualizado_em = now() where criativo_id = %s""", (nova, ag, nova, autor, cid))
         esteira_evento(cid, nova, "moveu", autor, comentario or f"de {etapa} para {nova}")
         return {"ok": True}
     if acao == "descartar":
@@ -840,7 +860,7 @@ _CATALOGO = memo(300)
 
 def catalogo() -> dict:
     return _CATALOGO.pegar(lambda: DB.lote({
-        "marcas": ("select id, nome, prefixo from marcas order by nome", None),
+        "marcas": ("select id, nome, prefixo, demonstracao from marcas order by nome", None),
         "produtos": ("select id, marca_id, nome, descricao from produtos order by nome", None),
         "ofertas": ("""select o.id, o.marca_id, o.produto_id, o.nome, o.status, o.pais, o.idioma, o.moeda,
                               o.oferta_atual, count(c.id) criativos
@@ -900,6 +920,480 @@ def registrar_criativo(b: dict) -> dict:
          (cid, b["oferta_id"], b["processo"], b["tipo"], b["formato"].strip(), b["idioma"].lower(), status,
           b.get("descricao") or None))
     return {"ok": True, "acao": "registrado"}
+
+
+def ofertas_por_id() -> dict:
+    cat = catalogo()
+    marcas = {m["id"]: m for m in cat["marcas"]}
+    produtos = {p["id"]: p for p in cat["produtos"]}
+    return {o["id"]: o | {"marca_nome": (marcas.get(o["marca_id"]) or {}).get("nome"),
+                          "produto_nome": (produtos.get(o["produto_id"]) or {}).get("nome")} for o in cat["ofertas"]}
+
+
+# ---------------------------------------------------------------- garimpo: pedidos de criativo
+# O dono cola o link (ou sobe o vídeo) e diz o que quer; aprovar cria o código na Fila da Produção.
+
+BRUTO = ROOT / "Vídeo Bruto"
+UPLOAD_MAX = 400 * 1024 * 1024
+TIPOS_REF = ("video", "nativo", "imagem")
+
+
+def _chave(alvo: str) -> str:
+    try:
+        return dados.chave_de(alvo)
+    except SystemExit as e:                  # chave_de encerra com mensagem; aqui vira erro de validação
+        raise ValueError(str(e)) from None
+
+
+def _validar_pedido(b: dict) -> tuple:
+    oferta = b.get("oferta_alvo") or None
+    processo = b.get("processo_alvo") or "modelagem"
+    prioridade = int(b.get("prioridade") or 2)
+    if processo not in ("replica", "modelagem") or prioridade not in (1, 2, 3):
+        raise ValueError("Processo (Réplica ou Modelagem) e prioridade (1 a 3) inválidos.")
+    if oferta and oferta not in ofertas_por_id():
+        raise ValueError("Oferta inexistente.")
+    return oferta, processo, prioridade, (b.get("pedido") or "").strip() or None
+
+
+def garimpo_lista() -> dict:
+    rs = DB.q("""select r.chave, r.tipo, r.url, r.arquivo, r.midia_url, r.anunciante, r.triagem, r.motivo,
+                        r.oferta_alvo, r.processo_alvo, r.prioridade, r.pedido, r.criativo_id, r.enviado_por,
+                        r.decidido_por, r.decidido_em, r.criado_em
+                 from referencias r where r.triagem is not null order by r.prioridade nulls last, r.criado_em desc""")
+    ofs = ofertas_por_id()
+    for r in rs:
+        o = ofs.get(r["oferta_alvo"]) or {}
+        r |= {"marca_id": o.get("marca_id"), "produto_id": o.get("produto_id"), "marca_nome": o.get("marca_nome"),
+              "produto_nome": o.get("produto_nome"), "oferta_nome": o.get("nome")}
+        r["midia"] = None
+        if r["arquivo"] and (ROOT / r["arquivo"]).is_file():
+            r["midia"] = {"url": url_rel(r["arquivo"]), "arquivo": r["arquivo"], "local": True}
+        elif (r["midia_url"] or "").startswith("r2:") and midia.configurado():
+            r["midia"] = {"url": midia.assinar(r["midia_url"][3:]), "arquivo": None, "local": False}
+        if r["midia"]:
+            r["midia"]["video"] = pathlib.Path(r["arquivo"] or r["midia_url"]).suffix.lower() in VIDEO_EXT
+    return {"referencias": rs}
+
+
+def garimpo_novo(b: dict, autor: str) -> dict:
+    """Pedido novo: link da Biblioteca de Anúncios (ou outro link) ou arquivo já enviado para o Vídeo Bruto/."""
+    link, arquivo, tipo = (b.get("url") or "").strip(), (b.get("arquivo") or "").strip(), b.get("tipo")
+    if tipo not in TIPOS_REF:
+        raise ValueError("Tipo: vídeo, nativo ou imagem.")
+    if not link and not arquivo:
+        raise ValueError("Cole o link do anúncio ou envie o arquivo.")
+    if arquivo:
+        p = (ROOT / arquivo).resolve()
+        if not p.is_relative_to(BRUTO.resolve()) or not p.is_file():
+            raise ValueError("Arquivo não encontrado no Vídeo Bruto/.")
+    chave = _chave(link or str(ROOT / arquivo))
+    oferta, processo, prioridade, pedido = _validar_pedido(b)
+    ja = DB.q("select triagem, status, criativo_id from referencias where chave = %s", (chave,))
+    if ja:
+        j = ja[0]
+        if j["triagem"]:
+            raise ValueError(f"Essa referência já está no Garimpo ({j['triagem']}"
+                             + (f", virou {j['criativo_id']}" if j["criativo_id"] else "") + ").")
+        DB.q("""update referencias set triagem = 'nova', oferta_alvo = %s, processo_alvo = %s, prioridade = %s,
+                pedido = %s, enviado_por = %s, url = coalesce(url, %s), arquivo = coalesce(arquivo, %s),
+                atualizado_em = now() where chave = %s""",
+             (oferta, processo, prioridade, pedido, autor, link or None, arquivo or None, chave))
+        aviso = f"Já estava no registro (status {j['status']}): o Claude vai ver o que já foi feito com ela."
+    else:
+        DB.q("""insert into referencias (chave, tipo, url, arquivo, midia_url, anunciante, triagem, oferta_alvo,
+                                         processo_alvo, prioridade, pedido, enviado_por, visto_em)
+                values (%s,%s,%s,%s,%s,%s,'nova',%s,%s,%s,%s,%s,current_date)""",
+             (chave, tipo, link or None, arquivo or None, b.get("midia_url") or None,
+              (b.get("anunciante") or "").strip() or None, oferta, processo, prioridade, pedido, autor))
+        aviso = None
+    out = {"ok": True, "chave": chave, "aviso": aviso}
+    if b.get("destino", "producao") == "producao":
+        out |= garimpo_decidir({"chave": chave, "decisao": "aprovar", "oferta_alvo": oferta, "processo_alvo": processo,
+                                "prioridade": prioridade, "pedido": pedido}, autor)
+    return out
+
+
+def garimpo_decidir(b: dict, autor: str) -> dict:
+    chave = b.get("chave", "")
+    r = DB.q("select * from referencias where chave = %s and triagem is not null", (chave,))
+    if not r:
+        raise ValueError("Referência não está no Garimpo.")
+    r = r[0]
+    if b.get("decisao") == "reprovar":
+        motivo = (b.get("motivo") or "").strip()
+        if not motivo:
+            raise ValueError("Diga o motivo (fora do nicho, política, já temos, fraco...).")
+        DB.q("""update referencias set triagem = 'reprovada', motivo = %s, decidido_por = %s, decidido_em = now(),
+                status = 'descartada', atualizado_em = now() where chave = %s""", (motivo, autor, chave))
+        return {"ok": True}
+    if b.get("decisao") != "aprovar":
+        raise ValueError("Decisão: aprovar ou reprovar.")
+    if r["triagem"] == "aprovada" and r["criativo_id"]:
+        raise ValueError(f"Já aprovada: virou {r['criativo_id']}.")
+    if r["tipo"] not in TIPOS_REF:
+        raise ValueError("Carrossel ainda não tem processo de produção.")
+    oferta, processo, prioridade, pedido = _validar_pedido(b)
+    invalidar_lista()
+    cid = proximo_codigo(r["tipo"])
+    DB.q("""insert into esteira (criativo_id, etapa, aguardando, atualizado_por, referencia_chave, oferta_id, processo,
+                                 prioridade, pedido)
+            values (%s,'fila','claude',%s,%s,%s,%s,%s,%s)""", (cid, autor, chave, oferta, processo, prioridade, pedido))
+    DB.q("""update referencias set triagem = 'aprovada', criativo_id = %s, oferta_alvo = %s, processo_alvo = %s,
+            prioridade = %s, pedido = %s, decidido_por = %s, decidido_em = now(), atualizado_em = now()
+            where chave = %s""", (cid, oferta, processo, prioridade, pedido, autor, chave))
+    esteira_evento(cid, "fila", "criou", autor, f"pedido do Garimpo ({'Modelagem' if processo == 'modelagem' else 'Réplica'}, "
+                   f"prioridade {prioridade})" + (f": {pedido}" if pedido else ""))
+    invalidar_lista()
+    return {"ok": True, "criativo_id": cid}
+
+
+def nome_livre(pasta: pathlib.Path, nome: str) -> pathlib.Path:
+    nome = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "_", pathlib.Path(nome).name).strip(" .") or "referencia.mp4"
+    p = pasta / nome
+    i = 2
+    while p.exists():
+        p = pasta / f"{pathlib.Path(nome).stem} ({i}){pathlib.Path(nome).suffix}"
+        i += 1
+    return p
+
+
+def receber_arquivo(handler, nome: str) -> dict:
+    """Vídeo ou imagem de referência enviado pelo painel: vai para o Vídeo Bruto/ e, com R2, para o bucket
+    (assim o sócio vê a referência no computador dele)."""
+    n = int(handler.headers.get("Content-Length") or 0)
+    ext = pathlib.Path(nome).suffix.lower()
+    if ext not in VIDEO_EXT | IMG_EXT:
+        raise ValueError("Envie vídeo (.mp4, .mov, .webm) ou imagem (.png, .jpg, .webp).")
+    if not 0 < n <= UPLOAD_MAX:
+        raise ValueError("Arquivo vazio ou maior que 400 MB.")
+    BRUTO.mkdir(exist_ok=True)
+    destino = nome_livre(BRUTO, nome)
+    tmp = destino.with_name(destino.name + ".enviando")
+    falta = n
+    with tmp.open("wb") as f:
+        while falta > 0:
+            bloco = handler.rfile.read(min(1 << 20, falta))
+            if not bloco:
+                break
+            f.write(bloco)
+            falta -= len(bloco)
+    if falta:
+        tmp.unlink(missing_ok=True)
+        raise ValueError("Envio interrompido.")
+    tmp.replace(destino)
+    chave = _chave(str(destino))
+    midia_url = None
+    if midia.configurado():
+        objeto = f"referencias/{chave[4:]}{ext}"
+        try:
+            midia.cliente().upload_file(str(destino), midia.bucket(), objeto,
+                                        ExtraArgs={"ContentType": mimetypes.guess_type(destino.name)[0] or "application/octet-stream"})
+            midia_url = "r2:" + objeto
+        except Exception as e:  # noqa: BLE001 - fica só local; o pedido segue
+            print("[garimpo] envio ao R2 falhou:", str(e)[:200])
+    return {"ok": True, "arquivo": rel(destino), "chave": chave, "midia_url": midia_url,
+            "tipo": "video" if ext in VIDEO_EXT else "nativo"}
+
+
+# ---------------------------------------------------------------- provas sociais
+# Foto de pessoa com o produto ou vídeo de depoimento, feitos por IA, para uso interno, em qualquer marca.
+# Pasta: "Provas Sociais/PS01/" (imagens/, video/, final/). O arquivo final leva o selo "ilustrativo · IA"
+# (tools/selo_ia.py). Processo em PROVAS.md.
+
+PROVAS = ROOT / "Provas Sociais"
+ETAPAS_PROVA = {"foto": ["fila", "imagem", "aprovada"], "video": ["fila", "texto", "imagem", "video", "aprovada"]}
+
+
+def pastas_provas() -> dict:
+    if not PROVAS.exists():
+        return {}
+    return {d.name: d for d in PROVAS.iterdir() if d.is_dir() and re.fullmatch(r"PS\d{2,3}", d.name)}
+
+
+def pastas_todas() -> dict:
+    """Criativos e provas sociais (o midia.py sobe e baixa os dois)."""
+    return pastas_locais() | pastas_provas()
+
+
+def proximo_ps(usados: set | None = None) -> str:
+    ids = {r["id"] for r in DB.q("select id from provas_sociais")} | set(pastas_provas()) | (usados or set())
+    return f"PS{max((int(i[2:]) for i in ids), default=0) + 1:02d}"
+
+
+def midia_prova(pid: str, pasta: pathlib.Path | None) -> list[dict]:
+    """Arquivos da prova: os locais e, se faltarem aqui, os do R2. Os finais (com selo) vêm primeiro."""
+    out, vistos = [], set()
+
+    def add(caminho: str, url: str, arquivo: str, remoto_=False):
+        ext = pathlib.Path(caminho).suffix.lower()
+        if caminho in vistos or ext not in VIDEO_EXT | IMG_EXT:
+            return
+        vistos.add(caminho)
+        out.append({"caminho": caminho, "nome": pathlib.Path(caminho).name, "url": url, "arquivo": arquivo,
+                    "video": ext in VIDEO_EXT, "final": caminho.startswith("final/"), "remoto": remoto_})
+
+    if pasta:
+        for p in sorted(pasta.rglob("*")):
+            if p.is_file():
+                add(p.relative_to(pasta).as_posix(), url_midia(p), rel(p))
+    for r in remotos_de(pid):
+        add(r["caminho"], url_rel(r["rel"]), r["rel"], True)
+    out.sort(key=lambda m: (not m["final"], m["caminho"]))
+    return out
+
+
+def provas_lista() -> dict:
+    rs = DB.q("""select p.*, m.nome marca_nome, pr.nome produto_nome, o.nome oferta_nome
+                 from provas_sociais p join marcas m on m.id = p.marca_id join produtos pr on pr.id = p.produto_id
+                 left join ofertas o on o.id = p.oferta_id order by p.id""")
+    ev = DB.q("""select * from esteira_eventos where criativo_id like 'PS%%' order by em desc limit 400""")
+    trab = {t["alvo"]: t for t in DB.q("""select distinct on (alvo) alvo, status, motivo, inicio, fim from trabalhos
+                                          where alvo like 'PS%%' order by alvo, inicio desc""")}
+    locais = pastas_provas()
+    for r in rs:
+        r["custo_usd"] = num(r["custo_usd"])
+        r["gasto_liberado"] = num(r["gasto_liberado"])
+        r["trabalho"] = trab.get(r["id"])
+        r["etapas"] = ETAPAS_PROVA[r["tipo"]]
+        r["midias"] = midia_prova(r["id"], locais.get(r["id"]))
+        r["pasta"] = rel(locais[r["id"]]) if r["id"] in locais else f"Provas Sociais/{r['id']}"
+        r["eventos"] = [e for e in ev if e["criativo_id"] == r["id"]][:20]
+    return {"provas": rs}
+
+
+def provas_nova(b: dict, autor: str) -> dict:
+    if not DB.q("select 1 from marcas where id = %s", (b.get("marca_id"),)):
+        raise ValueError("Escolha a marca.")
+    prod = DB.q("select id from produtos where id = %s and marca_id = %s", (b.get("produto_id"), b["marca_id"]))
+    if not prod:
+        raise ValueError("Escolha um produto da marca.")
+    oferta = b.get("oferta_id") or None
+    if oferta and not DB.q("select 1 from ofertas where id = %s and produto_id = %s", (oferta, b["produto_id"])):
+        raise ValueError("A oferta precisa ser desse produto.")
+    if b.get("tipo") not in ETAPAS_PROVA:
+        raise ValueError("Tipo: foto com o produto ou vídeo de depoimento.")
+    idioma = (b.get("idioma") or "").strip().lower()
+    if not re.fullmatch(r"[a-z]{2}(-[a-z]{2})?", idioma):
+        raise ValueError("Idioma da peça (ex.: fr, en, pt).")
+    qtd = int(b.get("quantidade") or 1)
+    if not 1 <= qtd <= 10:
+        raise ValueError("Quantidade de 1 a 10.")
+    ids = []
+    for _ in range(qtd):
+        pid = proximo_ps(set(ids))
+        DB.q("""insert into provas_sociais (id, marca_id, produto_id, oferta_id, tipo, idioma, persona, pedido, criado_por)
+                values (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+             (pid, b["marca_id"], b["produto_id"], oferta, b["tipo"], idioma, (b.get("persona") or "").strip() or None,
+              (b.get("pedido") or "").strip() or None, autor))
+        esteira_evento(pid, "fila", "criou", autor, b.get("pedido") or None)
+        ids.append(pid)
+    return {"ok": True, "ids": ids}
+
+
+def provas_acao(b: dict, autor: str) -> dict:
+    pid, acao = b.get("id", ""), b.get("acao")
+    r = DB.q("select * from provas_sociais where id = %s", (pid,))
+    if not r:
+        raise ValueError("Prova social não encontrada.")
+    r = r[0]
+    etapas, comentario = ETAPAS_PROVA[r["tipo"]], (b.get("comentario") or "").strip() or None
+    if acao in ("liberar", "repetir"):
+        return acao_automatico("provas_sociais", "id", pid, r["etapa"], r.get("pendencia"), acao, autor, comentario)
+    if acao == "aprovar":
+        if r.get("pendencia"):
+            raise ValueError("O Claude está esperando você (gasto ou pergunta): responda a pendência antes de aprovar.")
+        if r["aguardando"] != "dono" or r["etapa"] in ("fila", "aprovada", "descartada"):
+            raise ValueError("Nada para aprovar agora: a vez é do Claude.")
+        prox = etapas[etapas.index(r["etapa"]) + 1]
+        DB.q("""update provas_sociais set etapa = %s, aguardando = %s, ajuste = null, atualizado_em = now()
+                where id = %s""", (prox, "dono" if prox == "aprovada" else "claude", pid))
+        esteira_evento(pid, r["etapa"], "concluiu" if prox == "aprovada" else "aprovou", autor, comentario)
+        return {"ok": True, "etapa": prox}
+    if acao == "ajuste":
+        if not comentario:
+            raise ValueError("Escreva o que ajustar.")
+        DB.q("""update provas_sociais set ajuste = %s, aguardando = 'claude', pendencia = null, atualizado_em = now()
+                where id = %s""", (comentario, pid))
+        esteira_evento(pid, r["etapa"], "pediu_ajuste", autor, comentario)
+        return {"ok": True}
+    if acao == "descartar":
+        DB.q("update provas_sociais set etapa = 'descartada', atualizado_em = now() where id = %s", (pid,))
+        esteira_evento(pid, r["etapa"], "descartou", autor, comentario)
+        return {"ok": True}
+    raise ValueError("Ação desconhecida.")
+
+
+# ---------------------------------------------------------------- Claude automático
+# Com CLAUDE_AUTO=1 no .env, o painel chama o Claude Code sem chat (claude -p) sempre que um card fica "com o Claude"
+# (pedido novo, etapa aprovada, ajuste, gasto liberado). Um trabalho por vez. Cada etapa segue sozinha até
+# LIMITE_AUTO_USD (padrão 1.00); acima disso o Claude roda `painel.py pedir-gasto` e o card volta ao dono com o botão
+# "Liberar". Falta de informação: `painel.py perguntar`. A chave alvo|etapa|atualizado_em garante que o mesmo estado
+# do card rode uma vez só, mesmo com o painel aberto em dois computadores.
+
+AUTO = {"rodando": None, "ultimo": None, "erro": None}
+
+
+def auto_config() -> dict:
+    env = dotenv_values(ROOT / ".env")
+    try:
+        limite = float(env.get("LIMITE_AUTO_USD") or 1.0)
+    except ValueError:
+        limite = 1.0
+    return {"ligado": (env.get("CLAUDE_AUTO") or "0").strip() == "1", "limite": limite}
+
+
+def _tabela_de(alvo: str) -> tuple[str, str]:
+    return ("provas_sociais", "id") if alvo.startswith("PS") else ("esteira", "criativo_id")
+
+
+def acao_automatico(tabela, col, alvo, etapa, pendencia, acao, autor, comentario) -> dict:
+    """Botões do dono para o modo automático: liberar o gasto pedido ou mandar o Claude tentar de novo."""
+    if acao == "liberar":
+        if not pendencia or pendencia.get("tipo") != "gasto":
+            raise ValueError("Não há gasto pedido neste card.")
+        DB.q(f"""update {tabela} set gasto_liberado = %s, pendencia = null, aguardando = 'claude', atualizado_em = now()
+                 where {col} = %s""", (pendencia.get("custo") or 0, alvo))
+        esteira_evento(alvo, etapa, "liberou_gasto", autor, comentario or f"US$ {float(pendencia.get('custo') or 0):.2f}")
+        return {"ok": True}
+    DB.q(f"update {tabela} set pendencia = null, aguardando = 'claude', atualizado_em = now() where {col} = %s", (alvo,))
+    esteira_evento(alvo, etapa, "moveu", autor, comentario or "tentar de novo")
+    return {"ok": True}
+
+
+def _pendente(a, pendencia: dict, msg: str):
+    alvo = a.alvo.upper()
+    tabela, col = _tabela_de(alvo)
+    r = DB.q(f"update {tabela} set pendencia = %s, aguardando = 'dono', atualizado_em = now() where {col} = %s returning etapa",
+             (json.dumps(pendencia, ensure_ascii=False), alvo))
+    if not r:
+        sys.exit(f"{alvo} não está em produção.")
+    esteira_evento(alvo, r[0]["etapa"], "pediu_gasto" if pendencia["tipo"] == "gasto" else "perguntou", "Claude",
+                   pendencia.get("plano") or pendencia.get("texto"), pendencia.get("custo"))
+    print(msg.format(alvo=alvo))
+
+
+def cmd_pedir_gasto(a):
+    _pendente(a, {"tipo": "gasto", "custo": round(a.custo, 2), "plano": a.plano},
+              "{alvo}: gasto pedido ao dono no painel. Pare aqui; o card volta quando ele liberar.")
+
+
+def cmd_perguntar(a):
+    _pendente(a, {"tipo": "pergunta", "texto": a.texto},
+              "{alvo}: pergunta enviada ao dono no painel. Pare aqui; a resposta volta como ajuste.")
+
+
+def _cards_com_claude() -> list[dict]:
+    """O que está com o Claude e sem pendência, na ordem de prioridade (criativos antes das provas)."""
+    cs = DB.q("""select criativo_id alvo, etapa, atualizado_em, coalesce(prioridade, 2) prioridade, desde,
+                        gasto_liberado from esteira where aguardando = 'claude' and pendencia is null
+                 order by prioridade, desde""")
+    ps = DB.q("""select id alvo, etapa, atualizado_em, 9 prioridade, criado_em desde, gasto_liberado from provas_sociais
+                 where aguardando = 'claude' and pendencia is null and etapa not in ('aprovada','descartada')
+                 order by criado_em""")
+    return cs + ps
+
+
+def _prompt_trabalho(c: dict, limite: float) -> str:
+    alvo, etapa = c["alvo"], c["etapa"]
+    liberado = float(c.get("gasto_liberado") or 0)
+    if alvo.startswith("PS"):
+        tarefa = (f"Trabalhe só a prova social {alvo}. Rode `python -I -X utf8 tools/painel.py provas` para ver o pedido, "
+                  f"a persona e algum AJUSTE PEDIDO. Siga PROVAS.md. Card na etapa '{etapa}': se for 'fila', faça a "
+                  "primeira etapa (texto no vídeo, imagem na foto); senão faça ou refaça a etapa atual. Termine com "
+                  f"`python -I -X utf8 tools/painel.py prova-entregar {alvo} --etapa <etapa> --custo <US$ real> ...`.")
+    else:
+        tarefa = (f"Trabalhe só o criativo {alvo}. Rode `python -I -X utf8 tools/painel.py esteira` para ver o pedido, a "
+                  "referência e os ajustes pedidos (e `painel.py fila` para as anotações). Siga CLAUDE.md e PROCESSO.md "
+                  f"(seção 'Esteira de produção' e 'Garimpo'). Card na etapa '{etapa}': se for 'fila', comece pela "
+                  "análise (pasta nova com o código do card a partir de `_Modelo Criativo/`); senão faça ou refaça a "
+                  "etapa atual. Atualize a ficha.json e termine com "
+                  f"`python -I -X utf8 tools/painel.py entregar {alvo} --etapa <etapa> --custo <US$ real> --nota \"...\"`.")
+    return f"""Você está rodando sozinho, sem chat: o painel disparou este trabalho (modo automático). Ninguém vai responder perguntas no chat.
+
+{tarefa}
+
+Regras do modo automático:
+1. Faça UMA etapa só, confira o resultado (checar_takes.py nos takes, olhe cada imagem) e entregue. Não avance para a etapa seguinte: ela depende da aprovação do dono no painel.
+2. Gasto: limite desta etapa US$ {max(limite, liberado):.2f}{f' (o dono liberou US$ {liberado:.2f})' if liberado else ''}. Estime o custo antes de qualquer geração paga. Se a estimativa passar do limite, NÃO gere: rode `python -I -X utf8 tools/painel.py pedir-gasto {alvo} --custo <estimativa> --plano "o que vai gerar e por quê"` e pare.
+3. Se faltar algo que só o dono sabe (oferta do card, fato do produto fora do PRODUTOS.md, foto do produto, decisão de política), não chute: rode `python -I -X utf8 tools/painel.py perguntar {alvo} "pergunta em português"` e pare.
+4. Use o Bash para os comandos. No máximo 2 takes em paralelo. Lotes longos em primeiro plano com timeout alto (até 10 min por chamada).
+5. Nunca publique na Meta, nunca faça commit ou push, nunca mexa em outro card.
+6. Responda no fim, em uma ou duas frases em português, o que fez e quanto gastou."""
+
+
+# Toda rodada automática começa no modo caveman full (pedido do dono em 2026-11-26): resposta curta economiza tokens.
+# Vale só para a fala do Claude; arquivos, ficha.json, roteiro, copy e o texto que vai para o painel seguem normais.
+CAVEMAN_AUTO = """MODO CAVEMAN FULL, obrigatório do início ao fim desta rodada, em toda fala sua (respostas, resumo final, texto entre ferramentas). Fale como homem das cavernas esperto: corte artigos (o, a, os, as, um, uma), conectivos dispensáveis, cortesia, hesitação e explicação do óbvio. Fragmentos. Uma ideia por frase. Sinônimo curto. Padrão: "[coisa] [ação] [motivo]. [próximo passo]."
+Errado: "Eu analisei a referência e o roteiro ficou pronto; agora vou gerar as imagens, que custam cerca de US$ 0,12."
+Certo: "Análise pronta. Roteiro pronto. Próximo: 3 imagens, US$ 0,12."
+Nunca anuncie o modo. Não narre chamada de ferramenta: chame direto. Termos técnicos, comandos, código, números, unidades e erros: exatos. Nunca corte "não/nunca/só/exceto". Idioma: português.
+Fora do caveman (texto normal e completo): tudo que fica gravado ou que outra pessoa lê, ou seja, arquivos, ficha.json, análises, roteiros, copy dos anúncios, traduções, prompts de imagem, notas do `entregar`, e os textos de `pedir-gasto` e `perguntar`."""
+
+FERRAMENTAS_AUTO = ["Read", "Write", "Edit", "Glob", "Grep", "Bash(python:*)", "Bash(ffmpeg:*)", "Bash(ffprobe:*)",
+                    "Bash(mkdir:*)", "Bash(cp:*)", "Bash(mv:*)", "Bash(ls:*)", "Bash(cat:*)", "Bash(head:*)"]
+TRAB_DIR = WEB / ".trabalhos"                  # saída de cada trabalho (fora do Git)
+
+
+def rodar_trabalho(c: dict, cfg: dict):
+    import shutil
+    import socket
+    alvo = c["alvo"]
+    chave = f"{alvo}|{c['etapa']}|{c['atualizado_em'].isoformat() if hasattr(c['atualizado_em'], 'isoformat') else c['atualizado_em']}"
+    r = DB.q("""insert into trabalhos (alvo, etapa, chave, maquina) values (%s,%s,%s,%s)
+                on conflict (chave) do nothing returning id""", (alvo, c["etapa"], chave, socket.gethostname()))
+    if not r:
+        return                                   # outro computador (ou rodada anterior) já pegou este estado do card
+    tid = r[0]["id"]
+    AUTO["rodando"] = {"alvo": alvo, "etapa": c["etapa"], "inicio": datetime.now().isoformat(timespec="seconds")}
+    invalidar_lista()
+    exe = shutil.which("claude") or str(pathlib.Path.home() / ".local" / "bin" / "claude.exe")
+    TRAB_DIR.mkdir(exist_ok=True)
+    log = TRAB_DIR / f"{tid}_{alvo}.json"
+    status, motivo, custo, sessao = "erro", None, None, None
+    try:
+        p = subprocess.run([exe, "-p", _prompt_trabalho(c, cfg["limite"]), "--output-format", "json",
+                            "--append-system-prompt", CAVEMAN_AUTO,
+                            "--permission-mode", "acceptEdits", "--allowedTools", *FERRAMENTAS_AUTO],
+                           cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=3 * 3600)
+        log.write_text(p.stdout + ("\n--- stderr ---\n" + p.stderr if p.stderr else ""), encoding="utf-8")
+        try:
+            j = json.loads(p.stdout)
+            motivo, custo, sessao = (j.get("result") or "")[-1500:], j.get("total_cost_usd"), j.get("session_id")
+        except ValueError:
+            motivo = (p.stdout or p.stderr)[-1500:]
+        # Entregou, pediu gasto ou perguntou: o card saiu da vez do Claude. Senão, parou no meio.
+        tabela, col = _tabela_de(alvo)
+        ainda = DB.q(f"select 1 from {tabela} where {col} = %s and aguardando = 'claude' and pendencia is null", (alvo,))
+        status = "parado" if ainda else "feito"
+    except subprocess.TimeoutExpired:
+        motivo = "Passou de 3 horas sem terminar."
+    except Exception as e:  # noqa: BLE001
+        motivo = str(e)[:1500]
+        AUTO["erro"] = motivo
+    DB.q("""update trabalhos set status = %s, motivo = %s, custo_claude_usd = %s, sessao = %s, fim = now() where id = %s""",
+         (status, motivo, custo, sessao, tid))
+    esteira_evento(alvo, c["etapa"], "trabalhou", "Claude", (motivo or "")[:300] if status != "feito" else None)
+    AUTO["rodando"], AUTO["ultimo"] = None, {"alvo": alvo, "status": status, "fim": datetime.now().isoformat(timespec="seconds")}
+    invalidar_lista()
+
+
+def laco_trabalho():
+    """Fila do modo automático: olha a cada 20 s o que está com o Claude e roda um trabalho por vez."""
+    while True:
+        try:
+            cfg = auto_config()
+            if cfg["ligado"] and DB.ok() and not AUTO["rodando"]:
+                feitos = {t["chave"] for t in DB.q("select chave from trabalhos where inicio > now() - interval '30 days'")}
+                for c in _cards_com_claude():
+                    ts = c["atualizado_em"].isoformat() if hasattr(c["atualizado_em"], "isoformat") else c["atualizado_em"]
+                    if f"{c['alvo']}|{c['etapa']}|{ts}" not in feitos:
+                        rodar_trabalho(c, cfg)
+                        break
+        except Exception as e:  # noqa: BLE001 - o laço não pode morrer
+            AUTO["erro"] = str(e)[:300]
+            traceback.print_exc()
+        time.sleep(20)
 
 
 # ---------------------------------------------------------------- login
@@ -1123,7 +1617,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._cache_longo = True
                 return self._arquivo(p, raiz=WEB)
             if u.path == "/api/estado":
-                return self._json({"banco": DB.ok(), "banco_erro": DB.erro, "meta": meta_configurada(), "r2": midia.configurado(), **ESTADO})
+                return self._json({"banco": DB.ok(), "banco_erro": DB.erro, "meta": meta_configurada(), "r2": midia.configurado(),
+                                   "auto": {**auto_config(), **AUTO}, **ESTADO})
             if u.path == "/api/criativos":
                 reler_pastas()                    # arquivos novos aparecem; o banco vem do cache até o próximo POST
                 tot = totais()
@@ -1139,6 +1634,10 @@ class Handler(BaseHTTPRequestHandler):
                     order by criativo_id, tempo_s nulls first""")})
             if u.path == "/api/variaveis":
                 return self._json({"variaveis": variaveis_ranking()})
+            if u.path == "/api/garimpo":
+                return self._json(garimpo_lista())
+            if u.path == "/api/provas":
+                return self._json(provas_lista())
             if u.path == "/api/anuncios":
                 filtro = "where a.criativo_id is null" if qs.get("sem_criativo") else ""
                 return self._json({"anuncios": DB.q(f"""
@@ -1154,6 +1653,13 @@ class Handler(BaseHTTPRequestHandler):
         u = urlsplit(self.path)
         invalidar_lista()
         try:
+            if u.path == "/api/garimpo/arquivo":   # corpo é o arquivo (não JSON): confere a sessão antes de ler
+                self.usuario = usuario_da_sessao(self._token())
+                origem = self.headers.get("Origin")
+                if not self.usuario or (origem and urlsplit(origem).netloc != self.headers.get("Host")):
+                    return self._json({"erro": "sessão expirada", "login": True}, 401)
+                nome = unquote(parse_qs(u.query).get("nome", ["referencia.mp4"])[0])
+                return self._json(receber_arquivo(self, nome))
             b = self._corpo()
             # --- rotas abertas: entrar e criar o primeiro usuário
             if u.path == "/api/login":
@@ -1208,6 +1714,14 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(registrar_criativo(b))
             if u.path == "/api/esteira":
                 return self._json(esteira_acao(b, autor))
+            if u.path == "/api/garimpo":
+                return self._json(garimpo_novo(b, autor))
+            if u.path == "/api/garimpo/decidir":
+                return self._json(garimpo_decidir(b, autor))
+            if u.path == "/api/provas":
+                return self._json(provas_nova(b, autor))
+            if u.path == "/api/provas/acao":
+                return self._json(provas_acao(b, autor))
             if u.path == "/api/anotacoes":
                 cid = b["criativo_id"]
                 texto = (b.get("texto") or "").strip()
@@ -1326,14 +1840,22 @@ def cmd_esteira(a):
     pedidas = {}
     for r in DB.q("select * from anotacoes where status = 'pedida' order by criativo_id, tempo_s nulls first, id"):
         pedidas.setdefault(r["criativo_id"], []).append(r)
+    refs = {r["chave"]: r for r in DB.q("select chave, url, arquivo, anunciante from referencias where triagem is not null")}
     for vez, titulo in (("claude", "COM O CLAUDE (fazer agora, com custo antes)"), ("dono", "AGUARDANDO O DONO")):
         cs = [c for c in lista if c["esteira"]["aguardando"] == vez]
+        cs.sort(key=lambda c: (c["esteira"].get("prioridade") or 2, ordem(c["id"])))
         print(f"\n== {titulo}: {len(cs)}")
         for c in cs:
             e, p = c["esteira"], pastas.get(c["id"])
             print(f"  {c['id']}  {c.get('titulo') or '':<24} {ROTULO.get(e['etapa'], e['etapa']):<9} {c.get('formato') or '-':<12} "
                   f"{c.get('oferta_id') or 'sem oferta':<10} {rel(p) if p else '(sem pasta)'}"
                   + ("  [etapa deduzida dos arquivos]" if e["inferida"] else ""))
+            if e.get("referencia_chave"):        # pedido do Garimpo: o que o dono quer e onde está a referência
+                r = refs.get(e["referencia_chave"]) or {}
+                print(f"      pedido: {'Modelagem' if c.get('processo') == 'modelagem' else 'Réplica'}, prioridade "
+                      f"{e.get('prioridade') or 2}{' · ' + e['pedido'] if e.get('pedido') else ''}")
+                print(f"      referência: {r.get('url') or r.get('arquivo') or e['referencia_chave']}"
+                      + (f" ({r['anunciante']})" if r.get("anunciante") else ""))
             if vez == "claude":
                 for r in pedidas.get(c["id"], []):
                     t = f"{float(r['tempo_s']):.1f}s" if r["tempo_s"] is not None else "peça"
@@ -1352,7 +1874,8 @@ def cmd_entregar(a):
             on conflict (criativo_id) do update set
               desde = case when esteira.etapa = excluded.etapa then esteira.desde else now() end,
               etapa = excluded.etapa, aguardando = 'dono', custo_usd = esteira.custo_usd + excluded.custo_usd,
-              atualizado_por = 'Claude', atualizado_em = now()""", (cid, a.etapa, a.custo or 0))
+              pendencia = null, gasto_liberado = 0, atualizado_por = 'Claude', atualizado_em = now()""",
+         (cid, a.etapa, a.custo or 0))
     esteira_evento(cid, a.etapa, "entregou", "Claude", a.nota, a.custo)
     print(f"{cid}: {ROTULO[a.etapa]} entregue para aprovação no painel.")
     if not midia.configurado():
@@ -1374,6 +1897,55 @@ def cmd_entrar(a):
             on conflict (criativo_id) do nothing""", (cid, a.etapa))
     esteira_evento(cid, a.etapa, "criou", "Claude", a.nota)
     print(f"{cid} na esteira, etapa {ROTULO[a.etapa]}.")
+
+
+ROT_PROVA = {"fila": "Fila", "texto": "Texto", "imagem": "Imagem", "video": "Vídeo", "aprovada": "Aprovada"}
+
+
+def cmd_provas(a):
+    """Provas sociais em produção: o que fazer (com o Claude) e o que espera o dono."""
+    rs = [r for r in provas_lista()["provas"] if r["etapa"] not in ("aprovada", "descartada")]
+    if not rs:
+        print("Nenhuma prova social em produção.")
+        return
+    for vez, titulo in (("claude", "COM O CLAUDE (fazer agora, com custo antes)"), ("dono", "AGUARDANDO O DONO")):
+        cs = [r for r in rs if r["aguardando"] == vez]
+        print(f"\n== {titulo}: {len(cs)}")
+        for r in cs:
+            et = r["etapas"]
+            fazer = et[et.index(r["etapa"]) + 1] if vez == "claude" and r["etapa"] == "fila" else r["etapa"]
+            print(f"  {r['id']}  {'foto' if r['tipo'] == 'foto' else 'vídeo':<6} {ROT_PROVA[fazer if vez == 'claude' else r['etapa']]:<7} "
+                  f"{r['marca_nome']} › {r['produto_nome']}{' › ' + r['oferta_id'] if r['oferta_id'] else ''}  "
+                  f"idioma {r['idioma']}  pasta {r['pasta']}")
+            if r["persona"]:
+                print(f"      persona: {r['persona']}")
+            if r["pedido"]:
+                print(f"      pedido: {r['pedido']}")
+            if vez == "claude" and r["ajuste"]:
+                print(f"      AJUSTE PEDIDO: {r['ajuste']}")
+    print("\nAo terminar uma etapa: painel.py prova-entregar <PS##> --etapa <texto|imagem|video> --custo <US$> "
+          "[--texto \"...\" --texto-pt \"...\"]")
+
+
+def cmd_prova_entregar(a):
+    pid = a.prova.upper()
+    r = DB.q("select tipo from provas_sociais where id = %s", (pid,))
+    if not r:
+        sys.exit(f"{pid} não existe.")
+    if a.etapa not in ETAPAS_PROVA[r[0]["tipo"]][1:-1]:
+        sys.exit(f"Etapa inválida para {r[0]['tipo']}: {', '.join(ETAPAS_PROVA[r[0]['tipo']][1:-1])}")
+    DB.q("""update provas_sociais set etapa = %s, aguardando = 'dono', ajuste = null, pendencia = null,
+            gasto_liberado = 0, custo_usd = custo_usd + %s,
+            texto = coalesce(%s, texto), texto_pt = coalesce(%s, texto_pt), atualizado_em = now() where id = %s""",
+         (a.etapa, a.custo or 0, a.texto, a.texto_pt, pid))
+    esteira_evento(pid, a.etapa, "entregou", "Claude", a.nota, a.custo)
+    print(f"{pid}: {ROT_PROVA[a.etapa]} entregue para aprovação no painel (Provas sociais).")
+    if midia.configurado() and pid in pastas_provas():
+        try:
+            t = midia.subir([pid], log=lambda s: print("  " + s))
+            print(f"  R2: {t['enviados']} arquivo(s) enviados ({t['bytes'] / 1048576:,.1f} MB).")
+        except Exception as e:  # noqa: BLE001
+            print(f"Aviso: entregue, mas o envio ao R2 falhou ({str(e)[:200]}). Rode: midia.py subir {pid}")
 
 
 def cmd_proximo(a):
@@ -1416,6 +1988,18 @@ def main():
     p.set_defaults(f=cmd_entrar)
     p = sub.add_parser("proximo", help="próximo código livre de um tipo (vídeo, nativo, imagem)")
     p.add_argument("--tipo", required=True, choices=["video", "nativo", "imagem"]); p.set_defaults(f=cmd_proximo)
+    sub.add_parser("provas", help="provas sociais: o que está com o Claude e o que espera o dono").set_defaults(f=cmd_provas)
+    p = sub.add_parser("prova-entregar", help="terminei a etapa de uma prova social: vai para aprovação")
+    p.add_argument("prova"); p.add_argument("--etapa", required=True, choices=["texto", "imagem", "video"])
+    p.add_argument("--custo", type=float, default=0.0); p.add_argument("--nota", default=None)
+    p.add_argument("--texto", default=None, help="fala ou legenda no idioma da peça")
+    p.add_argument("--texto-pt", dest="texto_pt", default=None, help="tradução para o português")
+    p.set_defaults(f=cmd_prova_entregar)
+    p = sub.add_parser("pedir-gasto", help="modo automático: a etapa passa do limite, pede liberação ao dono")
+    p.add_argument("alvo"); p.add_argument("--custo", type=float, required=True); p.add_argument("--plano", required=True)
+    p.set_defaults(f=cmd_pedir_gasto)
+    p = sub.add_parser("perguntar", help="modo automático: falta informação, pergunta ao dono no painel")
+    p.add_argument("alvo"); p.add_argument("texto"); p.set_defaults(f=cmd_perguntar)
     p = sub.add_parser("usuario", help="cria um usuário do painel (pede a senha no terminal)")
     p.add_argument("--email", required=True); p.add_argument("--nome", required=True); p.set_defaults(f=cmd_usuario)
     a = ap.parse_args()
@@ -1426,6 +2010,9 @@ def main():
     if not DB.ok():
         print("Aviso: sem banco (", DB.erro, "). O painel abre só com os arquivos locais.")
     threading.Thread(target=laco_sync, daemon=True).start()
+    threading.Thread(target=laco_trabalho, daemon=True).start()
+    if auto_config()["ligado"]:
+        print(f"Claude automático ligado (limite US$ {auto_config()['limite']:.2f} por etapa).")
     srv = ThreadingHTTPServer((a.host, a.porta), Handler)
     url = f"http://127.0.0.1:{a.porta}"
     print(f"Painel em {url}  (Ctrl+C para fechar)")

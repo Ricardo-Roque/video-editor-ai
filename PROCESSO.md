@@ -321,7 +321,7 @@ O painel local (`python -I -X utf8 tools/painel.py`, abre em http://127.0.0.1:87
 
 O Claude trabalha assim, em toda etapa de todo criativo:
 
-1. Criativo novo entra na esteira com `python -I -X utf8 tools/painel.py entrar C<NN>` (até existir o Garimpo, que vai criar o card ao aprovar uma referência).
+1. Criativo novo entra na esteira pelo **Garimpo** (abaixo): o dono aprova o pedido e o card nasce na Fila com o código já reservado. Criativo começado no chat entra com `python -I -X utf8 tools/painel.py entrar C<NN>`.
 2. Ao terminar uma etapa, **atualiza a `ficha.json`** da pasta (formato abaixo) e roda `python -I -X utf8 tools/painel.py entregar C<NN> --etapa <etapa> --custo <US$ real> --nota "o que foi feito"`. O card vai para "aguardando você". No chat, só um aviso curto com o link do painel; o conteúdo para aprovar fica no card.
 3. Quando o dono disser **"continue a esteira"**: `python -I -X utf8 tools/painel.py esteira` lista o que está com o Claude (aprovado, ou com ajuste pedido) e os pedidos de cada um. Para cada card: informar o plano e o custo estimado, esperar o "pode" (gasto continua pedindo aprovação no chat), fazer, conferir (`checar_takes.py`, olhar frames e imagens), e voltar ao passo 2. Ajuste pedido: corrigir só o que foi pedido e marcar as anotações com `feita`.
 4. O dono aprova a última etapa (Revisão) no painel: o criativo sai da Produção e vai para a Biblioteca como entregue. A partir daí segue a lista "Ao entregar um criativo".
@@ -349,6 +349,20 @@ Aprovação dada no chat continua valendo: nesse caso o Claude registra com `ent
 ```
 
 O `anuncio` (texto principal, título, descrição e botão) é obrigatório também para vídeo: o dono copia dali para o Gerenciador. Enquanto não estiver escrito, use `"anuncio": { "pendente": "motivo" }`. Nativo continua gravando o `copy_final_<idioma>.txt` (o painel lê os dois). Exemplo completo: `Criativo 13/ficha.json`.
+
+**Garimpo: pedidos de criativo.** Na tela Garimpo (ou no botão "Novo pedido" da Produção) o dono cola o link do anúncio (Biblioteca de Anúncios ou outro) ou envia o vídeo/imagem, e escolhe tipo (vídeo, nativo, imagem), oferta, Réplica ou Modelagem, prioridade (1 alta, 2 normal, 3 baixa) e o que quer ("testar hook novo", "persona 55+"). O arquivo enviado vai para `Vídeo Bruto/` e, com R2, para o bucket (`referencias/...`), para o sócio ver também. "Direto para a Fila da Produção" aprova na hora; "Deixar no Garimpo" espera a decisão (Aprovar ou Reprovar com motivo). A referência ganha a chave estável (`meta:<ID>`, `url:` ou `arq:`), então o mesmo anúncio não entra duas vezes. Aprovar reserva o próximo código do tipo (`C23`, `CN15`...) e cria o card na Fila com oferta, processo, prioridade e pedido. Em "continue a esteira", o `painel.py esteira` mostra esses dados e o link ou arquivo da referência, ordenados por prioridade: o Claude cria a pasta com o código do card, segue Réplica (`PROCESSO.md`) ou Modelagem (`MODELAGEM.md`) como o pedido diz, registra o criativo na oferta do card (`criativos`) na análise, quando o formato está definido, e entrega a análise como sempre. Pedido sem oferta: perguntar antes de começar.
+
+**Provas sociais (uso interno).** Tela "Provas sociais": foto de pessoa com o produto ou vídeo de depoimento, feitos por IA, ligados ao produto (oferta opcional, quando a peça cita kit ou preço), em qualquer marca. São para uso interno: não vão para página de venda nem para anúncio. Todo arquivo final leva o selo "ilustrativo · IA" (`tools/selo_ia.py`), que não sai. Processo completo em [PROVAS.md](PROVAS.md); "faça as provas sociais" = `painel.py provas` e trabalhar o que está com o Claude, com custo antes.
+
+**Claude automático.** Com `CLAUDE_AUTO=1` no `.env`, o painel chama o Claude Code sem chat (`claude -p`) sempre que um card fica "com o Claude" (pedido aprovado no Garimpo, etapa aprovada, ajuste, resposta, gasto liberado): ninguém precisa dizer "continue a esteira". Um trabalho por vez; o card mostra "Claude trabalhando" e o menu lateral, "Claude: trabalhando em C23". Cada rodada faz uma etapa só e entrega para aprovação. Regras da rodada:
+
+- **Gasto**: segue sozinho até `LIMITE_AUTO_USD` por etapa (padrão US$ 1,00, decidido pelo dono em 2026-11-26). Acima disso, não gera: roda `painel.py pedir-gasto C<NN> --custo <estimativa> --plano "..."` e o card volta ao dono com o botão **Liberar US$ X** (liberar dispara a rodada de novo, com esse limite).
+- **Dúvida**: o que só o dono sabe (oferta, fato do produto, foto do produto, decisão de política) vira `painel.py perguntar C<NN> "..."`; o dono responde no card (botão Responder, que funciona como ajuste).
+- **Parou sem entregar**: o card mostra "Claude parou" com o motivo e os botões Orientar e Tentar de novo.
+- Toda rodada começa no **modo caveman full** (`CAVEMAN_AUTO` no `painel.py`, pedido do dono em 2026-11-26): a fala do Claude sai curta para gastar menos tokens. Arquivos, `ficha.json`, roteiro, copy, traduções e os textos de pedido de gasto e pergunta continuam em texto normal.
+- Nunca publica na Meta, nunca faz commit ou push, nunca mexe em outro card. Ferramentas liberadas: leitura e edição de arquivos e Bash para `python`, `ffmpeg`, `ffprobe` e arquivos (`painel.py`, `FERRAMENTAS_AUTO`).
+- Só roda com o computador ligado e o painel aberto. Cada estado do card roda uma vez só (tabela `trabalhos`, chave card|etapa|hora), então dois computadores com o painel aberto não duplicam o trabalho; a saída de cada rodada fica em `painel/.trabalhos/`.
+- `CLAUDE_AUTO=0` (ou sem a linha) volta ao modo manual ("continue a esteira" no chat).
 
 **Refação pedida no painel.** "Pedir ajuste" (card em produção) e "Refazer com anotações" (Visão geral) põem o pedido na fila; nada é gerado sozinho. Criativo já pronto com refação pedida continua na Biblioteca e aparece na coluna "Refação" da Produção até ser feito. Quando o dono disser "refaça os pedidos do painel" (ou "continue a esteira"):
 
@@ -416,7 +430,7 @@ Todo criativo entregue vai também para o Drive do dono, que o time usa como reg
 | Script | Etapa | Função |
 |--------|-------|--------|
 | `dados.py` | todas | ponte com o banco do negócio (Supabase, ver [ARQUITETURA.md](ARQUITETURA.md)): `contexto <oferta>` (portão de contexto), `buscar <link/arquivo>` ("já vi?"), `parecidos "<texto>"`, `capturar <oferta> <etapa>` (página do funil; Shopify bloqueia, então `--arquivo` com o texto do Chrome), `gravar <tabela> <json>`, `embeddings`, `sql` (só leitura). Precisa de `SUPABASE_DB_URL` no `.env` |
-| `painel.py` | todas | painel local (produção, biblioteca, anotação por tempo, métricas, comparação, variáveis); `esteira` lista o que está com o Claude; `entrar C<NN>` põe na esteira; `entregar C<NN> --etapa --custo` manda a etapa para aprovação; `fila` lista os pedidos de refação; `feita <ids> --resposta` fecha |
+| `painel.py` | todas | painel local (produção, biblioteca, anotação por tempo, métricas, comparação, variáveis); `esteira` lista o que está com o Claude; `entrar C<NN>` põe na esteira; `entregar C<NN> --etapa --custo` manda a etapa para aprovação; `fila` lista os pedidos de refação; `feita <ids> --resposta` fecha; `provas` e `prova-entregar PS## --etapa --custo` para as provas sociais ([PROVAS.md](PROVAS.md)) |
 | `midia.py` | todas | mídia no Cloudflare R2 ([R2.md](R2.md)): `verificar`, `subir C<NN>` / `--todos` (só o novo ou mudado; `--ensaio`), `baixar C<NN> [--papel take]`, `estado`. O `painel.py entregar` já sobe |
 | `meta.py` | entrega, resultados | Marketing API ([META.md](META.md)): `verificar`, `sincronizar` (números diários por anúncio), `ligar <ad_id> <CN05>`, `sem-criativo`, `publicar` (sempre PAUSADO; ensaio sem `--confirmar`) |
 | `analisar_referencia.py` | 1, M1 | transcrição com tempo por palavra, cortes, folhas com tempo, hook denso (0,25 s) e `evidencias.md` (ritmo de cortes, palavras nos 3 s, palavras/s, pausas, volume, fundo sob a voz) |
@@ -430,4 +444,5 @@ Todo criativo entregue vai também para o Drive do dono, que o time usa como reg
 | `prancheta_zoom.py` | 5–6 | imagem nítida com zoom lento + voz do take, para cena com muito texto (05, 11, 12) |
 | `quadro_nitido.py` | 5–6 | troca o texto redesenhado do quadro pelo nítido da imagem, mantendo mãos e cabelo do take (13) |
 | `faixas_oferta.py` | 6 | faixas fixas de oferta em PNG transparente 1080x1920 (11, 12) |
+| `selo_ia.py` | provas sociais | selo "ilustrativo · IA" no idioma da peça, em foto ou vídeo; obrigatório no arquivo final de toda prova social |
 | `compor_imagem.py` | N3 | criativo de imagem a partir de um `imagem.json`: foto do Nano Banana (sem texto), rótulo nítido do sachê aprovado colado por cima, faixas, selo e todo o texto em fontes locais; trocar preço ou frase custa 0 (32, 33, 34) |
